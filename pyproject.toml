@@ -3,7 +3,7 @@ name = "prover"
 version = "0.1.0"
 description = "The description of the package"
 
-license = { text = "MIT" }
+license = "MIT"
 readme = "README.md"
 
 # No python upper bound for package metadata
@@ -17,6 +17,8 @@ authors = [
 keywords = ["prover"]
 
 dependencies = [
+    "pydantic>=2.11.7",
+    "pyyaml>=6.0.2",
 ]
 
 [project.urls]
@@ -55,3 +57,6 @@ Sphinx = "^5.1.1"
 # A: flake8-builtins (built-in shadowing)
 # C4: flake8-comprehensions (comprehension best practices)
 lint.select = ["E", "F", "I", "B", "UP", "A", "C4"]
+
+[tool.setuptools.packages.find]
+include = ["prover"]

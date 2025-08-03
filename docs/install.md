@@ -2,6 +2,12 @@
 
 ```bash
 docker create --gpus all --net=host --shm-size="50g" --cap-add=SYS_ADMIN -v .:/workspace/prover --name prover pufanyi/prover:latest sleep infinity
+docker start prover
+docker exec -it prover zsh
+cd /workspace/prover/
+uv venv --python=3.12
+source .venv/bin/activate
+uv pip install -e .
 ```
 
 Common error:

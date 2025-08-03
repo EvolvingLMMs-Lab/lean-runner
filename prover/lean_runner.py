@@ -1,6 +1,8 @@
 import json
 import subprocess
 
+from prover.env import CONFIG
+
 
 class Proof:
     def __init__(self, proof: str):
@@ -18,11 +20,11 @@ class Proof:
 
     def execute(self):
         outputs = subprocess.run(
-            ["/root/.elan/bin/lake", "exe", "repl"],
+            [CONFIG.lean.executable, "exe", "repl"],
             input=self.command,
             capture_output=True,
             text=True,
-            cwd="/root/playground",
+            cwd=CONFIG.lean.workspace,
         )
         return {
             "stdout": outputs.stdout,
