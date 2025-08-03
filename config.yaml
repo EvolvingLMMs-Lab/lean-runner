@@ -1,0 +1,3 @@
+lean:
+  executable: /root/.elan/bin/lake
+  workspace: /root/playground

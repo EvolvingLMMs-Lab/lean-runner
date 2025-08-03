@@ -12,7 +12,7 @@ class Proof(object):
         })
     
     def execute(self):
-        outputs = subprocess.run(["lake", "exe", 'repl'], input=self.command, capture_output=True, text=True, cwd=self.lean_workspace)
+        outputs = subprocess.run(["/root/.elan/bin/lake", "exe", 'repl'], input=self.command, capture_output=True, text=True, cwd="/root/playground")
         return {
             "stdout": outputs.stdout,
             "stderr": outputs.stderr,
