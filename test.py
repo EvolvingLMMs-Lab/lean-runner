@@ -1,27 +1,28 @@
 import subprocess
-import tempfile
-
-CODE = """\
-import Mathlib
-import Aesop
-
-set_option maxHeartbeats 0
-
-open BigOperators Real Nat Topology Rat
-
-/-- The second and fourth terms of a geometric sequence are $2$ and $6$. Which of the following is a possible first term?
-Show that it is $\frac{2\sqrt{3}}{3}$.-/
-theorem amc12b_2003_p6 (a r : ℝ) (u : ℕ → ℝ) (h₀ : ∀ k, u k = a * r ^ k) (h₁ : u 1 = 2)
-  (h₂ : u 3 = 6) : u 0 = 2 / Real.sqrt 3 ∨ u 0 = -(2 / Real.sqrt 3) := by sorry
-"""
+import json
 
 class Proof(object):
     def __init__(self, proof: str):
         self.proof = proof
+        self.lean_workspace = "playground"
+        self.command = json.dumps({
+            "cmd": self.proof,
+            "allTactics": False,
+            "ast": False, "tactics": False, "premises": False
+        })
     
     def execute(self):
-        pass
+        outputs = subprocess.run(["lake", "exe", 'repl'], input=self.command, capture_output=True, text=True, cwd=self.lean_workspace)
+        return {
+            "stdout": outputs.stdout,
+            "stderr": outputs.stderr,
+            "returncode": outputs.returncode,
+        }
 
 if __name__ == "__main__":
-    proof = Proof(CODE)
-    print(proof.execute())
+    with open("test.lean", "r") as f:
+        code = f.read()
+    proof = Proof(code)
+    result = proof.execute()
+    print(result["stdout"])
+    print(result["stderr"])
