@@ -44,3 +44,7 @@ pytest-cov = "^3.0"
 optional = true
 [tool.poetry.group.docs.dependencies]
 Sphinx = "^5.1.1"
+
+[tool.ruff]
+# Enable Pyflakes (F) and pycodestyle (E) and isort (I) rules by default.
+lint.select = ["E", "F", "I"]
