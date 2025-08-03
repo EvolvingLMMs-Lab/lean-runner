@@ -46,5 +46,12 @@ optional = true
 Sphinx = "^5.1.1"
 
 [tool.ruff]
-# Enable Pyflakes (F) and pycodestyle (E) and isort (I) rules by default.
-lint.select = ["E", "F", "I"]
+# Rule selection:
+# E: pycodestyle (style errors)
+# F: Pyflakes (logical errors)
+# I: isort (import sorting)
+# B: flake8-bugbear (bug detection)
+# UP: pyupgrade (syntax modernization)
+# A: flake8-builtins (built-in shadowing)
+# C4: flake8-comprehensions (comprehension best practices)
+lint.select = ["E", "F", "I", "B", "UP", "A", "C4"]

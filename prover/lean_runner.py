@@ -2,7 +2,7 @@ import json
 import subprocess
 
 
-class Proof(object):
+class Proof:
     def __init__(self, proof: str):
         self.proof = proof
         self.lean_workspace = "playground"
@@ -32,7 +32,7 @@ class Proof(object):
 
 
 if __name__ == "__main__":
-    with open("test.lean", "r") as f:
+    with open("test.lean") as f:
         code = f.read()
     proof = Proof(code)
     result = proof.execute()

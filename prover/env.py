@@ -13,6 +13,6 @@ class Config(BaseModel):
     lean: LeanConfig
 
 
-with open(Path(__file__).parents[1] / "config.yaml", "r") as f:
+with open(Path(__file__).parents[1] / "config.yaml") as f:
     config_dict = yaml.safe_load(f)
     CONFIG = Config.model_validate(config_dict)
