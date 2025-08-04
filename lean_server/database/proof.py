@@ -1,6 +1,9 @@
+import json
+
 import aiosqlite
 
 from lean_server.config import CONFIG
+from lean_server.proof.config import LeanProofConfig
 
 
 class ProofDatabase:
@@ -15,13 +18,23 @@ class ProofDatabase:
                 CREATE TABLE IF NOT EXISTS proof (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     proof TEXT,
+                    config TEXT,
+                    result TEXT,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
                 """
             )
             await db.commit()
 
-    async def insert_proof(self, proof: str):
+    async def insert_proof(
+        self, proof: str, config: LeanProofConfig, result: dict
+    ) -> int:
+        config_string = config.model_dump_json()
+        result_string = json.dumps(result)
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
-            await db.execute("INSERT INTO proof (proof) VALUES (?)", (proof,))
+            cursor = await db.execute(
+                "INSERT INTO proof (proof, config, result) VALUES (?, ?, ?)",
+                (proof, config_string, result_string),
+            )
             await db.commit()
+            return cursor.lastrowid
