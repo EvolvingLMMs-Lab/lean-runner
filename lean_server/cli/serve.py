@@ -3,19 +3,23 @@ from fastapi import FastAPI
 
 from ..config import CONFIG
 from .args import parse_args
+from .lifespan import get_lifespan
+from .prove import router as prove_router
 
-app = FastAPI()
+
+def launch() -> FastAPI:
+    app = FastAPI(lifespan=get_lifespan())
+    app.include_router(prove_router)
+    return app
 
 
-@app.get("/")
-async def root():
-    return {"message": "Lean Server is running."}
+app = launch()
 
 
 def main():
     args = parse_args()
     uvicorn.run(
-        "lean_server.cli.serve:app",
+        f"{__name__}:app",
         host=args.host,
         port=args.port,
         reload=True,
