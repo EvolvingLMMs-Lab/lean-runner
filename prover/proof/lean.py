@@ -1,10 +1,10 @@
 import json
 import subprocess
 
-from prover.env import CONFIG
+from prover.config import CONFIG
 
 
-class Proof:
+class LeanProof:
     def __init__(self, proof: str):
         self.proof = proof
         self.lean_workspace = "playground"
@@ -36,7 +36,7 @@ class Proof:
 if __name__ == "__main__":
     with open("test.lean") as f:
         code = f.read()
-    proof = Proof(code)
+    proof = LeanProof(code)
     result = proof.execute()
     print("========== stdout ==========")
     print(result["stdout"])
