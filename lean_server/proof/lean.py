@@ -1,7 +1,10 @@
 import json
+import logging
 import subprocess
 
-from prover.config import CONFIG
+from lean_server.config import CONFIG
+
+logger = logging.getLogger(__name__)
 
 
 class LeanProof:
@@ -38,7 +41,7 @@ if __name__ == "__main__":
         code = f.read()
     proof = LeanProof(code)
     result = proof.execute()
-    print(result)
-    print(result["stdout"])
-    print(result["stderr"])
-    print(result["returncode"])
+    logger.info(result)
+    logger.info(result["stdout"])
+    logger.info(result["stderr"])
+    logger.info(result["returncode"])

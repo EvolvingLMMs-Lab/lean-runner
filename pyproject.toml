@@ -1,5 +1,5 @@
 [project]
-name = "prover"
+name = "lean-server"
 version = "0.1.0"
 description = "The description of the package"
 
@@ -14,22 +14,24 @@ authors = [
 ]
 
 # Keywords (translated to tags on the package index)
-keywords = ["prover"]
+keywords = ["lean-server"]
 
 dependencies = [
     "pydantic>=2.11.7",
     "pyyaml>=6.0.2",
     "loguru>=0.7.2",
-    "vllm",
+    "fastapi>=0.116.1",
+    "uvicorn>=0.35.0",
+    "rich>=14.1.0",
 ]
 
 [project.urls]
-repository = "https://github.com/pufanyi/prover"
-homepage = "https://github.com/pufanyi/prover"
+repository = "https://github.com/pufanyi/lean-server"
+homepage = "https://github.com/pufanyi/lean-server"
 
 # Scripts are easily expressed
 [project.scripts]
-prover = 'prover.console:run'
+lean-server = 'lean_server.cli.serve:main'
 
 [tool.poetry.dependencies]
 # Python upper bound for locking
@@ -61,4 +63,4 @@ Sphinx = "^5.1.1"
 lint.select = ["E", "F", "I", "B", "UP", "A", "C4"]
 
 [tool.setuptools.packages.find]
-include = ["prover"]
+include = ["lean_server"]

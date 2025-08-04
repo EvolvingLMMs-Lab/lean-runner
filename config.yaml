@@ -1,3 +1,30 @@
 lean:
-  executable: /root/.elan/bin/lake
-  workspace: /root/playground
+  # executable: /root/.elan/bin/lake
+  # workspace: /root/playground
+  executable: /home/libo/.elan/bin/lake
+  workspace: /mnt/raid10/pufanyi/prover/playground
+logging:
+  version: 1
+  disable_existing_loggers: false
+  handlers:
+    default:
+      class: "rich.logging.RichHandler"
+      level: "INFO"
+      rich_tracebacks: true
+      tracebacks_word_wrap: false
+  loggers:
+    uvicorn:
+      handlers:
+        - "default"
+      level: "INFO"
+      propagate: false
+    uvicorn.error:
+      handlers:
+        - "default"
+      level: "INFO"
+      propagate: false
+    uvicorn.access:
+      handlers:
+        - "default"
+      level: "INFO"
+      propagate: false

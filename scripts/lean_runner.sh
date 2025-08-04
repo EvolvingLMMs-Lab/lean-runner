@@ -2,6 +2,6 @@
 
 set -eu
 
-COMMAND='cd /workspace/prover/ && source .venv/bin/activate && python -m prover.proof.lean'
+COMMAND='cd /workspace/lean-server/ && source .venv/bin/activate && python -m lean_server.proof.lean'
 
-docker exec prover zsh -c "${COMMAND}"
+docker exec lean-server zsh -c "${COMMAND}"

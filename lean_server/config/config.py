@@ -8,3 +8,4 @@ class LeanConfig(BaseModel):
 
 class Config(BaseModel):
     lean: LeanConfig
+    logging: dict
