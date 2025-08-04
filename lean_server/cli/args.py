@@ -1,5 +1,6 @@
 import argparse
 
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run the Lean Server.")
     parser.add_argument(

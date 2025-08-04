@@ -22,6 +22,7 @@ dependencies = [
     "loguru>=0.7.2",
     "fastapi>=0.116.1",
     "uvicorn>=0.35.0",
+    "rich>=14.1.0",
 ]
 
 [project.urls]
