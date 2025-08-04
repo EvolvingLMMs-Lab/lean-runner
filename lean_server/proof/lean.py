@@ -12,7 +12,6 @@ logger = logging.getLogger(__name__)
 class LeanProof:
     def __init__(self, proof: str):
         self.proof = proof
-        self.lean_workspace = "playground"
 
     async def execute(self, config: LeanProofConfig):
         command = {

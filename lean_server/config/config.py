@@ -6,6 +6,12 @@ class LeanConfig(BaseModel):
     workspace: str
 
 
+class SQLiteConfig(BaseModel):
+    database_path: str
+    timeout: int
+
+
 class Config(BaseModel):
     lean: LeanConfig
+    sqlite: SQLiteConfig
     logging: dict
