@@ -7,8 +7,8 @@ from .lifespan import get_lifespan
 from .prove import router as prove_router
 
 
-def launch() -> FastAPI:
-    app = FastAPI(lifespan=get_lifespan())
+def launch(*, concurrency: int) -> FastAPI:
+    app = FastAPI(lifespan=get_lifespan(concurrency))
     app.include_router(prove_router)
     return app
 
