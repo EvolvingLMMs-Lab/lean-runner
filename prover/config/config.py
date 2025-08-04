@@ -1,4 +1,5 @@
 import os
+
 from pydantic import BaseModel
 
 
@@ -15,4 +16,3 @@ class LeanConfig(BaseModel):
 
 class Config(BaseModel):
     lean: LeanConfig
-
