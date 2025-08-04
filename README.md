@@ -1,4 +1,4 @@
-# prover
+# lean-server
 
 - [Install](docs/install.md)
 - [Lean](docs/lean.md)

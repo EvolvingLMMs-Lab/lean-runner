@@ -1,5 +1,5 @@
 [project]
-name = "prover"
+name = "lean-server"
 version = "0.1.0"
 description = "The description of the package"
 
@@ -14,7 +14,7 @@ authors = [
 ]
 
 # Keywords (translated to tags on the package index)
-keywords = ["prover"]
+keywords = ["lean-server"]
 
 dependencies = [
     "pydantic>=2.11.7",
@@ -25,8 +25,8 @@ dependencies = [
 ]
 
 [project.urls]
-repository = "https://github.com/pufanyi/prover"
-homepage = "https://github.com/pufanyi/prover"
+repository = "https://github.com/pufanyi/lean-server"
+homepage = "https://github.com/pufanyi/lean-server"
 
 # Scripts are easily expressed
 [project.scripts]
@@ -62,4 +62,4 @@ Sphinx = "^5.1.1"
 lint.select = ["E", "F", "I", "B", "UP", "A", "C4"]
 
 [tool.setuptools.packages.find]
-include = ["prover"]
+include = ["lean_server"]
