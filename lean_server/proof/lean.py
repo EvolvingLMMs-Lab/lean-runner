@@ -10,12 +10,12 @@ logger = logging.getLogger(__name__)
 
 
 class LeanProof:
-    def __init__(self, proof: str):
-        self.proof = proof
+    def __init__(self, *, proof: str):
+        self.lean_code = proof
 
     async def execute(self, config: LeanProofConfig):
         command = {
-            "cmd": self.proof,
+            "cmd": self.lean_code,
             "allTactics": config.all_tactics,
             "ast": config.ast,
             "tactics": config.tactics,

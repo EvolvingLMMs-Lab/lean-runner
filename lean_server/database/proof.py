@@ -3,6 +3,7 @@ import json
 import aiosqlite
 
 from lean_server.config import CONFIG
+from lean_server.proof.lean import LeanProof
 from lean_server.proof.config import LeanProofConfig
 
 
@@ -27,14 +28,14 @@ class ProofDatabase:
             await db.commit()
 
     async def insert_proof(
-        self, proof: str, config: LeanProofConfig, result: dict
+        self, proof: LeanProof, config: LeanProofConfig, result: dict
     ) -> int:
         config_string = config.model_dump_json()
         result_string = json.dumps(result)
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
             cursor = await db.execute(
                 "INSERT INTO proof (proof, config, result) VALUES (?, ?, ?)",
-                (proof, config_string, result_string),
+                (proof.lean_code, config_string, result_string),
             )
             await db.commit()
             return cursor.lastrowid
