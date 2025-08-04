@@ -2,7 +2,7 @@ import json
 import logging
 import subprocess
 
-from prover.config import CONFIG
+from lean_server.config import CONFIG
 
 logger = logging.getLogger(__name__)
 

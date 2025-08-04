@@ -20,7 +20,8 @@ dependencies = [
     "pydantic>=2.11.7",
     "pyyaml>=6.0.2",
     "loguru>=0.7.2",
-    "vllm",
+    "fastapi>=0.116.1",
+    "uvicorn>=0.35.0",
 ]
 
 [project.urls]
@@ -29,7 +30,7 @@ homepage = "https://github.com/pufanyi/prover"
 
 # Scripts are easily expressed
 [project.scripts]
-prover = 'prover.console:run'
+lean-server = 'lean_server.cli.serve:main'
 
 [tool.poetry.dependencies]
 # Python upper bound for locking
