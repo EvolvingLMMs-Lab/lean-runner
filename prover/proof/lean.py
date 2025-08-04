@@ -3,7 +3,6 @@ import subprocess
 
 from prover.config import CONFIG
 
-
 class LeanProof:
     def __init__(self, proof: str):
         self.proof = proof
@@ -38,9 +37,7 @@ if __name__ == "__main__":
         code = f.read()
     proof = LeanProof(code)
     result = proof.execute()
-    print("========== stdout ==========")
+    print(result)
     print(result["stdout"])
-    print("========== stderr ==========")
     print(result["stderr"])
-    print("========== returncode ==========")
     print(result["returncode"])

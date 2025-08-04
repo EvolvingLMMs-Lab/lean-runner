@@ -19,6 +19,7 @@ keywords = ["prover"]
 dependencies = [
     "pydantic>=2.11.7",
     "pyyaml>=6.0.2",
+    "loguru>=0.7.2",
 ]
 
 [project.urls]

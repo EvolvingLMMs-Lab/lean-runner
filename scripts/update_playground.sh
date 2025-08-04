@@ -15,4 +15,4 @@ COMMAND='
   /root/.elan/bin/lake build
 '
 
-sudo docker exec prover zsh -c "${COMMAND}"
+docker exec prover zsh -c "${COMMAND}"
