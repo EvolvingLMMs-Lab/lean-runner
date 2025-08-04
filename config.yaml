@@ -1,3 +1,5 @@
 lean:
-  executable: /root/.elan/bin/lake
-  workspace: /root/playground
+  # executable: /root/.elan/bin/lake
+  # workspace: /root/playground
+  executable: /home/libo/.elan/bin/lake
+  workspace: /mnt/raid10/pufanyi/prover/playground
