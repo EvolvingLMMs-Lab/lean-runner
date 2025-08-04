@@ -1,8 +1,10 @@
+import asyncio
 import json
 import logging
-import subprocess
 
 from lean_server.config import CONFIG
+
+from .config import LeanProofConfig
 
 logger = logging.getLogger(__name__)
 
@@ -11,20 +13,19 @@ class LeanProof:
     def __init__(self, proof: str):
         self.proof = proof
         self.lean_workspace = "playground"
-        self.command = json.dumps(
-            {
-                "cmd": self.proof,
-                "allTactics": False,
-                "ast": False,
-                "tactics": False,
-                "premises": False,
-            }
-        )
 
-    def execute(self):
-        outputs = subprocess.run(
+    async def execute(self, config: LeanProofConfig):
+        command = {
+            "cmd": self.proof,
+            "allTactics": config.all_tactics,
+            "ast": config.ast,
+            "tactics": config.tactics,
+            "premises": config.premises,
+        }
+        logger.info(f"Executing command: {command}")
+        outputs = await asyncio.subprocess.create_subprocess_exec(
             [CONFIG.lean.executable, "exe", "repl"],
-            input=self.command,
+            input=json.dumps(command),
             capture_output=True,
             text=True,
             cwd=CONFIG.lean.workspace,
@@ -34,14 +35,3 @@ class LeanProof:
             "stderr": outputs.stderr,
             "returncode": outputs.returncode,
         }
-
-
-if __name__ == "__main__":
-    with open("test.lean") as f:
-        code = f.read()
-    proof = LeanProof(code)
-    result = proof.execute()
-    logger.info(result)
-    logger.info(result["stdout"])
-    logger.info(result["stderr"])
-    logger.info(result["returncode"])
