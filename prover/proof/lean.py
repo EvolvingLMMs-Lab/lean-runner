@@ -3,6 +3,7 @@ import subprocess
 
 from prover.config import CONFIG
 
+
 class LeanProof:
     def __init__(self, proof: str):
         self.proof = proof
