@@ -17,9 +17,7 @@ class LeanProof:
         else:
             self.proof_id = proof_id
 
-    async def execute(
-        self, config: LeanProofConfig, proof_database
-    ) -> LeanProofResult:
+    async def execute(self, config: LeanProofConfig, proof_database) -> LeanProofResult:
         try:
             await proof_database.update_status(
                 proof_id=self.proof_id, status=LeanProofStatus.RUNNING

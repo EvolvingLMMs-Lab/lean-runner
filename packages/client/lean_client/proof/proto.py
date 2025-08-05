@@ -17,7 +17,6 @@ class LeanProofStatus(Enum):
     ERROR = "error"
 
 
-
 class ProofResult(BaseModel):
     status: LeanProofStatus
     result: dict | None = None
