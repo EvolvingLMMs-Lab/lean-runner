@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  lean-server:
+    # Build the image from the Dockerfile in the current directory
+    build: .
+    # Name the container
+    container_name: lean-server
+    # Use host networking to allow easy access to the server
+    network_mode: "host"
+    # Set shared memory size as specified in the installation guide
+    shm_size: '10g'
+    # Add required capabilities
+    cap_add:
+      - SYS_ADMIN
+    # Mount the current directory into the container for live code changes
+    volumes:
+      - .:/workspace/lean-server
+    # Keep the container running in the background
+    # The command is overridden by the devcontainer.json for development.
+    command: sleep infinity
+    restart: unless-stopped

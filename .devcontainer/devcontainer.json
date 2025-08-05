@@ -1,0 +1,40 @@
+{
+  // A name for the dev container that can be displayed in the UI.
+  "name": "Lean Server Dev Environment",
+
+  // Tells VS Code to use your existing docker-compose.yml.
+  "dockerComposeFile": "../docker-compose.yml",
+
+  // The name of the service within your docker-compose.yml to use.
+  "service": "lean-server",
+
+  // The path to the workspace folder inside the container.
+  "workspaceFolder": "/workspace/lean-server",
+
+  // Forward the port from the container to the host machine.
+  "forwardPorts": [8000],
+
+  // Set a custom command to run after the container is created.
+  // This will keep the container alive, overriding the Dockerfile's CMD.
+  "postCreateCommand": "echo 'Dev container is ready.'",
+
+  // Configure VS Code settings and extensions for this project.
+  "customizations": {
+    "vscode": {
+      // Add extensions that should be installed inside the container.
+      "extensions": [
+        "ms-python.python",         // Python support
+        "charliermarsh.ruff",       // Ruff linter for Python
+        "ms-vscode-remote.remote-containers" // Dev Containers support
+      ],
+      // Set default settings for the workspace inside the container.
+      "settings": {
+        // Point the Python extension to the virtual environment inside the container.
+        "python.defaultInterpreterPath": "/workspace/lean-server/.venv/bin/python"
+      }
+    }
+  },
+
+  // Run as the same user as on the host to avoid permission issues.
+  "remoteUser": "vscode"
+}
