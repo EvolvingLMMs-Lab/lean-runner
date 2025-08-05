@@ -1,0 +1,57 @@
+[project]
+name = "lmms-lean-server"
+version = "0.0.1.dev1"
+description = "A FastAPI-based server to interact with the Lean Theorem Prover."
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    { name = "Pu Fanyi", email = "FPU001@e.ntu.edu.sg" },
+]
+keywords = ["lean", "lean-server", "theorem prover", "fastapi"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Framework :: FastAPI",
+]
+dependencies = [
+    "pydantic>=2.11.7",
+    "pyyaml>=6.0.2",
+    "loguru>=0.7.2",
+    "fastapi>=0.116.1",
+    "uvicorn>=0.35.0",
+    "rich>=14.1.0",
+    "aiosqlite>=0.21.0",
+    "python-multipart>=0.0.20",
+    "aiohttp>=3.12.15",
+]
+
+[project.urls]
+Repository = "https://github.com/pufanyi/lean-server"
+Homepage = "https://github.com/pufanyi/lean-server"
+
+[project.scripts]
+lean-server = 'lean_server.app.serve:main'
+
+[tool.setuptools.packages.find]
+include = ["lean_server*"]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "httpx>=0.25.0",
+    "pydantic>=2.11.7",
+    "fastapi>=0.116.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
