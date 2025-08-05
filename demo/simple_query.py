@@ -17,7 +17,7 @@ def check():
         print(result)
 
 async def check_async():
-    async with AsyncLeanClient(base_url="http://0.0.0.0:8000") as client:
+    async with AsyncLeanClient(base_url="http://0.0.0.0:8000", timeout=60.0) as client:
         result = await client.check_proof(
             proof=Path(__file__).parent / "test.lean",
             config={

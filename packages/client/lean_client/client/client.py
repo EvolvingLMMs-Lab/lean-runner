@@ -14,22 +14,24 @@ class LeanClient:
     The asynchronous client is available via the `aio` attribute.
     """
 
-    def __init__(self, base_url: str):
+    def __init__(self, base_url: str, timeout: float = 3600.0):
         """
         Initializes the LeanClient.
 
         Args:
             base_url: The base URL of the Lean Server, e.g., "http://localhost:8000".
+            timeout: The timeout for the HTTP requests in seconds.
         """
         if not base_url.endswith("/"):
             base_url += "/"
         self.base_url = base_url
+        self.timeout = timeout
         self._session: httpx.Client | None = None
 
     def _get_session(self) -> httpx.Client:
         """Initializes or returns the httpx client session."""
         if self._session is None or self._session.is_closed:
-            self._session = httpx.Client()
+            self._session = httpx.Client(timeout=self.timeout)
         return self._session
 
     def _read_proof_from_file(self, file_path: str | Path) -> str:
