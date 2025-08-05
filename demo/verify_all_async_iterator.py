@@ -47,8 +47,6 @@ async def main():
         results_iterator = client.verify_all(
             proofs=proof_generator(),
             max_workers=4,  # Limit concurrent requests
-            progress_bar=True,
-            total=len(LEAN_FILES),
         )
 
         print("\n--- Verification Results ---")
