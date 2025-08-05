@@ -1,6 +1,7 @@
 import json
+import os
 from pathlib import Path
-from typing import Any
+from typing import Any, Union
 
 import aiohttp
 
@@ -28,15 +29,43 @@ class LeanClient:
             self._session = aiohttp.ClientSession()
         return self._session
 
+    def _read_proof_from_file(self, file_path: Union[str, Path]) -> str:
+        """
+        Reads proof content from a file.
+        
+        Args:
+            file_path: Path to the file containing the proof.
+            
+        Returns:
+            The content of the file as a string.
+            
+        Raises:
+            FileNotFoundError: If the file doesn't exist.
+            IOError: If there's an error reading the file.
+        """
+        path = Path(file_path)
+        if not path.exists():
+            raise FileNotFoundError(f"File not found: {path}")
+        
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                return f.read()
+        except IOError as e:
+            raise IOError(f"Error reading file {path}: {e}")
+
     async def check_proof(
-        self, proof: str, config: dict[str, Any] | None = None
+        self, 
+        proof: Union[str, Path, os.PathLike], 
+        config: dict[str, Any] | None = None
     ) -> dict[str, Any]:
         """
         Sends a proof to the /prove/check endpoint.
 
         Args:
-            proof: The proof string to be checked, or a path to a file containing the
-            proof.
+            proof: The proof content. Can be:
+                - A string containing the proof
+                - A Path object pointing to a file containing the proof
+                - A string path to a file containing the proof
             config: An optional dictionary for proof configuration.
 
         Returns:
@@ -45,7 +74,21 @@ class LeanClient:
         session = await self._get_session()
         url = f"{self.base_url}prove/check"
 
-        data = {"proof": proof, "config": json.dumps(config) if config else "{}"}
+        # Handle different input types for proof
+        if isinstance(proof, (str, Path, os.PathLike)):
+            # Check if it's a file path
+            path = Path(proof)
+            if path.exists() and path.is_file():
+                # It's a file path, read the content
+                proof_content = self._read_proof_from_file(path)
+            else:
+                # It's a string content
+                proof_content = str(proof)
+        else:
+            # Assume it's already a string content
+            proof_content = str(proof)
+
+        data = {"proof": proof_content, "config": json.dumps(config) if config else "{}"}
 
         try:
             async with session.post(url, data=data) as response:
