@@ -1,0 +1,25 @@
+[project]
+name = "lmms-lean-runner"
+version = "0.0.1.dev1"
+description = "Lean Server Workspace"
+requires-python = ">=3.12"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.uv.workspace]
+members = [
+    "packages/client",
+    "packages/server"
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+    "pre-commit>=3.0.0",
+]

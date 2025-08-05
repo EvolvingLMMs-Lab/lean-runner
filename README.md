@@ -1,45 +1,168 @@
-# Lean Server Monorepo
+# Lean Server
 
-This repository is a monorepo for the Lean Server project, containing the server application and its corresponding Python client.
+A FastAPI-based server to interact with the Lean Theorem Prover, with a Python client library.
 
-## 📦 Packages
+## Project Structure
 
-This repository contains the following independent packages:
+This is a multipackage project using uv workspace:
 
--   `packages/server`: The core FastAPI server that exposes the Lean prover via a REST API.
--   `packages/client`: A Python client library (`lean-client`) for easily interacting with the server's API.
+```
+lean-server/
+├── pyproject.toml          # Workspace configuration
+├── packages/
+│   ├── client/            # Lean client library
+│   │   └── pyproject.toml
+│   └── server/            # Lean server application
+│       └── pyproject.toml
+```
 
-## 🚀 Getting Started
-
-The recommended way to work on this project is by using the included [Dev Container](https://code.visualstudio.com/docs/devcontainers/containers) configuration.
+## Development Setup
 
 ### Prerequisites
 
--   [Docker](https://www.docker.com/products/docker-desktop/)
--   [VS Code](https://code.visualstudio.com/) or [Cursor](https://cursor.sh/)
--   [Dev Containers Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) installed in your editor.
+- Python 3.12+
+- uv (install with `pip install uv`)
 
-### Development Workflow
+### Initial Setup
 
-1.  **Open in Container**:
-    -   Clone this repository.
-    -   Open the root folder in VS Code or Cursor.
-    -   A notification will appear asking to "Reopen in Container". Click it.
+1. **Install uv** (if not already installed):
+   ```bash
+   pip install uv
+   ```
 
-2.  **Install Dependencies**:
-    -   Once the Dev Container is running, open a new terminal (`Ctrl+` `).
-    -   Install both packages in editable mode using `uv`:
-      ```bash
-      uv pip install -e packages/server -e packages/client
-      ```
+2. **Initialize the workspace**:
+   ```bash
+   uv sync
+   ```
 
-3.  **Run the Services**:
-    -   **Start the Server**: In a terminal, run the server:
-      ```bash
-      lean-server
-      ```
-      This command is available because it's registered as a script in `packages/server/pyproject.toml`.
+3. **Activate the virtual environment**:
+   ```bash
+   source .venv/bin/activate  # On Linux/macOS
+   # or
+   .venv\Scripts\activate     # On Windows
+   ```
 
-    -   **Test with the Client**: In a separate terminal, you can run Python scripts to test the client, or use the example from the `packages/client` README.
+### Working with Packages
 
-This setup allows you to modify both server and client code and see the changes reflected immediately.
+#### Install dependencies for all packages:
+```bash
+uv sync
+```
+
+#### Install dependencies for a specific package:
+```bash
+uv sync --package lean-client
+uv sync --package lean-server
+```
+
+#### Add a dependency to a specific package:
+```bash
+uv add --package lean-client requests
+uv add --package lean-server redis
+```
+
+#### Add a development dependency:
+```bash
+uv add --dev --package lean-client pytest
+uv add --dev --package lean-server httpx
+```
+
+#### Run tests for all packages:
+```bash
+uv run pytest
+```
+
+#### Run tests for a specific package:
+```bash
+uv run --package lean-client pytest
+uv run --package lean-server pytest
+```
+
+#### Build all packages:
+```bash
+uv build
+```
+
+#### Build a specific package:
+```bash
+uv build --package lean-client
+uv build --package lean-server
+```
+
+#### Install packages in development mode:
+```bash
+uv pip install -e packages/client
+uv pip install -e packages/server
+```
+
+### Package Management
+
+#### Adding a new package:
+1. Create a new directory in `packages/`
+2. Add a `pyproject.toml` file
+3. Add the package to the workspace members in the root `pyproject.toml`
+
+#### Removing a package:
+1. Remove the package directory
+2. Remove it from the workspace members in the root `pyproject.toml`
+
+### Common Commands
+
+- `uv sync` - Install all dependencies
+- `uv add <package>` - Add dependency to workspace
+- `uv add --dev <package>` - Add development dependency
+- `uv run <command>` - Run command in workspace environment
+- `uv build` - Build all packages
+- `uv publish` - Publish packages to PyPI
+
+## Package Details
+
+### lean-client
+A Python client library for interacting with the Lean Theorem Prover Server API.
+
+**Key dependencies:**
+- aiohttp>=3.9.0
+- pydantic>=2.0.0
+
+### lean-server
+A FastAPI-based server application for the Lean Theorem Prover.
+
+**Key dependencies:**
+- fastapi>=0.116.1
+- uvicorn>=0.35.0
+- pydantic>=2.11.7
+- aiohttp>=3.12.15
+
+## Development Workflow
+
+1. **Start development**:
+   ```bash
+   uv sync
+   source .venv/bin/activate
+   ```
+
+2. **Make changes** to packages in `packages/`
+
+3. **Test changes**:
+   ```bash
+   uv run pytest
+   ```
+
+4. **Build and install**:
+   ```bash
+   uv build
+   uv pip install -e packages/client
+   uv pip install -e packages/server
+   ```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests: `uv run pytest`
+5. Submit a pull request
+
+## License
+
+MIT License

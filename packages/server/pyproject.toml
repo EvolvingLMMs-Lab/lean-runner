@@ -1,21 +1,20 @@
 [project]
-name = "lean-server"
+name = "lmms-lean-server"
 version = "0.0.1.dev1"
-description = "The description of the package"
-
-license = "MIT"
+description = "A FastAPI-based server to interact with the Lean Theorem Prover."
+license = { text = "MIT" }
 readme = "README.md"
-
-# No python upper bound for package metadata
 requires-python = ">=3.12"
-
 authors = [
     { name = "Pu Fanyi", email = "FPU001@e.ntu.edu.sg" },
 ]
-
-# Keywords (translated to tags on the package index)
-keywords = ["lean-server"]
-
+keywords = ["lean", "lean-server", "theorem prover", "fastapi"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Framework :: FastAPI",
+]
 dependencies = [
     "pydantic>=2.11.7",
     "pyyaml>=6.0.2",
@@ -29,41 +28,30 @@ dependencies = [
 ]
 
 [project.urls]
-repository = "https://github.com/pufanyi/lean-server"
-homepage = "https://github.com/pufanyi/lean-server"
+Repository = "https://github.com/pufanyi/lean-server"
+Homepage = "https://github.com/pufanyi/lean-server"
 
-# Scripts are easily expressed
 [project.scripts]
 lean-server = 'lean_server.app.serve:main'
 
-[tool.poetry.dependencies]
-# Python upper bound for locking
-python = ">=3.12,<4.0"
-# Version-specific dependencies with prereleases allowed
-tomli = { allow-prereleases = true }
-
-# Dependency groups are supported for organizing your dependencies
-[tool.poetry.group.dev.dependencies]
-pytest = "^7.1.2"
-pytest-cov = "^3.0"
-
-# ...and can be installed only when explicitly requested
-# via 'poetry install --with docs'
-[tool.poetry.group.docs]
-optional = true
-[tool.poetry.group.docs.dependencies]
-Sphinx = "^5.1.1"
-
-[tool.ruff]
-# Rule selection:
-# E: pycodestyle (style errors)
-# F: Pyflakes (logical errors)
-# I: isort (import sorting)
-# B: flake8-bugbear (bug detection)
-# UP: pyupgrade (syntax modernization)
-# A: flake8-builtins (built-in shadowing)
-# C4: flake8-comprehensions (comprehension best practices)
-lint.select = ["E", "F", "I", "B", "UP", "A", "C4"]
-
 [tool.setuptools.packages.find]
-include = ["lean_server"]
+include = ["lean_server*"]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "httpx>=0.25.0",
+    "pydantic>=2.11.7",
+    "fastapi>=0.116.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
