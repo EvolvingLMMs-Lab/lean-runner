@@ -54,7 +54,7 @@ async def main():
         # The client will handle consuming from it concurrently.
         results_iterator = client.verify_all(
             proofs=proof_generator(),
-            max_workers=4,  # Limit concurrent requests
+            max_workers=32,  # Limit concurrent requests
             progress_bar=True,
             total=len(LEAN_FILES),
         )
