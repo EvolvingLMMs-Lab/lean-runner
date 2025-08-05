@@ -79,6 +79,7 @@ class AsyncLeanClient:
     ) -> ProofResult:
         session = await self._get_session()
 
+        print(proof)
         proof_content = await self._get_proof_content(proof)
 
         data = {
@@ -130,8 +131,13 @@ class AsyncLeanClient:
         # Consumer: A worker that pulls proofs from the queue and verifies them.
         async def worker():
             while True:
+                proof = await proof_queue.get()
+                if proof is None:
+                    # Sentinel value received, exit the loop.
+                    proof_queue.task_done()
+                    break
+
                 try:
-                    proof = await proof_queue.get()
                     result = await self.verify(proof, config)
                     await results_queue.put(result)
                 except asyncio.CancelledError:
@@ -167,12 +173,9 @@ class AsyncLeanClient:
 
         processed_count = 0
         try:
-            while processed_count < max_workers:
+            while processed_count < total:
                 result = await results_queue.get()
-                if result is None:
-                    # A worker has exited after seeing a sentinel.
-                    processed_count += 1
-                    continue
+                processed_count += 1
 
                 pbar.update(1)
                 if isinstance(result, Exception):
