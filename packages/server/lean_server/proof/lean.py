@@ -3,7 +3,6 @@ import json
 import logging
 
 from ..config import CONFIG
-from ..database.proof import ProofDatabase
 from ..utils.uuid.uuid import uuid
 from .proto import LeanProofConfig, LeanProofResult, LeanProofStatus
 
@@ -19,7 +18,7 @@ class LeanProof:
             self.proof_id = proof_id
 
     async def execute(
-        self, config: LeanProofConfig, proof_database: ProofDatabase
+        self, config: LeanProofConfig, proof_database
     ) -> LeanProofResult:
         try:
             await proof_database.update_status(

@@ -43,3 +43,12 @@ def launch_prove_router(app: FastAPI):
             raise
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e)) from e
+
+    @app.get("/prove/result/{proof_id}")
+    async def get_result(
+        *,
+        proof_id: str,
+    ):
+        proof_manager: ProofManager = app.state.proof_manager
+        result = await proof_manager.get_result(proof_id)
+        return result

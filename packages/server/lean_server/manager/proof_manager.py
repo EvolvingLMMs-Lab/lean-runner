@@ -3,7 +3,7 @@ import logging
 
 from ..database.proof import ProofDatabase
 from ..proof.lean import LeanProof
-from ..proof.proto import LeanProofConfig, LeanProofStatus
+from ..proof.proto import LeanProofConfig, LeanProofResult, LeanProofStatus
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +30,7 @@ class ProofManager:
         logger.info(f"Submitted proof: {proof.proof_id}")
         self.background_tasks.add(task)
         task.add_done_callback(self.background_tasks.discard)
-        return proof.proof_id
+        return {"id": proof.proof_id}
 
     async def run_proof(
         self, *, proof: LeanProof, config: LeanProofConfig
@@ -62,3 +62,6 @@ class ProofManager:
                     "status": "error",
                     "error": str(e),
                 }
+
+    async def get_result(self, proof_id: str) -> LeanProofResult:
+        return await self.proof_database.get_result(proof_id)
