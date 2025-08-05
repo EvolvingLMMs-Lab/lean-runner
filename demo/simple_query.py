@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.INFO)
 
 def check():
     with LeanClient(base_url="http://0.0.0.0:8000") as client:
-        result = client.check_proof(
+        result = client.verify(
             proof=Path(__file__).parent / "test.lean",
             config={
                 "timeout": 30,
@@ -20,7 +20,7 @@ def check():
 
 async def check_async():
     async with AsyncLeanClient(base_url="http://0.0.0.0:8000", timeout=60.0) as client:
-        result = await client.check_proof(
+        result = await client.verify(
             proof=Path(__file__).parent / "test.lean",
             config={
                 "timeout": 30,

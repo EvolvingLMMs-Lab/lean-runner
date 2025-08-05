@@ -58,7 +58,7 @@ class LeanClient:
         except OSError as e:
             raise OSError(f"Error reading file {path}: {e}") from e
 
-    def check_proof(
+    def verify(
         self, proof: str | Path | os.PathLike, config: dict[str, Any] | None = None
     ) -> dict[str, Any]:
         """

@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 
 import httpx
+from anyio import Path as AnyioPath
 
 logger = logging.getLogger(__name__)
 
@@ -34,7 +35,7 @@ class AsyncLeanClient:
             self._session = httpx.AsyncClient(timeout=self.timeout)
         return self._session
 
-    def _read_proof_from_file(self, file_path: str | Path) -> str:
+    async def _read_proof_from_file(self, file_path: str | Path | AnyioPath) -> str:
         """
         Reads proof content from a file.
 
@@ -48,18 +49,19 @@ class AsyncLeanClient:
             FileNotFoundError: If the file doesn't exist.
             IOError: If there's an error reading the file.
         """
-        path = Path(file_path)
-        if not path.exists():
+        path = AnyioPath(file_path)
+        if not await path.exists():
             raise FileNotFoundError(f"File not found: {path}")
 
         try:
-            with open(path, encoding="utf-8") as f:
-                return f.read()
+            return await path.read_text(encoding="utf-8")
         except OSError as e:
             raise OSError(f"Error reading file {path}: {e}") from e
 
-    async def check_proof(
-        self, proof: str | Path | os.PathLike, config: dict[str, Any] | None = None
+    async def verify(
+        self,
+        proof: str | Path | os.PathLike | AnyioPath,
+        config: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
         """
         Sends a proof to the /prove/check endpoint.
@@ -77,18 +79,13 @@ class AsyncLeanClient:
         session = await self._get_session()
         url = f"{self.base_url}prove/check"
 
-        # Handle different input types for proof
         if isinstance(proof, str | Path | os.PathLike):
-            # Check if it's a file path
-            path = Path(proof)
-            if path.exists() and path.is_file():
-                # It's a file path, read the content
-                proof_content = self._read_proof_from_file(path)
+            path = AnyioPath(proof)
+            if await path.exists() and await path.is_file():
+                proof_content = await self._read_proof_from_file(path)
             else:
-                # It's a string content
                 proof_content = str(proof)
         else:
-            # Assume it's already a string content
             proof_content = str(proof)
 
         data = {
