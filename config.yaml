@@ -1,10 +1,8 @@
 lean:
-  # executable: /root/.elan/bin/lake
-  # workspace: /root/playground
-  executable: /home/libo/.elan/bin/lake
-  workspace: /mnt/raid10/pufanyi/prover/playground
+  executable: /root/.elan/bin/lake
+  workspace: /root/playground
 sqlite:
-  database_path: /mnt/raid10/pufanyi/prover/lean_server.db
+  database_path: /root/lean_server/lean_server.db
   timeout: 10
 logging:
   version: 1
