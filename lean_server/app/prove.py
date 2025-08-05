@@ -1,4 +1,4 @@
-from fastapi import APIRouter, FastAPI, Form
+from fastapi import FastAPI, Form
 
 from lean_server.manager.proof_manager import ProofManager
 from lean_server.proof.config import LeanProofConfig
