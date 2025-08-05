@@ -56,6 +56,85 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
+## Batch Verification of Multiple Proofs
+
+For verifying a large number of proofs, the `verify_all` method provides a high-performance, memory-efficient solution. It processes proofs concurrently and yields results as they become available, making it ideal for handling large datasets or streaming data.
+
+### Synchronous: `verify_all`
+
+The synchronous `verify_all` method uses a thread pool to verify proofs from any iterable (like a list or a generator) concurrently.
+
+**Features:**
+- **Concurrent**: Uses `concurrent.futures.ThreadPoolExecutor` to run multiple verification tasks in parallel.
+- **Memory-Efficient**: Processes proofs as an iterator, without loading the entire dataset into memory.
+- **Progress Bar**: Displays a `tqdm` progress bar to track progress.
+
+**Example (`demo/verify_all_sync_iterator.py`):**
+```python
+from pathlib import Path
+from lean_client import LeanClient
+
+# A generator to simulate a streaming data source
+def proof_generator():
+    lean_files = (Path(__file__).parent).glob("*.lean")
+    for file_path in lean_files:
+        yield file_path
+
+def main():
+    with LeanClient(base_url="http://0.0.0.0:8080") as client:
+        # Pass the generator directly to the function
+        results_iterator = client.verify_all(
+            proofs=proof_generator(),
+            max_workers=4,  # Limit concurrent requests
+        )
+
+        print("\n--- Verification Results ---")
+        for result in results_iterator:
+            print(result)
+
+if __name__ == "__main__":
+    main()
+```
+
+### Asynchronous: `aio.verify_all`
+
+The asynchronous version, `client.aio.verify_all`, is even more powerful. It uses an `asyncio` producer-consumer model to handle proofs from either a standard iterable or an asynchronous iterable.
+
+**Features:**
+- **Highly Concurrent**: Manages concurrency with `asyncio` tasks, ideal for I/O-bound operations.
+- **Back-pressure Management**: Uses a bounded queue to prevent the data source from overwhelming the system, ensuring stable memory usage.
+- **Flexible Inputs**: Accepts both synchronous (`Iterable`) and asynchronous (`AsyncIterable`) sources of proofs.
+
+**Example (`demo/verify_all_async_iterator.py`):**
+```python
+import asyncio
+from pathlib import Path
+from collections.abc import AsyncIterable
+from lean_client import AsyncLeanClient
+
+# An async generator to simulate a streaming data source
+async def proof_generator() -> AsyncIterable[Path]:
+    lean_files = (Path(__file__).parent).glob("*.lean")
+    for file_path in lean_files:
+        await asyncio.sleep(0.1) # Simulate I/O delay
+        yield file_path
+
+async def main():
+    async with AsyncLeanClient(base_url="http://0.0.0.0:8080") as client:
+        # Pass the async generator directly to the function
+        results_iterator = client.verify_all(
+            proofs=proof_generator(),
+            max_workers=4,
+        )
+
+        print("\n--- Verification Results ---")
+        async for result in results_iterator:
+            print(result)
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
 ## Long-Running Proofs: Submit and Poll
 
 For proofs that may take a long time to complete, it's better to submit them first and then poll for the result. This avoids long-held HTTP connections.
@@ -159,6 +238,7 @@ async def main():
 
 ### Methods
 - **`verify(proof, config)`**: Sends a proof for immediate verification. Blocks until the result is returned.
+- **`verify_all(proofs, config, max_workers, progress_bar, total)`**: Verifies a collection of proofs concurrently. Returns an iterator that yields results as they complete.
 - **`submit(proof, config)`**: Submits a proof for background processing. Returns a `Proof` object with an ID.
 - **`get_result(proof)`**: Retrieves the result of a previously submitted proof.
 - **`close()`**: Closes the underlying HTTP session. The client can also be used as a context manager (`with LeanClient(...) as client:`), which handles closing automatically.
