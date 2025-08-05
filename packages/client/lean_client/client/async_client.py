@@ -1,9 +1,12 @@
 import json
+import logging
 import os
 from pathlib import Path
 from typing import Any
 
 import httpx
+
+logger = logging.getLogger(__name__)
 
 
 class AsyncLeanClient:
@@ -94,7 +97,12 @@ class AsyncLeanClient:
         try:
             response = await session.post(url, data=data)
             response.raise_for_status()  # Raise an exception for bad status codes
-            return response.json()
+            try:
+                return response.json()
+            except Exception as e:
+                logger.error(f"Failed to parse JSON response: {e}")
+                logger.error(f"Raw response: {response.text}")
+                return {"error": str(e), "status": "N/A"}
         except httpx.HTTPStatusError as e:
             return {
                 "error": str(e),

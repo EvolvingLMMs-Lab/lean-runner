@@ -5,8 +5,6 @@ from typing import Any
 
 import httpx
 
-from .async_client import AsyncLeanClient
-
 
 class LeanClient:
     """
@@ -26,7 +24,6 @@ class LeanClient:
         if not base_url.endswith("/"):
             base_url += "/"
         self.base_url = base_url
-        self.aio = AsyncLeanClient(base_url)
         self._session: httpx.Client | None = None
 
     def _get_session(self) -> httpx.Client:
