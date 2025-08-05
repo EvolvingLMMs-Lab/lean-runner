@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Form
 
 from lean_server.manager.proof_manager import ProofManager
-from lean_server.proof.config import LeanProofConfig
 from lean_server.proof.lean import LeanProof
+from lean_server.proof.proto import LeanProofConfig
 
 
 def launch_prove_router(app: FastAPI):
@@ -32,3 +32,4 @@ def launch_prove_router(app: FastAPI):
         result = await proof_manager.run_proof(
             proof=lean_proof, config=lean_proof_config
         )
+        return result

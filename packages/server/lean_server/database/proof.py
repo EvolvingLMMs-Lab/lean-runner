@@ -25,29 +25,41 @@ class ProofDatabase:
                 )
                 """
             )
+            await db.execute(
+                """
+                CREATE TABLE IF NOT EXISTS status (
+                    id TEXT PRIMARY KEY,
+                    status TEXT,
+                )
+                """
+            )
             await db.commit()
 
     async def insert_proof(
         self,
+        *,
         proof: LeanProof,
         config: LeanProofConfig,
         result: LeanProofResult,
-        id: str | None = None,
+        proof_id: str | None = None,
     ) -> str:
         config_string = config.model_dump_json()
         result_string = result.model_dump_json()
-        if id is None:
-            id = uuid()
+        if proof_id is None:
+            proof_id = uuid()
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
             await db.execute(
                 "INSERT INTO proof (id, proof, config, result) VALUES (?, ?, ?, ?)",
-                (id, proof.lean_code, config_string, result_string),
+                (proof_id, proof.lean_code, config_string, result_string),
             )
             await db.commit()
-            return id
+            return proof_id
 
-    async def get_result(self, id: str) -> LeanProofResult:
+    async def get_result(self, proof_id: str) -> LeanProofResult:
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
-            cursor = await db.execute("SELECT result FROM proof WHERE id = ?", (id,))
+            cursor = await db.execute(
+                "SELECT result FROM proof WHERE id = ?",
+                (proof_id,),
+            )
             result = await cursor.fetchone()
             return LeanProofResult.model_validate_json(result)
