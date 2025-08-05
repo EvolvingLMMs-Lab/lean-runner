@@ -8,7 +8,8 @@ from lean_client import AsyncLeanClient
 # Make sure the lean server is running and accessible at this address.
 LEAN_SERVER_URL = "http://0.0.0.0:8080"
 
-# Use the .lean files in the current directory as test data, and repeat them to simulate a large workload.
+# Use the .lean files in the current directory as test data, and repeat
+# them to simulate a large workload.
 DEMO_DIR = Path(__file__).parent
 BASE_LEAN_FILES = [
     DEMO_DIR / "test1.lean",
@@ -74,6 +75,3 @@ if __name__ == "__main__":
 
         traceback.print_exc()
         print(f"\nAn error occurred: {e}")
-        print(
-            "Please ensure the lean server is running and accessible at the configured URL."
-        )

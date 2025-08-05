@@ -113,7 +113,8 @@ class AsyncLeanClient:
             config: The proof configuration.
             total: The total number of proofs (for the progress bar). If not provided,
                    it's inferred from `len(proofs)` if available.
-            max_workers: The maximum number of concurrent verification tasks (consumers).
+            max_workers: The maximum number of concurrent verification tasks
+                    (consumers).
             progress_bar: Whether to display a progress bar.
 
         Yields:
