@@ -47,6 +47,11 @@ class LeanProof:
             try:
                 result = json.loads(stdout.decode("utf-8"))
                 status = LeanProofStatus.FINISHED
+
+                # check if error in message
+                print("checking error")
+                if self._has_error(result):
+                    raise Exception(error_message)
             except json.JSONDecodeError as e:
                 logger.error(f"Error parsing JSON: {e}")
                 result = {
@@ -55,6 +60,12 @@ class LeanProof:
                 }
                 status = LeanProofStatus.ERROR
 
+            # process result
+            result["status"] = "success"
+            result = self._handle_result(
+                result=result,
+                hide_warnings=True,  # to replace with a config boolean
+            )
             return LeanProofResult(
                 status=status,
                 result=result,
@@ -62,4 +73,35 @@ class LeanProof:
             )
         except Exception as e:
             logger.error(f"Error executing proof: {e}")
-            return LeanProofResult(status=LeanProofStatus.ERROR, error_message=str(e))
+            return LeanProofResult(
+                status=LeanProofStatus.ERROR,
+                error_message=str(e),
+                result={"status": "failed"},
+            )
+
+    def _has_error(self, result: dict) -> bool:
+        """Check if a proof result has any error messages."""
+        if result and "messages" in result:
+            for msg in result["messages"]:
+                if msg.get("severity") == "error":
+                    return True
+        return False
+
+    def _handle_result(self, result: dict, hide_warnings: bool = True) -> dict:
+        """
+        Process the result dictionary returned from Lean.
+
+        Args:
+            result (dict): The original result dictionary.
+            hide_warnings (bool): If True,
+                removes all messages with severity == 'warning'.
+
+        Returns:
+            dict: The processed result dictionary.
+        """
+        if hide_warnings and "messages" in result:
+            result["messages"] = [
+                msg for msg in result["messages"] if msg.get("severity") != "warning"
+            ]
+
+        return result
