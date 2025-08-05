@@ -1,11 +1,11 @@
 import json
 import os
 from pathlib import Path
-from .aio.client import AsyncLeanClient
 
 import httpx
 
 from ..proof.proto import ProofConfig, ProofResult
+from .aio.client import AsyncLeanClient
 
 
 class LeanClient:

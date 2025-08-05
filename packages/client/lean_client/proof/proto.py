@@ -2,6 +2,7 @@ from enum import Enum
 
 from pydantic import BaseModel
 
+
 class ProofConfig(BaseModel):
     all_tactics: bool = False
     ast: bool = False
@@ -12,6 +13,7 @@ class ProofConfig(BaseModel):
 class ProofResult(BaseModel):
     result: dict | None = None
     error_message: str | None = None
+
 
 class LeanProofStatus(Enum):
     PENDING = "pending"
