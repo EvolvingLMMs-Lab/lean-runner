@@ -10,7 +10,7 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 include = ["packages.*"]
-exclude = ["playground*"]
+exclude = ["playground*", "demo*"]
 
 [tool.uv.workspace]
 members = [
