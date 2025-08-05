@@ -1,10 +1,10 @@
-import json
-
 import aiosqlite
 
 from ..config import CONFIG
 from ..proof.config import LeanProofConfig
 from ..proof.lean import LeanProof
+from ..proof.result import LeanProofResult
+from ..utils.uuid.uuid import uuid
 
 
 class ProofDatabase:
@@ -17,7 +17,7 @@ class ProofDatabase:
             await db.execute(
                 """
                 CREATE TABLE IF NOT EXISTS proof (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id TEXT PRIMARY KEY,
                     proof TEXT,
                     config TEXT,
                     result TEXT,
@@ -28,14 +28,26 @@ class ProofDatabase:
             await db.commit()
 
     async def insert_proof(
-        self, proof: LeanProof, config: LeanProofConfig, result: dict
-    ) -> int:
+        self,
+        proof: LeanProof,
+        config: LeanProofConfig,
+        result: LeanProofResult,
+        id: str | None = None,
+    ) -> str:
         config_string = config.model_dump_json()
-        result_string = json.dumps(result)
+        result_string = result.model_dump_json()
+        if id is None:
+            id = uuid()
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
-            cursor = await db.execute(
-                "INSERT INTO proof (proof, config, result) VALUES (?, ?, ?)",
-                (proof.lean_code, config_string, result_string),
+            await db.execute(
+                "INSERT INTO proof (id, proof, config, result) VALUES (?, ?, ?, ?)",
+                (id, proof.lean_code, config_string, result_string),
             )
             await db.commit()
-            return cursor.lastrowid
+            return id
+
+    async def get_result(self, id: str) -> LeanProofResult:
+        async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
+            cursor = await db.execute("SELECT result FROM proof WHERE id = ?", (id,))
+            result = await cursor.fetchone()
+            return LeanProofResult.model_validate_json(result)
