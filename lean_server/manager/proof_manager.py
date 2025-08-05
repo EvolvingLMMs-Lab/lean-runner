@@ -20,9 +20,15 @@ class ProofManager:
     ) -> dict | None:
         async with self.lean_semaphore:
             try:
+                logger.info(f"Running proof: {proof}")
+                logger.info(f"Config: {config}")
                 result = await proof.execute(config)
+                logger.info(f"Proof result: {result}")
                 await self.proof_database.insert_proof(proof, config, result)
+                logger.info(f"Proof result inserted into database")
                 return result
             except Exception as e:
+                import traceback
+                traceback.print_exc()
                 logger.error(f"Error running proof: {e}")
                 return None

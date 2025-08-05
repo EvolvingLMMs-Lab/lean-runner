@@ -22,15 +22,23 @@ class LeanProof:
             "premises": config.premises,
         }
         logger.info(f"Executing command: {command}")
-        outputs = await asyncio.subprocess.create_subprocess_exec(
-            [CONFIG.lean.executable, "exe", "repl"],
-            input=json.dumps(command),
-            capture_output=True,
-            text=True,
+
+        proc = await asyncio.create_subprocess_exec(
+            CONFIG.lean.executable,
+            "exe",
+            "repl",
+            stdin=asyncio.subprocess.PIPE,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
             cwd=CONFIG.lean.workspace,
         )
+
+        stdout, stderr = await proc.communicate(
+            input=json.dumps(command).encode("utf-8")
+        )
+
         return {
-            "stdout": outputs.stdout,
-            "stderr": outputs.stderr,
-            "returncode": outputs.returncode,
+            "stdout": stdout.decode("utf-8") if stdout else "",
+            "stderr": stderr.decode("utf-8") if stderr else "",
+            "returncode": proc.returncode,
         }

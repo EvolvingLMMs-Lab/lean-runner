@@ -4,25 +4,21 @@ from fastapi import FastAPI
 from ..config import CONFIG
 from .args import parse_args
 from .lifespan import get_lifespan
-from .prove import router as prove_router
+from .prove import launch_prove_router
 
 
 def launch(*, concurrency: int) -> FastAPI:
-    app = FastAPI(lifespan=get_lifespan(concurrency))
-    app.include_router(prove_router)
+    app = FastAPI(lifespan=get_lifespan(concurrency=concurrency))
+    launch_prove_router(app)
     return app
-
-
-app = launch()
 
 
 def main():
     args = parse_args()
     uvicorn.run(
-        f"{__name__}:app",
+        launch(concurrency=args.concurrency),
         host=args.host,
         port=args.port,
-        reload=True,
         log_config=CONFIG.logging,
     )
 

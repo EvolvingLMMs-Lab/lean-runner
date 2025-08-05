@@ -24,6 +24,8 @@ dependencies = [
     "uvicorn>=0.35.0",
     "rich>=14.1.0",
     "aiosqlite>=0.21.0",
+    "python-multipart>=0.0.20",
+    "aiohttp>=3.12.15",
 ]
 
 [project.urls]
@@ -32,7 +34,7 @@ homepage = "https://github.com/pufanyi/lean-server"
 
 # Scripts are easily expressed
 [project.scripts]
-lean-server = 'lean_server.cli.serve:main'
+lean-server = 'lean_server.app.serve:main'
 
 [tool.poetry.dependencies]
 # Python upper bound for locking
