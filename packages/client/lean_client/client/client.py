@@ -1,9 +1,13 @@
 import json
 import logging
 import os
+from collections.abc import Iterable
+from concurrent import futures
+from functools import partial
 from pathlib import Path
 
 import httpx
+import tqdm
 
 from ..proof.proto import Proof, ProofConfig, ProofResult
 from .aio.client import AsyncLeanClient
@@ -111,6 +115,67 @@ class LeanClient:
         response.raise_for_status()
 
         return ProofResult.model_validate(response.json())
+
+    def verify_all(
+        self,
+        proofs: Iterable[str | Path | os.PathLike],
+        config: ProofConfig | None = None,
+        total: int | None = None,
+        max_workers: int = 128,
+        progress_bar: bool = True,
+    ) -> Iterable[ProofResult]:
+        """
+        Verifies a collection of proofs concurrently using a thread pool.
+
+        This function is designed to be memory-efficient. It yields results as
+        they are completed, making it suitable for very large collections of proofs.
+
+        Args:
+            proofs: An iterable of proofs to verify.
+            config: The proof configuration.
+            total: The total number of proofs (for the progress bar). If not provided,
+                   it's inferred from `len(proofs)` if available.
+            max_workers: The maximum number of concurrent verification tasks.
+            progress_bar: Whether to display a progress bar.
+
+        Yields:
+            ProofResult: The result of each verification as it completes.
+        """
+        if total is None and hasattr(proofs, "__len__"):
+            total = len(proofs)
+
+        # To handle exceptions gracefully with executor.map, we wrap the call
+        def _verify_wrapper(proof_item, proof_config):
+            try:
+                return self.verify(proof_item, proof_config)
+            except Exception as e:
+                return e, proof_item
+
+        with futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+            # Use partial to fix the `config` argument for the wrapper
+            verify_func = partial(_verify_wrapper, proof_config=config)
+
+            # `proofs` could be an iterator, so we convert it to a list to
+            # know the total and to be able to reference it for error logging
+            # if needed.
+            proof_list = list(proofs)
+            if total is None:
+                total = len(proof_list)
+
+            results_iterator = executor.map(verify_func, proof_list)
+
+            pbar = tqdm.tqdm(
+                results_iterator,
+                total=total,
+                disable=not progress_bar,
+            )
+
+            for result in pbar:
+                if isinstance(result, tuple) and isinstance(result[0], Exception):
+                    exc, proof_id = result
+                    logger.error(f"Error verifying proof {proof_id}: {exc}")
+                else:
+                    yield result
 
     def get_result(self, proof: Proof) -> ProofResult:
         """
