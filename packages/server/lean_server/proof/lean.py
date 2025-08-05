@@ -47,11 +47,6 @@ class LeanProof:
             try:
                 result = json.loads(stdout.decode("utf-8"))
                 status = LeanProofStatus.FINISHED
-
-                # check if error in message
-                print("checking error")
-                if self._has_error(result):
-                    raise Exception(error_message)
             except json.JSONDecodeError as e:
                 logger.error(f"Error parsing JSON: {e}")
                 result = {
@@ -60,13 +55,12 @@ class LeanProof:
                 }
                 status = LeanProofStatus.ERROR
 
-            # process result
-            result["status"] = "success"
-            result = self._handle_result(
+            result, success = self._handle_result(
                 result=result,
-                hide_warnings=True,  # to replace with a config boolean
+                hide_warnings=True,
             )
             return LeanProofResult(
+                success=success,
                 status=status,
                 result=result,
                 error_message=error_message,
@@ -87,7 +81,9 @@ class LeanProof:
                     return True
         return False
 
-    def _handle_result(self, result: dict, hide_warnings: bool = True) -> dict:
+    def _handle_result(
+        self, result: dict, hide_warnings: bool = True
+    ) -> tuple[dict, bool]:
         """
         Process the result dictionary returned from Lean.
 
@@ -99,9 +95,16 @@ class LeanProof:
         Returns:
             dict: The processed result dictionary.
         """
+        success = True
+        final_result_messages = []
         if hide_warnings and "messages" in result:
-            result["messages"] = [
-                msg for msg in result["messages"] if msg.get("severity") != "warning"
-            ]
+            for msg in result["messages"]:
+                if msg.get("severity") == "error":
+                    success = False
+                elif msg.get("severity") == "warning":
+                    if hide_warnings:
+                        continue
+                final_result_messages.append(msg)
+        result["messages"] = final_result_messages
 
-        return result
+        return result, success
