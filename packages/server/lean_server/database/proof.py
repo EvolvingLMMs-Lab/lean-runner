@@ -5,7 +5,6 @@ import aiosqlite
 from ..config import CONFIG
 from ..proof.lean import LeanProof
 from ..proof.proto import LeanProofConfig, LeanProofResult, LeanProofStatus
-from ..utils.uuid.uuid import uuid
 
 logger = logging.getLogger(__name__)
 
@@ -52,25 +51,33 @@ class ProofDatabase:
         proof: LeanProof,
         config: LeanProofConfig,
         result: LeanProofResult,
-        proof_id: str | None = None,
     ) -> str:
         config_string = config.model_dump_json()
         result_string = result.model_dump_json()
-        if proof_id is None:
-            proof_id = uuid()
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
             await db.execute(
                 "INSERT INTO proof (id, proof, config, result) VALUES (?, ?, ?, ?)",
-                (proof_id, proof.lean_code, config_string, result_string),
+                (proof.proof_id, proof.lean_code, config_string, result_string),
             )
             await db.commit()
-            return proof_id
+            return proof.proof_id
 
     async def get_result(self, proof_id: str) -> LeanProofResult:
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
             cursor = await db.execute(
-                "SELECT result FROM proof WHERE id = ?",
+                "SELECT status FROM status WHERE id = ?",
                 (proof_id,),
             )
-            result = await cursor.fetchone()
-            return LeanProofResult.model_validate_json(result)
+            status_query_result = await cursor.fetchone()
+            if status_query_result is None:
+                raise ValueError(f"Proof {proof_id} not found")
+            status = LeanProofStatus(status_query_result[0])
+            if status == LeanProofStatus.FINISHED or status == LeanProofStatus.ERROR:
+                cursor = await db.execute(
+                    "SELECT result FROM proof WHERE id = ?",
+                    (proof_id,),
+                )
+                result = await cursor.fetchone()
+                return LeanProofResult.model_validate_json(result)
+            else:
+                return LeanProofResult(status=status)

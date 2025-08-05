@@ -2,10 +2,11 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import Any
 
 import httpx
 from anyio import Path as AnyioPath
+
+from ...proof.proto import Proof, ProofConfig, ProofResult
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +33,9 @@ class AsyncLeanClient:
     async def _get_session(self) -> httpx.AsyncClient:
         """Initializes or returns the httpx async client session."""
         if self._session is None or self._session.is_closed:
-            self._session = httpx.AsyncClient(timeout=self.timeout)
+            self._session = httpx.AsyncClient(
+                timeout=self.timeout, base_url=self.base_url
+            )
         return self._session
 
     async def _get_proof_content(
@@ -50,10 +53,9 @@ class AsyncLeanClient:
     async def submit(
         self,
         proof: str | Path | os.PathLike | AnyioPath,
-        config: dict[str, Any] | None = None,
-    ) -> dict[str, Any]:
+        config: ProofConfig | None = None,
+    ) -> Proof:
         session = await self._get_session()
-        url = f"{self.base_url}prove/submit"
 
         proof_content = await self._get_proof_content(proof)
 
@@ -62,17 +64,17 @@ class AsyncLeanClient:
             "config": json.dumps(config) if config else "{}",
         }
 
-        response = await session.post(url, data=data)
+        response = await session.post("/prove/submit", data=data)
         response.raise_for_status()
-        return response.json()
+        print(response.json())
+        return Proof.model_validate(response.json())
 
     async def verify(
         self,
         proof: str | Path | os.PathLike | AnyioPath,
-        config: dict[str, Any] | None = None,
-    ) -> dict[str, Any]:
+        config: ProofConfig | None = None,
+    ) -> ProofResult:
         session = await self._get_session()
-        url = f"{self.base_url}prove/check"
 
         proof_content = await self._get_proof_content(proof)
 
@@ -81,9 +83,16 @@ class AsyncLeanClient:
             "config": json.dumps(config) if config else "{}",
         }
 
-        response = await session.post(url, data=data)
+        response = await session.post("/prove/check", data=data)
         response.raise_for_status()
-        return response.json()
+
+        return ProofResult.model_validate(response.json())
+
+    async def get_result(self, proof: Proof) -> ProofResult:
+        session = await self._get_session()
+        response = await session.get(f"/prove/result/{proof.id}")
+        response.raise_for_status()
+        return ProofResult.model_validate(response.json())
 
     async def close(self):
         if self._session and not self._session.is_closed:

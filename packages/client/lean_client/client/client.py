@@ -1,9 +1,11 @@
 import json
 import os
 from pathlib import Path
-from typing import Any
 
 import httpx
+
+from ..proof.proto import ProofConfig, ProofResult
+from .aio.client import AsyncLeanClient
 
 
 class LeanClient:
@@ -26,6 +28,7 @@ class LeanClient:
             base_url += "/"
         self.base_url = base_url
         self.timeout = timeout
+        self.aio = AsyncLeanClient(base_url, timeout)
         self._session: httpx.Client | None = None
 
     def _get_session(self) -> httpx.Client:
@@ -47,8 +50,8 @@ class LeanClient:
             raise OSError(f"Error reading file {path}: {e}") from e
 
     def verify(
-        self, proof: str | Path | os.PathLike, config: dict[str, Any] | None = None
-    ) -> dict[str, Any]:
+        self, proof: str | Path | os.PathLike, config: ProofConfig | None = None
+    ) -> ProofResult:
         """
         Sends a proof to the /prove/check endpoint synchronously.
 
@@ -63,7 +66,6 @@ class LeanClient:
             A dictionary containing the server's response.
         """
         session = self._get_session()
-        url = f"{self.base_url}prove/check"
 
         proof_content = self._get_proof_content(proof)
 
@@ -73,20 +75,21 @@ class LeanClient:
         }
 
         try:
-            response = session.post(url, data=data)
+            response = session.post("/prove/check", data=data)
             response.raise_for_status()  # Raise an exception for bad status codes
-            return response.json()
+            return ProofResult.model_validate(response.json())
         except httpx.HTTPStatusError as e:
-            return {
-                "error": str(e),
-                "status": e.response.status_code,
-            }
+            return ProofResult(
+                error_message=str(e),
+                status=e.response.status_code,
+                result=None,
+            )
         except httpx.RequestError as e:
             # Handle connection errors
-            return {
-                "error": str(e),
-                "status": "N/A",
-            }
+            return ProofResult(
+                error_message=str(e),
+                status="N/A",
+            )
 
     def close(self):
         """Closes the client session."""
