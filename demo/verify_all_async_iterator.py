@@ -1,6 +1,6 @@
 import asyncio
+from collections.abc import AsyncIterable
 from pathlib import Path
-from typing import AsyncIterable
 
 from lean_client import AsyncLeanClient
 
@@ -43,7 +43,9 @@ async def main():
         print("No .lean files found in the demo directory. Please add some.")
         return
 
-    print(f"Found {len(LEAN_FILES)} .lean files to verify: {[f.name for f in LEAN_FILES]}")
+    print(
+        f"Found {len(LEAN_FILES)} .lean files to verify: {[f.name for f in LEAN_FILES]}"
+    )
 
     # The client can be used as an async context manager.
     async with AsyncLeanClient(base_url=LEAN_SERVER_URL) as client:
@@ -72,4 +74,6 @@ if __name__ == "__main__":
 
         traceback.print_exc()
         print(f"\nAn error occurred: {e}")
-        print("Please ensure the lean server is running and accessible at the configured URL.")
+        print(
+            "Please ensure the lean server is running and accessible at the configured URL."
+        )

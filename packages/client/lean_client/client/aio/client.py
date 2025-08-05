@@ -1,12 +1,12 @@
+import asyncio
 import json
 import logging
-import asyncio
 import os
-from collections.abc import Iterable, AsyncIterable
+from collections.abc import AsyncIterable, Iterable
 from pathlib import Path
-import tqdm
 
 import httpx
+import tqdm
 from anyio import Path as AnyioPath
 
 from ...proof.proto import Proof, ProofConfig, ProofResult
@@ -147,6 +147,7 @@ class AsyncLeanClient:
                     # Log the error and place an exception object on the results queue
                     # so the main loop can decide how to handle it.
                     import traceback
+
                     traceback.print_exc()
                     logger.error(f"Error verifying proof: {e}")
                     await results_queue.put(e)
@@ -191,7 +192,6 @@ class AsyncLeanClient:
             for w in workers:
                 w.cancel()
             await asyncio.gather(producer_task, *workers, return_exceptions=True)
-
 
     async def get_result(self, proof: Proof) -> ProofResult:
         session = await self._get_session()
