@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Form
+from fastapi import FastAPI, Form, HTTPException
 
 from lean_server.manager.proof_manager import ProofManager
 from lean_server.proof.lean import LeanProof
@@ -12,24 +12,34 @@ def launch_prove_router(app: FastAPI):
         proof: str = Form(...),
         config: str = Form(default="{}"),
     ):
-        lean_proof = LeanProof(proof=proof)
-        lean_proof_config = LeanProofConfig.model_validate_json(config)
-        proof_manager: ProofManager = app.state.proof_manager
-        result = await proof_manager.run_proof(
-            proof=lean_proof, config=lean_proof_config
-        )
-        return result
+        try:
+            lean_proof = LeanProof(proof=proof)
+            lean_proof_config = LeanProofConfig.model_validate_json(config)
+            proof_manager: ProofManager = app.state.proof_manager
+            result = await proof_manager.run_proof(
+                proof=lean_proof, config=lean_proof_config
+            )
+            return result
+        except HTTPException:
+            raise
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e)) from e
 
-    @app.post("/prove/check/background")
-    async def check_proof_background(
+    @app.post("/prove/submit")
+    async def submit_proof(
         *,
         proof: str = Form(...),
         config: str = Form(default="{}"),
     ):
-        lean_proof = LeanProof(proof=proof)
-        lean_proof_config = LeanProofConfig.model_validate_json(config)
-        proof_manager: ProofManager = app.state.proof_manager
-        result = await proof_manager.run_proof(
-            proof=lean_proof, config=lean_proof_config
-        )
-        return result
+        try:
+            lean_proof = LeanProof(proof=proof)
+            lean_proof_config = LeanProofConfig.model_validate_json(config)
+            proof_manager: ProofManager = app.state.proof_manager
+            result = await proof_manager.submit_proof(
+                proof=lean_proof, config=lean_proof_config
+            )
+            return result
+        except HTTPException:
+            raise
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=str(e)) from e
