@@ -7,6 +7,7 @@ cd lmms-lean-runner
 
 ```sh
 uv venv
+source .venv/bin/activate
 uv pip install -e packages/server
 ```
 
