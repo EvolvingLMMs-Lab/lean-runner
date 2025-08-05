@@ -1,7 +1,10 @@
 import json
 import logging
+import asyncio
 import os
+from collections.abc import Iterable, AsyncIterable
 from pathlib import Path
+import tqdm
 
 import httpx
 from anyio import Path as AnyioPath
@@ -87,6 +90,55 @@ class AsyncLeanClient:
         response.raise_for_status()
 
         return ProofResult.model_validate(response.json())
+
+    async def verify_all(
+        self,
+        proofs: Iterable[str | Path | os.PathLike | AnyioPath],
+        config: ProofConfig | None = None,
+        total: int | None = None,
+        max_workers: int = 128,
+        progress_bar: bool = True,
+    ) -> AsyncIterable[ProofResult]:
+        if total is None and hasattr(proofs, "__len__"):
+            total = len(proofs)
+
+        pbar = tqdm.tqdm(total=total) if progress_bar else None
+        queue = asyncio.Queue(maxsize=max_workers)
+        semaphore = asyncio.Semaphore(max_workers)
+
+        async def worker():
+            while True:
+                proof = await queue.get()
+                if proof is None:  # Sentinel value to signal termination
+                    break
+                try:
+                    async with semaphore:
+                        result = await self.verify(proof, config)
+                        yield result
+                finally:
+                    queue.task_done()
+                    if pbar:
+                        pbar.update(1)
+
+        async def producer():
+            for proof in proofs:
+                await queue.put(proof)
+            for _ in range(max_workers):
+                await queue.put(None)
+
+        worker_tasks = [asyncio.create_task(worker()) for _ in range(max_workers)]
+
+        producer_task = asyncio.create_task(producer())
+        await producer_task
+        await queue.join()
+
+        # Wait for all worker tasks to complete
+        await asyncio.gather(*worker_tasks)
+
+        if pbar:
+            pbar.close()
+
+        return AsyncIterable(worker())
 
     async def get_result(self, proof: Proof) -> ProofResult:
         session = await self._get_session()
