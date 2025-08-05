@@ -2,10 +2,11 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import Any
 
 import httpx
 from anyio import Path as AnyioPath
+
+from lean_client.proto.proof import ProofConfig, ProofResult
 
 logger = logging.getLogger(__name__)
 
@@ -50,8 +51,8 @@ class AsyncLeanClient:
     async def submit(
         self,
         proof: str | Path | os.PathLike | AnyioPath,
-        config: dict[str, Any] | None = None,
-    ) -> dict[str, Any]:
+        config: ProofConfig | None = None,
+    ) -> ProofResult:
         session = await self._get_session()
         url = f"{self.base_url}prove/submit"
 
@@ -64,13 +65,13 @@ class AsyncLeanClient:
 
         response = await session.post(url, data=data)
         response.raise_for_status()
-        return response.json()
+        return ProofResult.model_validate(response.json())
 
     async def verify(
         self,
         proof: str | Path | os.PathLike | AnyioPath,
-        config: dict[str, Any] | None = None,
-    ) -> dict[str, Any]:
+        config: ProofConfig | None = None,
+    ) -> ProofResult:
         session = await self._get_session()
         url = f"{self.base_url}prove/check"
 
@@ -83,7 +84,7 @@ class AsyncLeanClient:
 
         response = await session.post(url, data=data)
         response.raise_for_status()
-        return response.json()
+        return ProofResult.model_validate(response.json())
 
     async def close(self):
         if self._session and not self._session.is_closed:
