@@ -85,6 +85,7 @@ class AsyncLeanClient:
 
         response = await session.post("/prove/check", data=data)
         response.raise_for_status()
+
         return ProofResult.model_validate(response.json())
 
     async def get_result(self, proof: Proof) -> ProofResult:

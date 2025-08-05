@@ -48,20 +48,13 @@ class ProofManager:
                     proof=proof, config=config, result=result
                 )
                 logger.info("Proof result inserted into database")
-                return {
-                    "status": "success",
-                    "id": proof.proof_id,
-                    "result": result,
-                }
+                return result
             except Exception as e:
-                import traceback
-
-                traceback.print_exc()
                 logger.error(f"Error running proof: {e}")
-                return {
-                    "status": "error",
-                    "error": str(e),
-                }
+                return LeanProofResult(
+                    status=LeanProofStatus.ERROR,
+                    error_message=str(e),
+                )
 
     async def get_result(self, proof_id: str) -> LeanProofResult:
         return await self.proof_database.get_result(proof_id)
