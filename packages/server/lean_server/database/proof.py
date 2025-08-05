@@ -70,7 +70,7 @@ class ProofDatabase:
             )
             status_query_result = await cursor.fetchone()
             if status_query_result is None:
-                raise ValueError(f"Proof {proof_id} not found")
+                return LeanProofResult(status=LeanProofStatus.PENDING)
             status = LeanProofStatus(status_query_result[0])
             if status == LeanProofStatus.FINISHED or status == LeanProofStatus.ERROR:
                 cursor = await db.execute(

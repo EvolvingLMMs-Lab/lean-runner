@@ -35,7 +35,7 @@ class ProofManager:
     async def run_proof(
         self, *, proof: LeanProof, config: LeanProofConfig
     ) -> dict | None:
-        await self.proof_database.update_status(
+        self.proof_database.update_status(
             proof_id=proof.proof_id, status=LeanProofStatus.PENDING
         )
         async with self.lean_semaphore:
