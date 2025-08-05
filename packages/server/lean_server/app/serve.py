@@ -13,10 +13,14 @@ def launch(*, concurrency: int) -> FastAPI:
     return app
 
 
+args = parse_args()
+app = launch(concurrency=args.concurrency)
+
+
 def main():
-    args = parse_args()
     uvicorn.run(
-        launch(concurrency=args.concurrency),
+        "lean_server.app.serve:app",
+        reload=args.reload,
         host=args.host,
         port=args.port,
         log_config=CONFIG.logging,

@@ -3,8 +3,7 @@ import json
 import logging
 
 from ..config import CONFIG
-from .config import LeanProofConfig
-from .result import LeanProofResult
+from .proto import LeanProofConfig, LeanProofResult
 
 logger = logging.getLogger(__name__)
 

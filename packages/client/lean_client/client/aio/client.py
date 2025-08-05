@@ -38,19 +38,6 @@ class AsyncLeanClient:
     async def _get_proof_content(
         self, file_or_content: str | Path | os.PathLike | AnyioPath
     ) -> str:
-        """
-        Reads proof content from a file.
-
-        Args:
-            file_path: Path to the file containing the proof.
-
-        Returns:
-            The content of the file as a string.
-
-        Raises:
-            FileNotFoundError: If the file doesn't exist.
-            IOError: If there's an error reading the file.
-        """
         path = AnyioPath(file_or_content)
         if not await path.exists():
             return str(file_or_content)
@@ -60,24 +47,30 @@ class AsyncLeanClient:
         except OSError as e:
             raise OSError(f"Error reading file {path}: {e}") from e
 
+    async def submit(
+        self,
+        proof: str | Path | os.PathLike | AnyioPath,
+        config: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        session = await self._get_session()
+        url = f"{self.base_url}prove/submit"
+
+        proof_content = await self._get_proof_content(proof)
+
+        data = {
+            "proof": proof_content,
+            "config": json.dumps(config) if config else "{}",
+        }
+
+        response = await session.post(url, data=data)
+        response.raise_for_status()
+        return response.json()
+
     async def verify(
         self,
         proof: str | Path | os.PathLike | AnyioPath,
         config: dict[str, Any] | None = None,
     ) -> dict[str, Any]:
-        """
-        Sends a proof to the /prove/check endpoint.
-
-        Args:
-            proof: The proof content. Can be:
-                - A string containing the proof
-                - A Path object pointing to a file containing the proof
-                - A string path to a file containing the proof
-            config: An optional dictionary for proof configuration.
-
-        Returns:
-            A dictionary containing the server's response.
-        """
         session = await self._get_session()
         url = f"{self.base_url}prove/check"
 
@@ -88,29 +81,11 @@ class AsyncLeanClient:
             "config": json.dumps(config) if config else "{}",
         }
 
-        try:
-            response = await session.post(url, data=data)
-            response.raise_for_status()  # Raise an exception for bad status codes
-            try:
-                return response.json()
-            except Exception as e:
-                logger.error(f"Failed to parse JSON response: {e}")
-                logger.error(f"Raw response: {response.text}")
-                return {"error": str(e), "status": "N/A"}
-        except httpx.HTTPStatusError as e:
-            return {
-                "error": str(e),
-                "status": e.response.status_code,
-            }
-        except httpx.RequestError as e:
-            # Handle connection errors
-            return {
-                "error": str(e),
-                "status": "N/A",
-            }
+        response = await session.post(url, data=data)
+        response.raise_for_status()
+        return response.json()
 
     async def close(self):
-        """Closes the client session."""
         if self._session and not self._session.is_closed:
             await self._session.aclose()
 
