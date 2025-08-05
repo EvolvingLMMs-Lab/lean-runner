@@ -57,7 +57,7 @@ class LeanClient:
             with open(path, encoding="utf-8") as f:
                 return f.read()
         except OSError as e:
-            raise OSError(f"Error reading file {path}: {e}")
+            raise OSError(f"Error reading file {path}: {e}") from e
 
     def check_proof(
         self, proof: str | Path | os.PathLike, config: dict[str, Any] | None = None
