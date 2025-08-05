@@ -91,11 +91,11 @@ theorem test_theorem : 1 + 1 = 2 := by
   rw [add_zero]
   rfl
 """
-        
+
         # Write content to file
         with open(proof_file, 'w', encoding='utf-8') as f:
             f.write(proof_content)
-        
+
         try:
             # Check proof from file
             result = await client.check_proof(proof_file, config={"timeout": 30})
