@@ -12,7 +12,6 @@ def launch_prove_router(app: FastAPI):
         proof: str = Form(...),
         config: str = Form(default="{}"),
     ):
-        print("hi")
         try:
             lean_proof = LeanProof(proof=proof)
             lean_proof_config = LeanProofConfig.model_validate_json(config)
