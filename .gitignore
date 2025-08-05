@@ -1,0 +1,15 @@
+# Local virtual environment
+.venv/
+
+# IDE-specific
+.idea/
+.vscode/
+
+# Python caches
+__pycache__/
+*.pyc
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
