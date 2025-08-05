@@ -1,6 +1,7 @@
-import aiohttp
 import json
-from typing import Any, Dict, Optional
+from typing import Any
+
+import aiohttp
 
 
 class LeanClient:
@@ -18,7 +19,7 @@ class LeanClient:
         if not base_url.endswith("/"):
             base_url += "/"
         self.base_url = base_url
-        self._session: Optional[aiohttp.ClientSession] = None
+        self._session: aiohttp.ClientSession | None = None
 
     async def _get_session(self) -> aiohttp.ClientSession:
         """Initializes or returns the aiohttp client session."""
@@ -27,8 +28,8 @@ class LeanClient:
         return self._session
 
     async def check_proof(
-        self, proof: str, config: Optional[Dict[str, Any]] = None
-    ) -> Dict[str, Any]:
+        self, proof: str, config: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
         """
         Sends a proof to the /prove/check endpoint.
 

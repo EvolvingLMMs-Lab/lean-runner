@@ -23,3 +23,14 @@ dev-dependencies = [
     "mypy>=1.0.0",
     "pre-commit>=3.0.0",
 ]
+
+[tool.ruff]
+# Rule selection:
+# E: pycodestyle (style errors)
+# F: Pyflakes (logical errors)
+# I: isort (import sorting)
+# B: flake8-bugbear (bug detection)
+# UP: pyupgrade (syntax modernization)
+# A: flake8-builtins (built-in shadowing)
+# C4: flake8-comprehensions (comprehension best practices)
+lint.select = ["E", "F", "I", "B", "UP", "A", "C4"]
