@@ -1,6 +1,6 @@
 [project]
 name = "lean-server"
-version = "0.1.0"
+version = "0.0.1.dev1"
 description = "The description of the package"
 
 license = "MIT"
