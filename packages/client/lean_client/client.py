@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 from typing import Any
 
 import aiohttp
@@ -34,7 +35,8 @@ class LeanClient:
         Sends a proof to the /prove/check endpoint.
 
         Args:
-            proof: The proof string to be checked.
+            proof: The proof string to be checked, or a path to a file containing the
+            proof.
             config: An optional dictionary for proof configuration.
 
         Returns:
