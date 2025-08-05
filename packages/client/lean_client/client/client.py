@@ -66,7 +66,6 @@ class LeanClient:
             A dictionary containing the server's response.
         """
         session = self._get_session()
-        url = f"{self.base_url}prove/check"
 
         proof_content = self._get_proof_content(proof)
 
@@ -76,7 +75,7 @@ class LeanClient:
         }
 
         try:
-            response = session.post(url, data=data)
+            response = session.post("/prove/check", data=data)
             response.raise_for_status()  # Raise an exception for bad status codes
             return ProofResult.model_validate(response.json())
         except httpx.HTTPStatusError as e:

@@ -20,3 +20,6 @@ class LeanProofStatus(Enum):
     RUNNING = "running"
     FINISHED = "finished"
     ERROR = "error"
+
+class Proof(BaseModel):
+    id: str

@@ -6,7 +6,7 @@ from pathlib import Path
 import httpx
 from anyio import Path as AnyioPath
 
-from lean_client.proto.proof import ProofConfig, ProofResult
+from ...proof.proto import ProofConfig, ProofResult, Proof
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ class AsyncLeanClient:
     async def _get_session(self) -> httpx.AsyncClient:
         """Initializes or returns the httpx async client session."""
         if self._session is None or self._session.is_closed:
-            self._session = httpx.AsyncClient(timeout=self.timeout)
+            self._session = httpx.AsyncClient(timeout=self.timeout, base_url=self.base_url  )
         return self._session
 
     async def _get_proof_content(
@@ -52,9 +52,8 @@ class AsyncLeanClient:
         self,
         proof: str | Path | os.PathLike | AnyioPath,
         config: ProofConfig | None = None,
-    ) -> ProofResult:
+    ) -> Proof:
         session = await self._get_session()
-        url = f"{self.base_url}prove/submit"
 
         proof_content = await self._get_proof_content(proof)
 
@@ -63,9 +62,9 @@ class AsyncLeanClient:
             "config": json.dumps(config) if config else "{}",
         }
 
-        response = await session.post(url, data=data)
+        response = await session.post("/prove/submit", data=data)
         response.raise_for_status()
-        return ProofResult.model_validate(response.json())
+        return Proof.model_validate(response.json())
 
     async def verify(
         self,
@@ -73,7 +72,6 @@ class AsyncLeanClient:
         config: ProofConfig | None = None,
     ) -> ProofResult:
         session = await self._get_session()
-        url = f"{self.base_url}prove/check"
 
         proof_content = await self._get_proof_content(proof)
 
@@ -82,7 +80,7 @@ class AsyncLeanClient:
             "config": json.dumps(config) if config else "{}",
         }
 
-        response = await session.post(url, data=data)
+        response = await session.post("/prove/check", data=data)
         response.raise_for_status()
         return ProofResult.model_validate(response.json())
 
