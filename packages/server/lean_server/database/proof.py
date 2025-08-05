@@ -1,9 +1,8 @@
 import aiosqlite
 
 from ..config import CONFIG
-from ..proof.config import LeanProofConfig
+from ..proof.proto import LeanProofConfig, LeanProofResult, LeanProofStatus
 from ..proof.lean import LeanProof
-from ..proof.result import LeanProofResult
 from ..utils.uuid.uuid import uuid
 
 
@@ -29,9 +28,17 @@ class ProofDatabase:
                 """
                 CREATE TABLE IF NOT EXISTS status (
                     id TEXT PRIMARY KEY,
-                    status TEXT,
+                    status TEXT
                 )
                 """
+            )
+            await db.commit()
+    
+    async def update_status(self, *, proof_id: str, status: LeanProofStatus):
+        async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
+            await db.execute(
+                "INSERT OR REPLACE INTO status (id, status) VALUES (?, ?)",
+                (proof_id, status.value),
             )
             await db.commit()
 

@@ -15,13 +15,16 @@ def get_lifespan(*, concurrency: int):
     async def lifespan(app: FastAPI):
         logger.info("Starting Lean Server")
         app.state.lean_semaphore = asyncio.Semaphore(concurrency)
-
+        
+        app.state.background_tasks = set()
+        
         app.state.proof_database = ProofDatabase()
         await app.state.proof_database.create_table()
 
         app.state.proof_manager = ProofManager(
             proof_database=app.state.proof_database,
             lean_semaphore=app.state.lean_semaphore,
+            background_tasks=app.state.background_tasks,
         )
 
         yield
