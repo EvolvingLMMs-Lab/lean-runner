@@ -1,6 +1,6 @@
 # Lean Server
 
-# WARNING: This is currently AI-generated and not yet functional.
+# WARNING: This document is currently AI-generated and not yet functional.
 
 A FastAPI-based server to interact with the Lean Theorem Prover, with a Python client library.
 
