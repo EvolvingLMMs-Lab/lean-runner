@@ -10,16 +10,18 @@ class ProofConfig(BaseModel):
     premises: bool = False
 
 
-class ProofResult(BaseModel):
-    result: dict | None = None
-    error_message: str | None = None
-
-
 class LeanProofStatus(Enum):
     PENDING = "pending"
     RUNNING = "running"
     FINISHED = "finished"
     ERROR = "error"
+
+
+class ProofResult(BaseModel):
+    status: LeanProofStatus
+    result: dict | None = None
+    error_message: str | None = None
+
 
 class Proof(BaseModel):
     id: str

@@ -6,7 +6,7 @@ from pathlib import Path
 import httpx
 from anyio import Path as AnyioPath
 
-from ...proof.proto import ProofConfig, ProofResult, Proof
+from ...proof.proto import Proof, ProofConfig, ProofResult
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +33,9 @@ class AsyncLeanClient:
     async def _get_session(self) -> httpx.AsyncClient:
         """Initializes or returns the httpx async client session."""
         if self._session is None or self._session.is_closed:
-            self._session = httpx.AsyncClient(timeout=self.timeout, base_url=self.base_url  )
+            self._session = httpx.AsyncClient(
+                timeout=self.timeout, base_url=self.base_url
+            )
         return self._session
 
     async def _get_proof_content(
@@ -81,6 +83,12 @@ class AsyncLeanClient:
         }
 
         response = await session.post("/prove/check", data=data)
+        response.raise_for_status()
+        return ProofResult.model_validate(response.json())
+
+    async def get_result(self, proof: Proof) -> ProofResult:
+        session = await self._get_session()
+        response = await session.get(f"/prove/result/{proof.id}")
         response.raise_for_status()
         return ProofResult.model_validate(response.json())
 

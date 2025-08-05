@@ -3,17 +3,29 @@ import json
 import logging
 
 from ..config import CONFIG
-from .proto import LeanProofConfig, LeanProofResult
+from ..database.proof import ProofDatabase
+from ..utils.uuid.uuid import uuid
+from .proto import LeanProofConfig, LeanProofResult, LeanProofStatus
 
 logger = logging.getLogger(__name__)
 
 
 class LeanProof:
-    def __init__(self, *, proof: str):
+    def __init__(self, *, proof_id: str | None = None, proof: str):
         self.lean_code = proof
+        if proof_id is None:
+            self.proof_id = uuid()
+        else:
+            self.proof_id = proof_id
 
-    async def execute(self, config: LeanProofConfig):
+    async def execute(
+        self, config: LeanProofConfig, proof_database: ProofDatabase
+    ) -> LeanProofResult:
         try:
+            await proof_database.update_status(
+                proof_id=self.proof_id, status=LeanProofStatus.RUNNING
+            )
+
             command = {
                 "cmd": self.lean_code,
                 "allTactics": config.all_tactics,
@@ -37,18 +49,29 @@ class LeanProof:
                 input=json.dumps(command).encode("utf-8")
             )
 
+            error_message = stderr.decode("utf-8") if stderr else None
+
             try:
                 result = json.loads(stdout.decode("utf-8"))
+                status = LeanProofStatus.FINISHED
             except json.JSONDecodeError as e:
                 logger.error(f"Error parsing JSON: {e}")
                 result = {
                     "raw": stdout.decode("utf-8"),
                     "parse_error_message": str(e),
                 }
+                status = LeanProofStatus.ERROR
 
-            error_message = stderr.decode("utf-8") if stderr else None
+            await proof_database.update_status(proof_id=self.proof_id, status=status)
 
-            return LeanProofResult(result=result, error_message=error_message)
+            return LeanProofResult(
+                status=status,
+                result=result,
+                error_message=error_message,
+            )
         except Exception as e:
             logger.error(f"Error executing proof: {e}")
-            return LeanProofResult(error_message=str(e))
+            await proof_database.update_status(
+                proof_id=self.proof_id, status=LeanProofStatus.ERROR
+            )
+            return LeanProofResult(status=LeanProofStatus.ERROR, error_message=str(e))

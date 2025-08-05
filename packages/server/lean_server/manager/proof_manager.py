@@ -3,8 +3,7 @@ import logging
 
 from ..database.proof import ProofDatabase
 from ..proof.lean import LeanProof
-from ..proof.proto import LeanProofConfig
-from ..utils.uuid.uuid import uuid
+from ..proof.proto import LeanProofConfig, LeanProofStatus
 
 logger = logging.getLogger(__name__)
 
@@ -27,34 +26,31 @@ class ProofManager:
         proof: LeanProof,
         config: LeanProofConfig,
     ):
-        async with self.lean_semaphore:
-            proof_id = uuid()
-            task = asyncio.create_task(
-                self.run_proof(proof_id=proof_id, proof=proof, config=config)
-            )
-            logger.info(f"Submitted proof: {proof_id}")
-            self.background_tasks.add(task)
-            task.add_done_callback(self.background_tasks.discard)
-            return proof_id
+        task = asyncio.create_task(self.run_proof(proof=proof, config=config))
+        logger.info(f"Submitted proof: {proof.proof_id}")
+        self.background_tasks.add(task)
+        task.add_done_callback(self.background_tasks.discard)
+        return proof.proof_id
 
     async def run_proof(
-        self, *, proof_id: str | None = None, proof: LeanProof, config: LeanProofConfig
+        self, *, proof: LeanProof, config: LeanProofConfig
     ) -> dict | None:
+        await self.proof_database.update_status(
+            proof_id=proof.proof_id, status=LeanProofStatus.PENDING
+        )
         async with self.lean_semaphore:
             try:
                 logger.info(f"Running proof: {proof}")
                 logger.info(f"Config: {config}")
-                result = await proof.execute(config)
+                result = await proof.execute(config, proof_database=self.proof_database)
                 logger.info(f"Proof result: {result}")
-                if proof_id is None:
-                    proof_id = uuid()
                 await self.proof_database.insert_proof(
-                    proof=proof, config=config, result=result, proof_id=proof_id
+                    proof=proof, config=config, result=result
                 )
                 logger.info("Proof result inserted into database")
                 return {
                     "status": "success",
-                    "id": proof_id,
+                    "id": proof.proof_id,
                     "result": result,
                 }
             except Exception as e:
