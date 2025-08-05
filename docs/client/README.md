@@ -28,10 +28,10 @@ from lean_client import LeanClient
 with LeanClient(base_url="http://0.0.0.0:8080") as client:
     # Path to your .lean file
     proof_file = Path(__file__).parent / "test1.lean"
-    
+
     # Send for verification
     result = client.verify(proof=proof_file)
-    
+
     # Print the result
     print(result)
 ```
@@ -87,9 +87,9 @@ def main():
     with LeanClient(base_url="http://0.0.0.0:8080") as client:
         # 1. Submit all proofs
         submitted_proofs = [client.submit(proof=file) for file in lean_files]
-        
+
         proof_map = {file.name: proof for file, proof in zip(lean_files, submitted_proofs)}
-        
+
         # 2. Poll for results until all are finished
         pending_proofs = list(proof_map.items())
         while pending_proofs:
@@ -99,7 +99,7 @@ def main():
                 # Update status...
                 if result.status not in {"FINISHED", "ERROR"}:
                     newly_pending.append((filename, proof))
-            
+
             pending_proofs = newly_pending
             # Update UI...
             time.sleep(1)
@@ -140,10 +140,10 @@ async def main():
         while pending_proofs:
             tasks = [client.get_result(proof=p) for _, p in pending_proofs]
             query_results = await asyncio.gather(*tasks)
-            
+
             newly_pending = []
             # Process results and update UI...
-            
+
             pending_proofs = newly_pending
             await asyncio.sleep(1)
 
