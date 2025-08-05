@@ -1,9 +1,9 @@
 import asyncio
 import logging
 
-from lean_server.database.proof import ProofDatabase
-from lean_server.proof.config import LeanProofConfig
-from lean_server.proof.lean import LeanProof
+from ..database.proof import ProofDatabase
+from ..proof.config import LeanProofConfig
+from ..proof.lean import LeanProof
 
 logger = logging.getLogger(__name__)
 

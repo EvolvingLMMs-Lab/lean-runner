@@ -2,9 +2,9 @@ import json
 
 import aiosqlite
 
-from lean_server.config import CONFIG
-from lean_server.proof.config import LeanProofConfig
-from lean_server.proof.lean import LeanProof
+from ..config import CONFIG
+from ..proof.config import LeanProofConfig
+from ..proof.lean import LeanProof
 
 
 class ProofDatabase:

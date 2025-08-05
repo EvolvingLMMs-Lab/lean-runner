@@ -2,8 +2,7 @@ import asyncio
 import json
 import logging
 
-from lean_server.config import CONFIG
-
+from ..config import CONFIG
 from .config import LeanProofConfig
 
 logger = logging.getLogger(__name__)
