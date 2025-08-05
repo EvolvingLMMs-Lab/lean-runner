@@ -3,6 +3,9 @@ lean:
   # workspace: /root/playground
   executable: /home/libo/.elan/bin/lake
   workspace: /mnt/raid10/pufanyi/prover/playground
+sqlite:
+  database_path: /mnt/raid10/pufanyi/prover/lean_server.db
+  timeout: 10
 logging:
   version: 1
   disable_existing_loggers: false

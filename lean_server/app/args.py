@@ -10,6 +10,9 @@ def parse_args() -> argparse.Namespace:
         "--port", type=int, default=8000, help="The port to run the server on."
     )
     parser.add_argument(
-        "--config", type=str, default="AUTO", help="The config to use for the server."
+        "--concurrency",
+        type=int,
+        default=4,
+        help="Maximum number of concurrent Lean worker threads.",
     )
     return parser.parse_args()

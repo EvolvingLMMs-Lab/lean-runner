@@ -1,47 +1,44 @@
+import asyncio
 import json
 import logging
-import subprocess
 
 from lean_server.config import CONFIG
+
+from .config import LeanProofConfig
 
 logger = logging.getLogger(__name__)
 
 
 class LeanProof:
-    def __init__(self, proof: str):
-        self.proof = proof
-        self.lean_workspace = "playground"
-        self.command = json.dumps(
-            {
-                "cmd": self.proof,
-                "allTactics": False,
-                "ast": False,
-                "tactics": False,
-                "premises": False,
-            }
-        )
+    def __init__(self, *, proof: str):
+        self.lean_code = proof
 
-    def execute(self):
-        outputs = subprocess.run(
-            [CONFIG.lean.executable, "exe", "repl"],
-            input=self.command,
-            capture_output=True,
-            text=True,
+    async def execute(self, config: LeanProofConfig):
+        command = {
+            "cmd": self.lean_code,
+            "allTactics": config.all_tactics,
+            "ast": config.ast,
+            "tactics": config.tactics,
+            "premises": config.premises,
+        }
+        logger.info(f"Executing command: {command}")
+
+        proc = await asyncio.create_subprocess_exec(
+            CONFIG.lean.executable,
+            "exe",
+            "repl",
+            stdin=asyncio.subprocess.PIPE,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
             cwd=CONFIG.lean.workspace,
         )
+
+        stdout, stderr = await proc.communicate(
+            input=json.dumps(command).encode("utf-8")
+        )
+
         return {
-            "stdout": outputs.stdout,
-            "stderr": outputs.stderr,
-            "returncode": outputs.returncode,
+            "stdout": stdout.decode("utf-8") if stdout else "",
+            "stderr": stderr.decode("utf-8") if stderr else "",
+            "returncode": proc.returncode,
         }
-
-
-if __name__ == "__main__":
-    with open("test.lean") as f:
-        code = f.read()
-    proof = LeanProof(code)
-    result = proof.execute()
-    logger.info(result)
-    logger.info(result["stdout"])
-    logger.info(result["stderr"])
-    logger.info(result["returncode"])
