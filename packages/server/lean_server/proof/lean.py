@@ -17,12 +17,8 @@ class LeanProof:
         else:
             self.proof_id = proof_id
 
-    async def execute(self, config: LeanProofConfig, proof_database) -> LeanProofResult:
+    async def execute(self, config: LeanProofConfig) -> LeanProofResult:
         try:
-            await proof_database.update_status(
-                proof_id=self.proof_id, status=LeanProofStatus.RUNNING
-            )
-
             command = {
                 "cmd": self.lean_code,
                 "allTactics": config.all_tactics,
@@ -59,8 +55,6 @@ class LeanProof:
                 }
                 status = LeanProofStatus.ERROR
 
-            await proof_database.update_status(proof_id=self.proof_id, status=status)
-
             return LeanProofResult(
                 status=status,
                 result=result,
@@ -68,7 +62,4 @@ class LeanProof:
             )
         except Exception as e:
             logger.error(f"Error executing proof: {e}")
-            await proof_database.update_status(
-                proof_id=self.proof_id, status=LeanProofStatus.ERROR
-            )
             return LeanProofResult(status=LeanProofStatus.ERROR, error_message=str(e))

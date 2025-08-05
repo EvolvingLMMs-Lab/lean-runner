@@ -42,15 +42,24 @@ class ProofManager:
             try:
                 logger.info(f"Running proof: {proof}")
                 logger.info(f"Config: {config}")
-                result = await proof.execute(config, proof_database=self.proof_database)
+                await self.proof_database.update_status(
+                    proof_id=proof.proof_id, status=LeanProofStatus.RUNNING
+                )
+                result = await proof.execute(config)
                 logger.info(f"Proof result: {result}")
                 await self.proof_database.insert_proof(
                     proof=proof, config=config, result=result
+                )
+                await self.proof_database.update_status(
+                    proof_id=proof.proof_id, status=result.status
                 )
                 logger.info("Proof result inserted into database")
                 return result
             except Exception as e:
                 logger.error(f"Error running proof: {e}")
+                await self.proof_database.update_status(
+                    proof_id=proof.proof_id, status=LeanProofStatus.ERROR
+                )
                 return LeanProofResult(
                     status=LeanProofStatus.ERROR,
                     error_message=str(e),

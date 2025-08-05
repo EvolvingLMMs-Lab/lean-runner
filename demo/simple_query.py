@@ -10,13 +10,13 @@ logging.basicConfig(level=logging.INFO)
 
 def check():
     with LeanClient(base_url="http://0.0.0.0:8080") as client:
-        result = client.verify(proof=Path(__file__).parent / "test.lean")
+        result = client.verify(proof=Path(__file__).parent / "test1.lean")
         print(result)
 
 
 async def check_async():
     async with AsyncLeanClient(base_url="http://0.0.0.0:8080", timeout=60.0) as client:
-        result = await client.verify(proof=Path(__file__).parent / "test.lean")
+        result = await client.verify(proof=Path(__file__).parent / "test1.lean")
         print(result)
 
 

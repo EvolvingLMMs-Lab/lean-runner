@@ -7,7 +7,7 @@ import aiohttp
 async def call_check_proof():
     url = "http://localhost:8000/prove/check"
 
-    with open(os.path.join(os.path.dirname(__file__), "test.lean")) as f:
+    with open(os.path.join(os.path.dirname(__file__), "test1.lean")) as f:
         proof = f.read()
 
     form_data = {"proof": proof, "config": "{}"}

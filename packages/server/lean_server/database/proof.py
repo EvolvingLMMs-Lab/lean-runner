@@ -78,6 +78,8 @@ class ProofDatabase:
                     (proof_id,),
                 )
                 result = await cursor.fetchone()
-                return LeanProofResult.model_validate_json(result)
+                if result is None:
+                    return LeanProofResult(status=status)
+                return LeanProofResult.model_validate_json(result[0])
             else:
                 return LeanProofResult(status=status)
