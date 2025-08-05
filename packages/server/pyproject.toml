@@ -1,6 +1,6 @@
 [project]
 name = "lmms-lean-server"
-version = "0.0.1.dev1"
+version = "0.0.1.dev2"
 description = "A FastAPI-based server to interact with the Lean Theorem Prover."
 license = { text = "MIT" }
 readme = "README.md"
