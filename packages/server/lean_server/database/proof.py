@@ -1,9 +1,13 @@
+import logging
+
 import aiosqlite
 
 from ..config import CONFIG
-from ..proof.proto import LeanProofConfig, LeanProofResult, LeanProofStatus
 from ..proof.lean import LeanProof
+from ..proof.proto import LeanProofConfig, LeanProofResult, LeanProofStatus
 from ..utils.uuid.uuid import uuid
+
+logger = logging.getLogger(__name__)
 
 
 class ProofDatabase:
@@ -33,7 +37,7 @@ class ProofDatabase:
                 """
             )
             await db.commit()
-    
+
     async def update_status(self, *, proof_id: str, status: LeanProofStatus):
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
             await db.execute(

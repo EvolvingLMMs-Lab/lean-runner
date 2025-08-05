@@ -24,12 +24,12 @@ async def main():
     # Test synchronous version
     print("=== Testing Synchronous Version ===")
     with ThreadPoolExecutor(max_workers=10) as executor:
-        for _ in range(10):
+        for _ in range(5):
             executor.submit(check)
 
     # Test asynchronous concurrent version
     print("\n=== Testing Asynchronous Concurrent Version ===")
-    tasks = [check_async() for _ in range(10)]
+    tasks = [check_async() for _ in range(5)]
     await asyncio.gather(*tasks)
 
 
