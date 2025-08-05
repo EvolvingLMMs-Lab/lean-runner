@@ -35,7 +35,9 @@ class AsyncLeanClient:
             self._session = httpx.AsyncClient(timeout=self.timeout)
         return self._session
 
-    async def _read_proof_from_file(self, file_path: str | Path | AnyioPath) -> str:
+    async def _get_proof_content(
+        self, file_or_content: str | Path | os.PathLike | AnyioPath
+    ) -> str:
         """
         Reads proof content from a file.
 
@@ -49,9 +51,9 @@ class AsyncLeanClient:
             FileNotFoundError: If the file doesn't exist.
             IOError: If there's an error reading the file.
         """
-        path = AnyioPath(file_path)
+        path = AnyioPath(file_or_content)
         if not await path.exists():
-            raise FileNotFoundError(f"File not found: {path}")
+            return str(file_or_content)
 
         try:
             return await path.read_text(encoding="utf-8")
@@ -79,14 +81,7 @@ class AsyncLeanClient:
         session = await self._get_session()
         url = f"{self.base_url}prove/check"
 
-        if isinstance(proof, str | Path | os.PathLike):
-            path = AnyioPath(proof)
-            if await path.exists() and await path.is_file():
-                proof_content = await self._read_proof_from_file(path)
-            else:
-                proof_content = str(proof)
-        else:
-            proof_content = str(proof)
+        proof_content = await self._get_proof_content(proof)
 
         data = {
             "proof": proof_content,

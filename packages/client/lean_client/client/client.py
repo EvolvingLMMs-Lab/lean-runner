@@ -34,26 +34,14 @@ class LeanClient:
             self._session = httpx.Client(timeout=self.timeout)
         return self._session
 
-    def _read_proof_from_file(self, file_path: str | Path) -> str:
-        """
-        Reads proof content from a file.
+    def _get_proof_content(self, file_or_content: str | Path | os.PathLike) -> str:
+        path = Path(file_or_content)
 
-        Args:
-            file_path: Path to the file containing the proof.
-
-        Returns:
-            The content of the file as a string.
-
-        Raises:
-            FileNotFoundError: If the file doesn't exist.
-            IOError: If there's an error reading the file.
-        """
-        path = Path(file_path)
         if not path.exists():
-            raise FileNotFoundError(f"File not found: {path}")
+            return str(file_or_content)
 
         try:
-            with open(path, encoding="utf-8") as f:
+            with path.open(encoding="utf-8") as f:
                 return f.read()
         except OSError as e:
             raise OSError(f"Error reading file {path}: {e}") from e
@@ -77,19 +65,7 @@ class LeanClient:
         session = self._get_session()
         url = f"{self.base_url}prove/check"
 
-        # Handle different input types for proof
-        if isinstance(proof, str | Path | os.PathLike):
-            # Check if it's a file path
-            path = Path(proof)
-            if path.exists() and path.is_file():
-                # It's a file path, read the content
-                proof_content = self._read_proof_from_file(path)
-            else:
-                # It's a string content
-                proof_content = str(proof)
-        else:
-            # Assume it's already a string content
-            proof_content = str(proof)
+        proof_content = self._get_proof_content(proof)
 
         data = {
             "proof": proof_content,
