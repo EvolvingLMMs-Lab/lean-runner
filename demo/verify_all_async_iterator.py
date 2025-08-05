@@ -6,11 +6,16 @@ from lean_client import AsyncLeanClient
 
 # --- Configuration ---
 # Make sure the lean server is running and accessible at this address.
-LEAN_SERVER_URL = "http://127.0.0.1:8080"
+LEAN_SERVER_URL = "http://0.0.0.0:8080"
 
 # Use the .lean files in the current directory as test data, and repeat them to simulate a large workload.
 DEMO_DIR = Path(__file__).parent
-BASE_LEAN_FILES = list(DEMO_DIR.glob("test*.lean"))
+BASE_LEAN_FILES = [
+    DEMO_DIR / "test1.lean",
+    DEMO_DIR / "test2.lean",
+    DEMO_DIR / "test3.lean",
+    DEMO_DIR / "test4.lean",
+]
 # Repeat the list to simulate a much larger number of proofs.
 REPETITIONS = 100
 LEAN_FILES = BASE_LEAN_FILES * REPETITIONS
@@ -54,10 +59,7 @@ async def main():
         print("\n--- Verification Results ---")
         # Asynchronously iterate over the results as they are completed.
         async for result in results_iterator:
-            if result.error:
-                print(f"Proof: {result.file_path or 'Unknown'}\n  Status: Failed\n  Error: {result.error}\n")
-            else:
-                print(f"Proof: {result.file_path}\n  Status: Success\n  Proved: {result.proved}\n")
+            print(result)
 
 
 if __name__ == "__main__":
