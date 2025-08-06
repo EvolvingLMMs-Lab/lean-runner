@@ -18,15 +18,13 @@ Update the package list and install essential tools like `git`, `curl`, and `pyt
 
 ```sh
 apt-get update
-apt-get install -y git curl python3.11 python3.11-venv python3-pip
+apt-get install -y git curl
 ```
 
 ## 3. Install `uv`
 
-We use `uv` for Python package management.
-
 ```sh
-pip install uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
 ## 4. Install Lean and `lake`
@@ -34,7 +32,7 @@ pip install uv
 Install `elan`, the Lean toolchain manager. This will also install `lake`, the build system.
 
 ```sh
-curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+curl https://elan.lean-lang.org/elan-init.sh -sSf | sh
 ```
 
 After installation, you need to add `elan` to your current shell's `PATH`.
@@ -58,9 +56,7 @@ cd lmms-lean-runner
 Navigate to the `playground` directory and use `lake` to build the Lean dependencies.
 
 ```sh
-cd playground
-lake build
-cd ..
+uv venv lean-server --python=3.12
 ```
 
 ## 7. Install Python Packages
