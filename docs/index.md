@@ -2,11 +2,11 @@
 
 <div class="grid cards" markdown>
 
--   :rocket: __One-Click Setup__
+-   :package: __Plug & Play__
 
     ---
 
-    Instant server deployment via Docker, eliminating complex setup and compilation steps.
+    Get started in minutes. Docker provides one-click server setup, and the simple client abstracts away implementation details.
 
 -   :zap: __Fast & Efficient__
 
@@ -25,11 +25,5 @@
     ---
 
     Supports both synchronous and asynchronous access patterns to fit your needs.
-
--   :thumbsup: __Easy to Use__
-
-    ---
-
-    A simple client interface allows you to get started quickly without worrying about server implementation details.
 
 </div>
