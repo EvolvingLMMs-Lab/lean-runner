@@ -45,7 +45,8 @@ def main():
         return
 
     print(
-        f"Found {len(LEAN_FILES)} .lean files to verify: {[f.name for f in BASE_LEAN_FILES]} (repeated {REPETITIONS} times)"
+        f"Found {len(LEAN_FILES)} .lean files to verify: "
+        f"{[f.name for f in BASE_LEAN_FILES]} (repeated {REPETITIONS} times)"
     )
 
     # The client can be used as a context manager.

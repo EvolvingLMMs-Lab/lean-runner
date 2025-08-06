@@ -1,6 +1,7 @@
 import asyncio
+from collections.abc import Iterable
+
 import datasets
-from typing import Iterable
 from lean_client import LeanClient
 from lean_client.proof.proto import LeanProofStatus
 
@@ -8,6 +9,7 @@ from lean_client.proof.proto import LeanProofStatus
 def get_data(data: datasets.Dataset) -> Iterable[str]:
     for d in data:
         yield d["full_code"][0]
+
 
 async def main():
     data = datasets.load_dataset("pufanyi/miniF2F-code-compilation")["train"]
@@ -29,7 +31,7 @@ async def main():
         num += 1
     print(result)
     print(num)
-        
+
 
 if __name__ == "__main__":
     asyncio.run(main())
