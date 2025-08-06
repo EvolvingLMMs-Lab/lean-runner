@@ -1,6 +1,6 @@
 # Docker
 
-=== Simple run
+=== "Simple run"
 
     ```bash
     PORT=8888
@@ -12,7 +12,7 @@
     /app/lmms-lean-runner/.venv/bin/lean-server --concurrency=$CONCURRENCY
     ```
 
-=== Run in background
+=== "Run in background"
 
     ```bash
     PORT=8888
