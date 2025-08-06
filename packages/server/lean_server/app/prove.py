@@ -1,12 +1,13 @@
+import logging
+
 from fastapi import FastAPI, Form, HTTPException
 
 from lean_server.manager.proof_manager import ProofManager
 from lean_server.proof.lean import LeanProof
 from lean_server.proof.proto import LeanProofConfig
-import logging
-
 
 logger = logging.getLogger(__name__)
+
 
 def launch_prove_router(app: FastAPI):
     @app.post("/prove/check")
