@@ -18,7 +18,6 @@ theme:
     - navigation.instant.prefetch
     - navigation.tabs
     - navigation.prune
-    - navigation.expand
     - navigation.path
     - navigation.indexes
     - navigation.top
@@ -31,6 +30,15 @@ theme:
 plugins:
   - search
   - macros
+  - minify:
+      minify_html: true
+      minify_js: true
+      minify_css: true
+      htmlmin_opts:
+        remove_comments: true
+      cache_safe: true
+      js_files:
+        - javascripts/mathjax.js
 markdown_extensions:
   - pymdownx.arithmatex:
       generic: true
@@ -47,6 +55,11 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - admonition
+  - pymdownx.details
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
 extra_javascript:
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
