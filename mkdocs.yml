@@ -1,7 +1,15 @@
 site_name: LMMs Lean Runner
 site_url: https://evolvinglmms-lab.github.io/lmms-lean-runner/
+
+repo_name: EvolvingLmms-lab/lmms-lean-runner
+repo_url: https://github.com/EvolvingLmms-lab/lmms-lean-runner
+
+copyright: Copyright &copy; 2025 EvolvingLmms-lab
+
 theme:
   name: material
+  icon:
+    repo: fontawesome/brands/github
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
@@ -65,7 +73,9 @@ extra_javascript:
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 nav:
-  - Home: index.md
+  - Home:
+      - Introduction: index.md
+      - Quick Start: quick-start.md
   - Client: client/README.md
   - Server:
       - Installation via Docker: server/docker.md
