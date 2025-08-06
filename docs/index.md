@@ -8,6 +8,8 @@
 
     Get started in minutes. Docker provides one-click server setup, and the simple client abstracts away implementation details.
 
+    [:octicons-arrow-right-24: Quick Start](quick-start.md)
+
 -   :zap: __Fast & Efficient__
 
     ---
