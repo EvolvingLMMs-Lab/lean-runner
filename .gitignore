@@ -15,3 +15,4 @@ build/
 *.egg-info/
 
 lean_server.db
+dev/
