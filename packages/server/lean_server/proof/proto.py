@@ -18,6 +18,7 @@ class LeanProofStatus(Enum):
 
 
 class LeanProofResult(BaseModel):
+    success: bool | None = None
     status: LeanProofStatus
     result: dict | None = None
     error_message: str | None = None

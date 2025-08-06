@@ -12,7 +12,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--concurrency",
         type=int,
-        default=4,
+        default=32,
         help="Maximum number of concurrent Lean worker threads.",
     )
     parser.add_argument(
