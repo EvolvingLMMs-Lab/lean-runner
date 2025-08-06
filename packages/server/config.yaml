@@ -15,6 +15,10 @@ logging:
       rich_tracebacks: true
       tracebacks_word_wrap: false
   loggers:
+    lean_server:
+      handlers:
+        - "default"
+      level: "INFO"
     uvicorn:
       handlers:
         - "default"

@@ -8,7 +8,6 @@ from lean_client.proof.proto import LeanProofStatus
 def get_data(data: datasets.Dataset) -> Iterable[str]:
     for d in data:
         yield d["full_code"][0]
-        break
 
 async def main():
     data = datasets.load_dataset("pufanyi/miniF2F-code-compilation")["train"]
@@ -23,7 +22,6 @@ async def main():
     error_num = 0
     num = 0
     async for r in results:
-        print(r)
         if r.success:
             result += 1
         if r.status != LeanProofStatus.FINISHED:
