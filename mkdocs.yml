@@ -1,5 +1,5 @@
-site_name: SC2001 Algorithm Design & Analysis
-site_url: https://pufanyi.github.io/SC2001/
+site_name: LMMs Lean Runner
+site_url: https://evolvinglmms-lab.github.io/lmms-lean-runner/
 theme:
   name: material
   palette:
