@@ -146,9 +146,6 @@ class AsyncLeanClient:
                 except Exception as e:
                     # Log the error and place an exception object on the results queue
                     # so the main loop can decide how to handle it.
-                    import traceback
-
-                    traceback.print_exc()
                     logger.error(f"Error verifying proof: {e}")
                     await results_queue.put(e)
                 finally:
