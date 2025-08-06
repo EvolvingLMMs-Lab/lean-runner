@@ -1,8 +1,8 @@
 lean:
   executable: /home/fypu/.elan/bin/lake
-  workspace: /root/lmms-lean-runner/playground
+  workspace: /app/lmms-lean-runner/playground
 sqlite:
-  database_path: /root/lmms-lean-runner/lean_server.db
+  database_path: /app/lmms-lean-runner/lean_server.db
   timeout: 10
 logging:
   version: 1
