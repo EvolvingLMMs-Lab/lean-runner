@@ -7,7 +7,7 @@ This document provides a step-by-step guide on how to set up the `lmms-lean-runn
 First, start an interactive Ubuntu container. We will map port `8000` from the container to our host machine to access the server later.
 
 ```sh
-docker run -it --name lean-dev-env -p 8000:8000 ubuntu:latest /bin/bash
+docker run -it --name lean-server -p 8080:8080 ubuntu:latest /bin/bash
 ```
 
 All subsequent commands should be run inside this container's shell.
