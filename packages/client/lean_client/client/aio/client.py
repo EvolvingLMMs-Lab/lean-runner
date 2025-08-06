@@ -164,19 +164,29 @@ class AsyncLeanClient:
                 for _ in range(max_workers):
                     await proof_queue.put(None)
 
+        # Monitor: Waits for all work to be done and signals completion.
+        async def monitor():
+            await producer_task
+            await proof_queue.join()
+            await results_queue.put(None)  # Sentinel to signal completion.
+
         workers = [asyncio.create_task(worker()) for _ in range(max_workers)]
         producer_task = asyncio.create_task(producer())
+        monitor_task = asyncio.create_task(monitor())
 
         processed_count = 0
         try:
-            while processed_count < max_workers:
-                result = await results_queue.get()
-                if result is None:
-                    # A worker has exited after seeing a sentinel.
-                    processed_count += 1
-                    continue
+            while True:
+                if total is not None and processed_count >= total:
+                    break
 
+                result = await results_queue.get()
+                if result is None:  # Sentinel value means we're done.
+                    break
+
+                processed_count += 1
                 pbar.update(1)
+
                 if isinstance(result, Exception):
                     # An error occurred in a worker. We can choose to raise it,
                     # log it, or yield it. For now, we just log it again.
@@ -187,9 +197,12 @@ class AsyncLeanClient:
             # Clean up all tasks to prevent "Task was destroyed but it is pending"
             pbar.close()
             producer_task.cancel()
+            monitor_task.cancel()
             for w in workers:
                 w.cancel()
-            await asyncio.gather(producer_task, *workers, return_exceptions=True)
+            await asyncio.gather(
+                producer_task, monitor_task, *workers, return_exceptions=True
+            )
 
         return AsyncIterable(worker())
 
