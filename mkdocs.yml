@@ -66,3 +66,6 @@ extra_javascript:
 nav:
   - Home: index.md
   - Client: client/README.md
+  - Server:
+      - Docker Install: server/docker.md
+      - Install from Source: server/install.md
