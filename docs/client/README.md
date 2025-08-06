@@ -4,11 +4,12 @@ This document provides instructions and examples on how to use the `lean-client`
 
 ## Installation
 
-To install the client, navigate to the `packages/client` directory and install it using pip:
+### 📦 Install from PyPI (Recommended)
+
+You can install the client directly from PyPI:
 
 ```bash
-cd packages/client
-pip install .
+pip install lmms-lean-client
 ```
 
 ## Quick Start: Verifying a Proof
@@ -20,9 +21,8 @@ The quickest way to check a Lean proof is to use the `verify` method. This sends
 This is the simplest way to use the client. The `verify` method sends the proof and waits for the server's response.
 
 ```python
-# demo/simple_query.py
 from pathlib import Path
-from lean_client import LeanClient
+from lean_client import LeanClient  # Import client
 
 # Initialize the client
 with LeanClient(base_url="http://0.0.0.0:8080") as client:
@@ -38,22 +38,30 @@ with LeanClient(base_url="http://0.0.0.0:8080") as client:
 
 ### Asynchronous Verification
 
-For non-blocking operations, you can use the `aio` client. This is useful in applications that handle many I/O operations concurrently.
+For non-blocking operations, you can use the `AsyncLeanClient`. This is useful in applications that handle many I/O operations concurrently.
 
 ```python
-# demo/simple_query.py (async part)
 import asyncio
 from pathlib import Path
-from lean_client import AsyncLeanClient
+from lean_client import AsyncLeanClient  # Import the async client
 
+# Define the main asynchronous function
 async def main():
+    # Create an asynchronous context with the Lean client
     async with AsyncLeanClient(base_url="http://0.0.0.0:8080") as client:
+        # Define the path to the Lean proof file
         proof_file = Path(__file__).parent / "test1.lean"
+
+        # Submit the proof file for verification asynchronously
         result = await client.verify(proof=proof_file)
+
+        # Print the verification result
         print(result)
 
+# Run the async main function using asyncio
 if __name__ == "__main__":
     asyncio.run(main())
+
 ```
 
 ## Batch Verification of Multiple Proofs
@@ -65,14 +73,14 @@ For verifying a large number of proofs, the `verify_all` method provides a high-
 The synchronous `verify_all` method uses a thread pool to verify proofs from any iterable (like a list or a generator) concurrently.
 
 **Features:**
+
 - **Concurrent**: Uses `concurrent.futures.ThreadPoolExecutor` to run multiple verification tasks in parallel.
 - **Memory-Efficient**: Processes proofs as an iterator, without loading the entire dataset into memory.
 - **Progress Bar**: Displays a `tqdm` progress bar to track progress.
 
-**Example (`demo/verify_all_sync_iterator.py`):**
 ```python
 from pathlib import Path
-from lean_client import LeanClient
+from lean_client import LeanClient  # Import client
 
 # A generator to simulate a streaming data source
 def proof_generator():
@@ -83,6 +91,7 @@ def proof_generator():
 def main():
     with LeanClient(base_url="http://0.0.0.0:8080") as client:
         # Pass the generator directly to the function
+        # Uses ThreadPoolExecutor under the hood
         results_iterator = client.verify_all(
             proofs=proof_generator(),
             max_workers=4,  # Limit concurrent requests
@@ -96,21 +105,21 @@ if __name__ == "__main__":
     main()
 ```
 
-### Asynchronous: `aio.verify_all`
+### Asynchronous: `verify_all`
 
-The asynchronous version, `client.aio.verify_all`, is even more powerful. It uses an `asyncio` producer-consumer model to handle proofs from either a standard iterable or an asynchronous iterable.
+The asynchronous version, `AsyncLeanClient.verify_all`, is even more powerful. It uses an `asyncio` producer-consumer model to handle proofs from either a standard iterable or an asynchronous iterable.
 
 **Features:**
+
 - **Highly Concurrent**: Manages concurrency with `asyncio` tasks, ideal for I/O-bound operations.
 - **Back-pressure Management**: Uses a bounded queue to prevent the data source from overwhelming the system, ensuring stable memory usage.
 - **Flexible Inputs**: Accepts both synchronous (`Iterable`) and asynchronous (`AsyncIterable`) sources of proofs.
 
-**Example (`demo/verify_all_async_iterator.py`):**
 ```python
 import asyncio
 from pathlib import Path
 from collections.abc import AsyncIterable
-from lean_client import AsyncLeanClient
+from lean_client import AsyncLeanClient  # Import async client
 
 # An async generator to simulate a streaming data source
 async def proof_generator() -> AsyncIterable[Path]:
@@ -122,6 +131,7 @@ async def proof_generator() -> AsyncIterable[Path]:
 async def main():
     async with AsyncLeanClient(base_url="http://0.0.0.0:8080") as client:
         # Pass the async generator directly to the function
+        # Uses AsyncIO under the hood
         results_iterator = client.verify_all(
             proofs=proof_generator(),
             max_workers=4,
@@ -147,12 +157,10 @@ For proofs that may take a long time to complete, it's better to submit them fir
 This example submits multiple proofs and then polls for their results in a loop, updating a live table in the console.
 
 ```python
-# demo/submit_query.py
 import time
 from pathlib import Path
 from lean_client import LeanClient
 from rich.console import Console
-# ... (other rich imports and helper functions)
 
 def main():
     """Submit multiple proofs and display their status in a live table."""
@@ -180,8 +188,8 @@ def main():
                     newly_pending.append((filename, proof))
 
             pending_proofs = newly_pending
-            # Update UI...
-            time.sleep(1)
+            # Update UI here...
+            time.sleep(1)  # Poll every 1 seconds
 
 # ... (UI code and main execution)
 ```
@@ -191,11 +199,9 @@ def main():
 The asynchronous version is more efficient for handling multiple concurrent requests, as it uses `asyncio.gather` to submit and poll for proofs in parallel.
 
 ```python
-# demo/submit_query_async.py
 import asyncio
 from pathlib import Path
-from lean_client import AsyncLeanClient
-# ... (other rich imports and helper functions)
+from lean_client import AsyncLeanClient  # Import async client
 
 async def main():
     """Submit multiple proofs and display their status in a live table."""
@@ -221,10 +227,10 @@ async def main():
             query_results = await asyncio.gather(*tasks)
 
             newly_pending = []
-            # Process results and update UI...
+            # Process results and update UI here...
 
             pending_proofs = newly_pending
-            await asyncio.sleep(1)
+            await asyncio.sleep(1)  # Poll every 1 seconds
 
 # ... (UI code and main execution)
 ```
@@ -232,13 +238,47 @@ async def main():
 ## API Reference
 
 ### `LeanClient(base_url, timeout)`
+
 - **`base_url`**: The base URL of the Lean Server (e.g., `http://localhost:8080`).
 - **`timeout`**: The timeout for HTTP requests in seconds.
 - **`.aio`**: An attribute that provides access to the `AsyncLeanClient`.
 
 ### Methods
+
 - **`verify(proof, config)`**: Sends a proof for immediate verification. Blocks until the result is returned.
 - **`verify_all(proofs, config, max_workers, progress_bar, total)`**: Verifies a collection of proofs concurrently. Returns an iterator that yields results as they complete.
 - **`submit(proof, config)`**: Submits a proof for background processing. Returns a `Proof` object with an ID.
 - **`get_result(proof)`**: Retrieves the result of a previously submitted proof.
 - **`close()`**: Closes the underlying HTTP session. The client can also be used as a context manager (`with LeanClient(...) as client:`), which handles closing automatically.
+
+---
+
+### `AsyncLeanClient(base_url, timeout)`
+
+- **`base_url`**: The base URL of the Lean Server (e.g., http://localhost:8080).
+
+- **`timeout`**: Timeout for HTTP requests in seconds.
+
+This client is designed for use with asyncio and supports concurrent verification of proofs using asynchronous queues and tasks.
+
+### Methods
+
+- **`await submit(proof, config)`**:
+  Submits a proof for background processing via /prove/submit.
+  Returns a Proof object with a unique ID.
+
+- **`await verify(proof, config)`**:
+  Sends a proof for immediate verification via /prove/check.
+  Returns a ProofResult with the verification status and any messages.
+
+- **`verify_all(proofs, config, max_workers, progress_bar, total)`**:
+  Verifies a collection of proofs concurrently using an asyncio-based producer-consumer model.
+  Returns an async iterator that yields ProofResult objects as they complete.
+  Accepts both Iterable and AsyncIterable sources.
+
+- **`await get_result(proof)`**:
+  Retrieves the verification result of a previously submitted Proof.
+
+- **`await close()`**:
+  Closes the underlying httpx.AsyncClient session.
+  The client can also be used with an async context manager - `async with AsyncLeanClient(...) as client:`
