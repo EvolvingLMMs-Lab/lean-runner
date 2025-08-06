@@ -143,12 +143,16 @@ class LeanClient:
         if total is None and hasattr(proofs, "__len__"):
             total = len(proofs)
 
+        pbar = tqdm.tqdm(total=total, disable=not progress_bar)
+
         # To handle exceptions gracefully with executor.map, we wrap the call
         def _verify_wrapper(proof_item, proof_config):
             try:
                 return self.verify(proof_item, proof_config)
             except Exception as e:
                 return e, proof_item
+            finally:
+                pbar.update(1)
 
         with futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
             # Use partial to fix the `config` argument for the wrapper
@@ -163,18 +167,14 @@ class LeanClient:
 
             results_iterator = executor.map(verify_func, proof_list)
 
-            pbar = tqdm.tqdm(
-                results_iterator,
-                total=total,
-                disable=not progress_bar,
-            )
-
-            for result in pbar:
+            for result in results_iterator:
                 if isinstance(result, tuple) and isinstance(result[0], Exception):
                     exc, proof_id = result
                     logger.error(f"Error verifying proof {proof_id}: {exc}")
                 else:
                     yield result
+
+        pbar.close()
 
     def get_result(self, proof: Proof) -> ProofResult:
         """
