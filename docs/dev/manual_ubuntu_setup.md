@@ -56,7 +56,7 @@ cd lmms-lean-runner
 Navigate to the `playground` directory and use `lake` to build the Lean dependencies.
 
 ```sh
-uv venv lean-server --python=3.12
+uv venv
 ```
 
 ## 7. Install Python Packages
@@ -72,7 +72,7 @@ uv pip install -e packages/server
 Now you can start the server. It will run inside the container on port `8000`.
 
 ```sh
-lmms-lean-server --host 0.0.0.0 --port 8000
+lean-server --host 0.0.0.0 --port 8080
 ```
 - `--host 0.0.0.0` is important to make the server accessible from outside the container.
 
