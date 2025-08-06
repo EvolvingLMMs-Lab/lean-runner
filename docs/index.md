@@ -20,7 +20,7 @@
 
     ---
 
-    All logs are persistently stored in a SQLite database for easy access. 报别崩溃重跑的烦恼。
+    All logs are persistently stored in a SQLite database for easy access. Say goodbye to the frustration of crashes and re-runs.
 
 -   :gear: __Flexible__
 
@@ -28,8 +28,16 @@
 
     Supports both synchronous and asynchronous access patterns to fit your needs.
 
--   使用哈希使得重复的 Lean code 不运行第二遍，告别 continual run 配置的烦恼。
+-   :recycle: __Smart Caching (Soon)__
 
--   方便地将数据导出成各种 data 形式（Hugging Face, json, xml, arrow, parquet），同时可以使用简单的 cli 将询问进行可视化。
+    ---
+
+    Identical Lean code is only processed once, thanks to smart hashing. Say goodbye to the hassle of configuring continual runs.
+
+-   :bar_chart: __Data Export & Visualization (Soon)__
+
+    ---
+
+    Easily export data in various formats (Hugging Face, JSON, XML, Arrow, Parquet) and visualize queries with a simple CLI.
 
 </div>
