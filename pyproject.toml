@@ -31,7 +31,6 @@ dev-dependencies = [
     "pymdown-extensions>=10.16",
     "PyYAML>=6.0.2",
     "mkdocs-macros-plugin>=1.3.7",
-    "mkdocs-encryptcontent-plugin>=3.0.5",
     "mkdocs-minify-plugin>=0.8.0",
 ]
 
