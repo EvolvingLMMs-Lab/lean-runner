@@ -10,7 +10,7 @@
 
     [:octicons-arrow-right-24: Quick Start](quick-start.md)
 
--   :zap: __Fast & Efficient__
+-   :zap: __Efficient__
 
     ---
 
