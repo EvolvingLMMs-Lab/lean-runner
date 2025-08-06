@@ -4,6 +4,6 @@ import yaml
 
 from .config import Config
 
-with open(Path(__file__).parents / "config.yaml") as f:
+with open(Path(__file__).parent / "config.yaml") as f:
     config_dict = yaml.safe_load(f)
     CONFIG = Config.model_validate(config_dict)
