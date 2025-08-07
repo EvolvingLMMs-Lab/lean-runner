@@ -9,10 +9,10 @@ If you have Docker installed, you can download and run the `lmms-lean-server` wi
 To run the server on port `8000`, execute the following command:
 
 ```sh
-docker run -d -p 8000:8000 --name lean-server-container your-dockerhub-username/lmms-lean-runner
+docker run -d -p 8000:8000 --name lean-server-container your-dockerhub-username/lean-runner
 ```
 
-**Note:** Please replace `your-dockerhub-username/lmms-lean-runner` with the actual image name on Docker Hub.
+**Note:** Please replace `your-dockerhub-username/lean-runner` with the actual image name on Docker Hub.
 
 - `-d`: Runs the container in the background.
 - `-p 8000:8000`: Maps port `8000` on your machine to port `8000` in the container. You can change the first `8000` to any other port you prefer (e.g., `-p 8080:8000`).
@@ -29,7 +29,7 @@ As a developer, you will need to build and publish the image to a container regi
 In the project's root directory (where the `Dockerfile` is located), run the build command:
 
 ```sh
-docker build -t your-dockerhub-username/lmms-lean-runner .
+docker build -t your-dockerhub-username/lean-runner .
 ```
 
 - Replace `your-dockerhub-username` with your Docker Hub username.
@@ -40,7 +40,7 @@ docker build -t your-dockerhub-username/lmms-lean-runner .
 Before publishing, you can test the image locally:
 
 ```sh
-docker run -d -p 8000:8000 your-dockerhub-username/lmms-lean-runner
+docker run -d -p 8000:8000 your-dockerhub-username/lean-runner
 ```
 
 ### 3. Publish the Image
@@ -54,7 +54,7 @@ docker login
 Then, push the image to Docker Hub:
 
 ```sh
-docker push your-dockerhub-username/lmms-lean-runner
+docker push your-dockerhub-username/lean-runner
 ```
 
 Once pushed, other users can run the server with the single `docker run` command as described above.

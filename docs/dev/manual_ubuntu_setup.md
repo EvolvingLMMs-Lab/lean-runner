@@ -1,6 +1,6 @@
 # Manual Setup Guide for Ubuntu
 
-This document provides a step-by-step guide on how to set up the `lmms-lean-runner` environment and run the server from a clean Ubuntu system, such as a fresh Docker container.
+This document provides a step-by-step guide on how to set up the `lean-runner` environment and run the server from a clean Ubuntu system, such as a fresh Docker container.
 
 ## 1. Start a Clean Ubuntu Container
 
@@ -47,8 +47,8 @@ source /root/.elan/env
 Clone the repository from GitHub.
 
 ```sh
-git clone https://github.com/EvolvingLMMs-Lab/lmms-lean-runner.git
-cd lmms-lean-runner
+git clone https://github.com/EvolvingLMMs-Lab/lean-runner.git
+cd lean-runner
 ```
 
 ## 6. Build Lean Dependencies

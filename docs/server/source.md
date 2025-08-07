@@ -70,15 +70,15 @@ Choose your preferred method to clone the repository:
 === "SSH (Recommended for Contributors)"
     ```bash
     # Clone using SSH
-git clone git@github.com:EvolvingLMMs-Lab/lmms-lean-runner.git
-cd lmms-lean-runner
+git clone git@github.com:EvolvingLMMs-Lab/lean-runner.git
+cd lean-runner
 ```
 
 === "HTTPS"
     ```bash
     # Clone using HTTPS
-    git clone https://github.com/EvolvingLMMs-Lab/lmms-lean-runner.git
-    cd lmms-lean-runner
+    git clone https://github.com/EvolvingLMMs-Lab/lean-runner.git
+    cd lean-runner
     ```
 
 ### 2. Set Up Python Environment
@@ -235,7 +235,7 @@ server:
 # Lean configuration
 lean:
   executable: "/home/user/.elan/bin/lake"
-  workspace: "/path/to/lmms-lean-runner/playground"
+  workspace: "/path/to/lean-runner/playground"
   timeout: 30  # Timeout for proof verification in seconds
 
 # Database configuration
@@ -455,7 +455,7 @@ After successful installation:
 
 If you encounter issues not covered in this guide:
 
-1. Check the [GitHub Issues](https://github.com/EvolvingLMMs-Lab/lmms-lean-runner/issues)
+1. Check the [GitHub Issues](https://github.com/EvolvingLMMs-Lab/lean-runner/issues)
 2. Review the [FAQ](../faq.md)
 3. Join our [Discord community](https://discord.gg/lean-runner)
 4. Create a new issue with detailed error information
