@@ -40,7 +40,8 @@ After installation, you need to add `elan` to your current shell's `PATH`.
 ```sh
 source /root/.elan/env
 ```
-*Note: If you are not running as root, the path will be `~/.elan/env`.*
+
+_Note: If you are not running as root, the path will be `~/.elan/env`._
 
 ## 5. Clone the Project
 
@@ -74,6 +75,7 @@ Now you can start the server. It will run inside the container on port `8000`.
 ```sh
 lean-server --host 0.0.0.0 --port 8080
 ```
+
 - `--host 0.0.0.0` is important to make the server accessible from outside the container.
 
 Because we started the container with `-p 8000:8000`, you can now access the server from your host machine's browser at `http://localhost:8000`.

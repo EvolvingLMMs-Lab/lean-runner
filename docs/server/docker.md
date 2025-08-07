@@ -24,8 +24,8 @@ You can run the server in two modes: either as an interactive process in your te
 
 You can configure the server using the following environment variables:
 
--   `PORT`: The port on your host machine that will forward to the server's port `8000` inside the container.
--   `CONCURRENCY`: The number of concurrent requests the server can handle. The optimal value depends on your machine's resources.
+- `PORT`: The port on your host machine that will forward to the server's port `8000` inside the container.
+- `CONCURRENCY`: The number of concurrent requests the server can handle. The optimal value depends on your machine's resources.
 
 ### Option A: Interactive Mode (Simple Run)
 
@@ -62,14 +62,14 @@ docker run -d \
 
 ### Understanding the Docker Command
 
-| Flag          | Description                                                                                                |
-|---------------|------------------------------------------------------------------------------------------------------------|
-| `docker run`  | The command to create and start a new container from an image.                                             |
-| `--rm`        | (Interactive Mode) Automatically removes the container when it exits.                                      |
-| `-it`         | (Interactive Mode) Creates an interactive terminal session.                                                |
-| `-d`          | (Detached Mode) Runs the container in the background.                                                      |
-| `--name`      | (Detached Mode) Assigns a memorable name to the container (e.g., `lean-server`).                           |
-| `-p X:Y`      | Maps port `X` on the host to port `Y` inside the container. Our server runs on port `8000` in the container. |
+| Flag         | Description                                                                                                  |
+| ------------ | ------------------------------------------------------------------------------------------------------------ |
+| `docker run` | The command to create and start a new container from an image.                                               |
+| `--rm`       | (Interactive Mode) Automatically removes the container when it exits.                                        |
+| `-it`        | (Interactive Mode) Creates an interactive terminal session.                                                  |
+| `-d`         | (Detached Mode) Runs the container in the background.                                                        |
+| `--name`     | (Detached Mode) Assigns a memorable name to the container (e.g., `lean-server`).                             |
+| `-p X:Y`     | Maps port `X` on the host to port `Y` inside the container. Our server runs on port `8000` in the container. |
 
 ## 3. Verifying the Server
 
@@ -82,7 +82,7 @@ curl http://localhost:8888/health
 If the server is running correctly, you should receive a response like:
 
 ```json
-{"status":"ok"}
+{ "status": "ok" }
 ```
 
 ## 4. Managing the Container

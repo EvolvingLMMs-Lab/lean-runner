@@ -42,12 +42,14 @@ lean-runner/
 ### Quick Start
 
 1. **Clone the repository:**
+
 ```bash
 git clone https://github.com/EvolvingLMMs-Lab/lean-runner.git
 cd lean-runner
 ```
 
 2. **Set up Python environment:**
+
 ```bash
 # Using UV (recommended)
 uv venv
@@ -59,6 +61,7 @@ uv pip install -e packages/client
 ```
 
 3. **Build Lean dependencies:**
+
 ```bash
 cd playground
 lake build
@@ -68,6 +71,7 @@ cd ..
 4. **Configure the server:**
 
 Edit `packages/server/config.yaml` to set your paths:
+
 ```yaml
 lean:
   executable: /path/to/your/.elan/bin/lake
@@ -77,6 +81,7 @@ sqlite:
 ```
 
 5. **Start the server:**
+
 ```bash
 lean-server --host 0.0.0.0 --port 8000
 ```
@@ -92,6 +97,7 @@ lean-server --host 0.0.0.0 --port 8000
 ### Python Client Examples
 
 #### Synchronous Client
+
 ```python
 from lean_client import LeanClient
 from pathlib import Path
@@ -103,13 +109,14 @@ with LeanClient(base_url="http://localhost:8000") as client:
         proof="theorem test : 1 + 1 = 2 := by norm_num"
     )
     print(result)
-    
+
     # Verify a proof from file
     result = client.verify(proof=Path("path/to/proof.lean"))
     print(result)
 ```
 
 #### Asynchronous Client
+
 ```python
 import asyncio
 from lean_client import AsyncLeanClient
@@ -120,7 +127,7 @@ async def verify_proof():
         proof_id = await client.submit(
             proof="theorem test : 2 + 2 = 4 := by norm_num"
         )
-        
+
         # Get result
         result = await client.get_result(proof_id)
         print(result)
@@ -129,6 +136,7 @@ asyncio.run(verify_proof())
 ```
 
 #### Batch Processing
+
 ```python
 import asyncio
 from lean_client import AsyncLeanClient
@@ -140,11 +148,11 @@ async def verify_multiple():
             "theorem test2 : 2 * 3 = 6 := by norm_num",
             "theorem test3 : 5 - 3 = 2 := by norm_num"
         ]
-        
+
         # Submit all proofs concurrently
         tasks = [client.verify(proof=p) for p in proofs]
         results = await asyncio.gather(*tasks)
-        
+
         for i, result in enumerate(results):
             print(f"Proof {i+1}: {result.status}")
 
@@ -157,12 +165,12 @@ asyncio.run(verify_multiple())
 
 ```yaml
 lean:
-  executable: /path/to/lake  # Lean build tool executable
-  workspace: /path/to/playground  # Lean workspace directory
+  executable: /path/to/lake # Lean build tool executable
+  workspace: /path/to/playground # Lean workspace directory
 
 sqlite:
-  database_path: /path/to/database.db  # SQLite database file
-  timeout: 10  # Database operation timeout
+  database_path: /path/to/database.db # SQLite database file
+  timeout: 10 # Database operation timeout
 
 logging:
   version: 1
@@ -175,6 +183,7 @@ logging:
 ### Proof Configuration Options
 
 When submitting proofs, you can specify:
+
 - `tactics`: Enable tactics in proof
 - `ast`: Output abstract syntax tree
 - `premises`: Extract premises from proof
@@ -212,6 +221,7 @@ class ProofResult:
 ## Examples
 
 Check the `demo/` directory for complete examples:
+
 - `simple_query.py` - Basic client usage with concurrent requests
 - `submit_query_sync.py` - Synchronous proof submission workflow
 - `submit_query_async.py` - Asynchronous proof submission workflow
@@ -254,6 +264,7 @@ lake build
 ## Lean Dependencies
 
 The project includes the following Lean 4 libraries:
+
 - **Mathlib4**: Comprehensive mathematical library
 - **REPL**: Interactive evaluation support
 - **Aesop**: Automated reasoning tactics
@@ -273,6 +284,7 @@ The project includes the following Lean 4 libraries:
 ### Debug Mode
 
 Enable debug logging by setting the environment variable:
+
 ```bash
 export LOG_LEVEL=DEBUG
 lean-server
