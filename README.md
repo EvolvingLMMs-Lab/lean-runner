@@ -1,10 +1,10 @@
-# LMMs Lean Runner
+# Lean Runner
 
 A high-performance server and client system for running and verifying Lean 4 theorem proofs. This project provides a FastAPI-based server that can execute Lean proofs asynchronously and a Python client library for interacting with the server.
 
 ## Overview
 
-LMMs Lean Runner consists of two main components:
+Lean Runner consists of two main components:
 
 - **Lean Server**: A FastAPI-based server that manages and executes Lean theorem proofs with configurable concurrency
 - **Lean Client**: A Python client library with both synchronous and asynchronous interfaces for submitting and monitoring proof verification
@@ -264,12 +264,6 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 ## Support
 
 For issues and questions, please use the [GitHub issue tracker](https://github.com/EvolvingLMMs-Lab/lmms-lean-runner/issues).
-
-## Authors
-
-- [Pu Fanyi]
-- [Oscar Qian]
-- [Bo Li]
 
 ## Acknowledgments
 
