@@ -74,6 +74,7 @@ nav:
       - Quick Start: quick-start.md
   - Client:
       - Overview: client/index.md
+      - Installation: client/install.md
   - Server:
       - Installation via Docker: server/docker.md
       - Installation from Source: server/source.md
