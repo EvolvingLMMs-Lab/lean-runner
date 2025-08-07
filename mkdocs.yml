@@ -21,7 +21,6 @@ theme:
   features:
     - navigation.instant
     - navigation.instant.prefetch
-    - navigation.tabs
     - navigation.prune
     - navigation.path
     - navigation.indexes
