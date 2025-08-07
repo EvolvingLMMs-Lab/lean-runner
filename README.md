@@ -103,7 +103,7 @@ with LeanClient(base_url="http://localhost:8000") as client:
         proof="theorem test : 1 + 1 = 2 := by norm_num"
     )
     print(result)
-    
+
     # Verify a proof from file
     result = client.verify(proof=Path("path/to/proof.lean"))
     print(result)
@@ -120,7 +120,7 @@ async def verify_proof():
         proof_id = await client.submit(
             proof="theorem test : 2 + 2 = 4 := by norm_num"
         )
-        
+
         # Get result
         result = await client.get_result(proof_id)
         print(result)
@@ -140,11 +140,11 @@ async def verify_multiple():
             "theorem test2 : 2 * 3 = 6 := by norm_num",
             "theorem test3 : 5 - 3 = 2 := by norm_num"
         ]
-        
+
         # Submit all proofs concurrently
         tasks = [client.verify(proof=p) for p in proofs]
         results = await asyncio.gather(*tasks)
-        
+
         for i, result in enumerate(results):
             print(f"Proof {i+1}: {result.status}")
 
