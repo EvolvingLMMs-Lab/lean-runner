@@ -7,13 +7,11 @@ This package contains the core `lean-server` application, a FastAPI-based server
 The server is designed to be run inside the Docker environment provided at the root of this monorepo. It exposes endpoints to perform proof checking and other Lean-related tasks.
 
 The main API endpoint is:
-
 - `POST /prove/check`: Accepts a `proof` and an optional `config` to run a proof.
 
 ## ⚙️ Configuration
 
 The server's behavior can be configured via `config.yaml`. Key settings include:
-
 - Server host and port.
 - Lean process configuration.
 - Proof checking timeouts.
@@ -27,11 +25,9 @@ This package is intended to be run within the development container.
 
 2.  **Install Dependencies**:
     In the container's terminal, install the package in editable mode:
-
     ```bash
     uv pip install -e .
     ```
-
     (Note: The root setup installs this automatically).
 
 3.  **Start the Server**:

@@ -2,42 +2,42 @@
 
 <div class="grid cards" markdown>
 
-- :package: **Plug & Play**
+-   :package: __Plug & Play__
 
-  ***
+    ---
 
-  Get started in minutes. Docker provides one-click server setup, and the simple client abstracts away implementation details.
+    Get started in minutes. Docker provides one-click server setup, and the simple client abstracts away implementation details.
 
-  [:octicons-arrow-right-24: Quick Start](quick-start.md)
+    [:octicons-arrow-right-24: Quick Start](quick-start.md)
 
-- :zap: **Efficient**
+-   :zap: __Efficient__
 
-  ***
+    ---
 
-  Fully asynchronous and multi-threaded architecture to maximize CPU utilization.
+    Fully asynchronous and multi-threaded architecture to maximize CPU utilization.
 
-- :shield: **Reliable**
+-   :shield: __Reliable__
 
-  ***
+    ---
 
-  All logs are persistently stored in a SQLite database for easy access. Say goodbye to the frustration of crashes and re-runs.
+    All logs are persistently stored in a SQLite database for easy access. Say goodbye to the frustration of crashes and re-runs.
 
-- :gear: **Flexible**
+-   :gear: __Flexible__
 
-  ***
+    ---
 
-  Supports both synchronous and asynchronous access patterns to fit your needs.
+    Supports both synchronous and asynchronous access patterns to fit your needs.
 
-- :recycle: **Smart Caching (Soon)**
+-   :recycle: __Smart Caching (Soon)__
 
-  ***
+    ---
 
-  Identical Lean code is only processed once, thanks to smart hashing. Say goodbye to the hassle of configuring continual runs.
+    Identical Lean code is only processed once, thanks to smart hashing. Say goodbye to the hassle of configuring continual runs.
 
-- :bar_chart: **Data Export & Visualization (Soon)**
+-   :bar_chart: __Data Export & Visualization (Soon)__
 
-  ***
+    ---
 
-  Easily export data in various formats (Hugging Face, JSON, XML, Arrow, Parquet) and visualize queries with a simple CLI.
+    Easily export data in various formats (Hugging Face, JSON, XML, Arrow, Parquet) and visualize queries with a simple CLI.
 
 </div>

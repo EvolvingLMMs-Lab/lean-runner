@@ -7,17 +7,13 @@ This package provides a simple, asynchronous `LeanClient` to interact with the `
 ## 📦 Installation
 
 ### As a Standalone Package
-
 To install this package from PyPI (once published):
-
 ```bash
 pip install lean-client
 ```
 
 ### For Development
-
 This package is part of a monorepo. For development, follow the setup instructions in the [root README](../../README.md). The recommended installation command within the dev container is:
-
 ```bash
 # This installs the client in editable mode
 uv pip install -e .
@@ -61,20 +57,17 @@ if __name__ == "__main__":
 The client supports multiple ways to provide proof content:
 
 1. **String content directly**:
-
 ```python
 proof_content = "theorem test : 1 + 1 = 2 := by rfl"
 result = await client.check_proof(proof_content)
 ```
 
 2. **File path as string**:
-
 ```python
 result = await client.check_proof("path/to/proof.lean")
 ```
 
 3. **Path object**:
-
 ```python
 from pathlib import Path
 proof_file = Path("path/to/proof.lean")
@@ -123,15 +116,12 @@ if __name__ == "__main__":
 The main client class for interacting with the Lean Server.
 
 #### `__init__(base_url: str)`
-
 Initialize the client with the server's base URL.
 
 #### `async check_proof(proof: Union[str, Path, os.PathLike], config: dict[str, Any] | None = None) -> dict[str, Any]`
-
 Send a proof to the server for checking.
 
 **Parameters:**
-
 - `proof`: The proof content. Can be:
   - A string containing the proof
   - A Path object pointing to a file containing the proof
@@ -139,13 +129,10 @@ Send a proof to the server for checking.
 - `config`: Optional configuration dictionary for the proof check
 
 **Returns:**
-
 - A dictionary containing the server's response
 
 #### `async close()`
-
 Close the client session.
 
 #### `async __aenter__()` and `async __aexit__()`
-
 Async context manager support for automatic session management.
