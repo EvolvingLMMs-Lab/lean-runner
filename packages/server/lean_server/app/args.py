@@ -20,4 +20,11 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Reload the server when code changes are detected.",
     )
+    parser.add_argument(
+        "--log-level",
+        type=str,
+        default="INFO",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        help="Set the logging level for the server.",
+    )
     return parser.parse_args()

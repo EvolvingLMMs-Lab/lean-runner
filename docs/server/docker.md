@@ -40,7 +40,7 @@ CONCURRENCY=32
 docker run --rm -it \
     -p $PORT:8000 \
     pufanyi/lean-server:latest \
-    /app/lmms-lean-runner/.venv/bin/lean-server --concurrency=$CONCURRENCY
+    /app/lean-runner/.venv/bin/lean-server --concurrency=$CONCURRENCY
 ```
 
 ### Option B: Detached Mode (Run in Background)
@@ -57,7 +57,7 @@ docker run -d \
     --name lean-server \
     -p $PORT:8000 \
     pufanyi/lean-server:latest \
-    /app/lmms-lean-runner/.venv/bin/lean-server --concurrency=$CONCURRENCY
+    /app/lean-runner/.venv/bin/lean-server --concurrency=$CONCURRENCY
 ```
 
 ### Understanding the Docker Command
