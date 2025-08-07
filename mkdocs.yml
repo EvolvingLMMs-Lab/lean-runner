@@ -23,8 +23,9 @@ theme:
     - navigation.instant.prefetch
     - navigation.prune
     - navigation.path
-    - navigation.indexes
     - navigation.top
+    - navigation.expand
+    - navigation.sections
     - search.suggest
     - content.code.copy
     - content.code.select
@@ -69,10 +70,10 @@ extra_javascript:
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 nav:
-  - Home:
-      - Introduction: index.md
+  - Introduction:
       - Quick Start: quick-start.md
-  - Client: client/index.md
+  - Client:
+      - Overview: client/index.md
   - Server:
       - Installation via Docker: server/docker.md
       - Installation from Source: server/source.md
