@@ -67,12 +67,12 @@ Before starting, ensure you have the following installed on your system:
 
 Choose your preferred method to clone the repository:
 
-=== "SSH (Recommended for Contributors)"
+=== "SSH"
     ```bash
     # Clone using SSH
-git clone git@github.com:EvolvingLMMs-Lab/lmms-lean-runner.git
-cd lmms-lean-runner
-```
+    git clone git@github.com:EvolvingLMMs-Lab/lmms-lean-runner.git
+    cd lmms-lean-runner
+    ```
 
 === "HTTPS"
     ```bash
@@ -88,10 +88,10 @@ Create and activate a Python virtual environment with the required Python versio
 === "Linux/macOS"
     ```bash
     # Create virtual environment with Python 3.12
-uv venv --python=3.12
+    uv venv --python=3.12
 
     # Activate the virtual environment
-source .venv/bin/activate
+    source .venv/bin/activate
     ```
 
 === "Windows"
