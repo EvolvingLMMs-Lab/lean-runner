@@ -6,60 +6,8 @@ This guide walks you through setting up the Lean Server from source code, provid
 
 Before starting, ensure you have the following installed on your system:
 
-- **Python 3.12+**: Required for running the server
-- **Git**: For cloning the repository
-- **Lean 4**: Install via [elan](https://github.com/leanprover/elan) (Lean toolchain manager)
-- **UV Package Manager**: Recommended for Python dependency management
-- **Lake**: Lean build tool (installed with elan)
-
-### Installing Prerequisites
-
-#### Install Lean 4 and Lake
-
-=== "Linux/macOS"
-    ```bash
-    # Install elan (Lean toolchain manager)
-    curl https://elan.lean-lang.org/elan-init.sh -sSf | sh
-    source ~/.elan/env
-
-    # Verify installation
-    lean --version
-    lake --version
-    ```
-
-=== "Windows"
-    ```powershell
-    # Download and run the Windows installer
-    # Visit: https://github.com/leanprover/elan/releases
-    # Or use Windows Subsystem for Linux (WSL) with the Linux commands above
-
-    # Verify installation
-    lean --version
-    lake --version
-    ```
-
-#### Install UV Package Manager
-
-=== "Linux/macOS"
-    ```bash
-    # Install UV
-    curl -LsSf https://astral.sh/uv/install.sh | sh
-
-    # Verify installation
-    uv --version
-    ```
-
-=== "Windows"
-    ```powershell
-    # Install via PowerShell
-    powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
-
-    # Or install via pip
-    pip install uv
-
-    # Verify installation
-    uv --version
-    ```
+- **Python 3.12+ (or UV)**: 我们强烈建议你使用 uv，可以 follow [这个 link](https://docs.astral.sh/uv/getting-started/installation/) 进行安装。
+- **elan**: 你可以 follow [这个教程](https://lean-lang.org/install/manual/) 来安装 elan。
 
 ## 🛠️ Installation Steps
 
@@ -67,19 +15,11 @@ Before starting, ensure you have the following installed on your system:
 
 Choose your preferred method to clone the repository:
 
-=== "SSH (Recommended for Contributors)"
-    ```bash
-    # Clone using SSH
-git clone git@github.com:EvolvingLMMs-Lab/lean-runner.git
-cd lean-runner
+```bash
+# Clone using HTTPS
+git clone https://github.com/EvolvingLMMs-Lab/lmms-lean-runner.git
+cd lmms-lean-runner
 ```
-
-=== "HTTPS"
-    ```bash
-    # Clone using HTTPS
-    git clone https://github.com/EvolvingLMMs-Lab/lean-runner.git
-    cd lean-runner
-    ```
 
 ### 2. Set Up Python Environment
 
@@ -88,10 +28,10 @@ Create and activate a Python virtual environment with the required Python versio
 === "Linux/macOS"
     ```bash
     # Create virtual environment with Python 3.12
-uv venv --python=3.12
+    uv venv --python=3.12
 
     # Activate the virtual environment
-source .venv/bin/activate
+    source .venv/bin/activate
     ```
 
 === "Windows"
@@ -235,7 +175,7 @@ server:
 # Lean configuration
 lean:
   executable: "/home/user/.elan/bin/lake"
-  workspace: "/path/to/lean-runner/playground"
+  workspace: "/path/to/lmms-lean-runner/playground"
   timeout: 30  # Timeout for proof verification in seconds
 
 # Database configuration
@@ -455,7 +395,7 @@ After successful installation:
 
 If you encounter issues not covered in this guide:
 
-1. Check the [GitHub Issues](https://github.com/EvolvingLMMs-Lab/lean-runner/issues)
+1. Check the [GitHub Issues](https://github.com/EvolvingLMMs-Lab/lmms-lean-runner/issues)
 2. Review the [FAQ](../faq.md)
 3. Join our [Discord community](https://discord.gg/lean-runner)
 4. Create a new issue with detailed error information
