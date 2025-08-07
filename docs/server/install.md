@@ -1,8 +1,8 @@
 # Install
 
 ```sh
-git clone git@github.com:EvolvingLMMs-Lab/lmms-lean-runner.git
-cd lmms-lean-runner
+git clone git@github.com:EvolvingLMMs-Lab/lean-runner.git
+cd lean-runner
 ```
 
 ```sh

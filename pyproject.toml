@@ -1,5 +1,5 @@
 [project]
-name = "lmms-lean-runner"
+name = "lean-runner"
 version = "0.0.1.dev1"
 description = "Lean Server Workspace"
 requires-python = ">=3.12"

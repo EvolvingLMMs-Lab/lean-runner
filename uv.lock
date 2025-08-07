@@ -5,7 +5,7 @@ requires-python = ">=3.12"
 [manifest]
 members = [
     "lmms-lean-client",
-    "lmms-lean-runner",
+    "lean-runner",
     "lmms-lean-server",
 ]
 
@@ -377,7 +377,7 @@ dev = [
 ]
 
 [[package]]
-name = "lmms-lean-runner"
+name = "lean-runner"
 version = "0.0.1.dev1"
 source = { editable = "." }
 

@@ -29,8 +29,8 @@ Lean Runner consists of two main components:
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/EvolvingLMMs-Lab/lmms-lean-runner.git
-cd lmms-lean-runner
+git clone https://github.com/EvolvingLMMs-Lab/lean-runner.git
+cd lean-runner
 ```
 
 ### Server Installation
@@ -148,7 +148,7 @@ with LeanClient(base_url="http://localhost:8080") as client:
 ## Project Structure
 
 ```
-lmms-lean-runner/
+lean-runner/
 ├── packages/
 │   ├── client/          # Python client library
 │   │   └── lean_client/
@@ -263,7 +263,7 @@ Contributions are welcome! Please feel free to submit issues and pull requests.
 
 ## Support
 
-For issues and questions, please use the [GitHub issue tracker](https://github.com/EvolvingLMMs-Lab/lmms-lean-runner/issues).
+For issues and questions, please use the [GitHub issue tracker](https://github.com/EvolvingLMMs-Lab/lean-runner/issues).
 
 ## Acknowledgments
 
