@@ -72,7 +72,7 @@ nav:
   - Home:
       - Introduction: index.md
       - Quick Start: quick-start.md
-  - Client: client/README.md
+  - Client: client/index.md
   - Server:
       - Installation via Docker: server/docker.md
       - Installation from Source: server/source.md
