@@ -1,7 +1,4 @@
-<picture>
-	<source media="(prefers-color-scheme: dark)" srcset="assets/logo/logo-wt-dark.webp">
-	<img alt="logo" src="assets/logo/logo-wt.webp">
-</picture>
+# ![logo](assets/logo/logo-wt-dark.webp#only-dark)![logo](assets/logo/logo-wt.webp#only-light)
 
 <div class="grid cards" markdown>
 
