@@ -4,7 +4,7 @@
 
 <span style="font-size: 1.3em;">🚀 Deploying High-Performance Lean 4 Server in One Click</span>
 
-[![Documentation](https://img.shields.io/badge/📖%20Documentation-blue?style=for-the-badge)](https://evolvinglmms-lab.github.io/lean-runner/)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?style=for-the-badge&logo=github)](https://github.com/EvolvingLMMs-Lab/lean-runner)
 [![PyPI Server](https://img.shields.io/pypi/v/lmms-lean-server?label=📦%20Server&style=for-the-badge&color=orange)](https://pypi.org/project/lmms-lean-server/)
 [![PyPI Client](https://img.shields.io/pypi/v/lmms-lean-client?label=📦%20Client&style=for-the-badge&color=orange)](https://pypi.org/project/lmms-lean-client/)
 [![Docker](https://img.shields.io/docker/v/pufanyi/lean-server?label=🐳%20Docker&style=for-the-badge&color=blue)](https://hub.docker.com/r/pufanyi/lean-server)
