@@ -1,13 +1,13 @@
-<div align="center">
+<div style="text-align: center;">
 
 <picture>
 	<source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo/logo-wt-dark.webp">
-	<img alt="Lean Runner Logo" src="docs/assets/logo/logo-wt.webp" width="400">
+	<img alt="Lean Runner Logo" src="docs/assets/logo/logo-wt.webp">
 </picture>
 
 <br/>
 
-<h3>🚀 A high-performance server and client system for executing and verifying Lean 4 mathematical proofs</h3>
+<h4>🚀 A high-performance server and client system for executing and verifying Lean 4 mathematical proofs</h4>
 
 <br/>
 
