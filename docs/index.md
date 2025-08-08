@@ -1,4 +1,7 @@
-# LMMs Lean Runner
+<picture>
+	<source media="(prefers-color-scheme: dark)" srcset="assets/logo/logo-wt-dark.webp">
+	<img alt="logo" src="assets/logo/logo-wt.webp">
+</picture>
 
 <div class="grid cards" markdown>
 
