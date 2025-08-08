@@ -319,7 +319,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ```bibtex
 @misc{fanyi2025leanrunner,
-  title={Lean-Runner: A High-Performance Server and Client System for Lean 4 Mathematical Proofs},
+  title={Lean-Runner: Deploying High-Performance Lean 4 Server in One Click},
   author={Fanyi Pu, Oscar Qian, Yezhen Wang, Bo Li},
   year={2025},
   publisher={GitHub},
