@@ -17,7 +17,7 @@ def launch_prove_router(app: FastAPI):
         config: str = Form(default="{}"),
     ):
         try:
-            lean_proof = LeanProof(proof=proof)
+            lean_proof = LeanProof(proof=proof, config=app.state.config)
             lean_proof_config = LeanProofConfig.model_validate_json(config)
             proof_manager: ProofManager = app.state.proof_manager
             result = await proof_manager.run_proof(
@@ -36,7 +36,7 @@ def launch_prove_router(app: FastAPI):
         config: str = Form(default="{}"),
     ):
         try:
-            lean_proof = LeanProof(proof=proof)
+            lean_proof = LeanProof(proof=proof, config=app.state.config)
             lean_proof_config = LeanProofConfig.model_validate_json(config)
             proof_manager: ProofManager = app.state.proof_manager
             result = await proof_manager.submit_proof(

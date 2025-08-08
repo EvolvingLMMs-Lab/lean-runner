@@ -1,9 +1,34 @@
-<picture>
-	<source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo/logo-wt-dark.webp">
-	<img alt="logo" src="docs/assets/logo/logo-wt.webp">
-</picture>
+<div align="center">
 
-A high-performance server and client system for executing and verifying Lean 4 mathematical proofs. This project provides a FastAPI-based REST API server that interfaces with the Lean theorem prover, along with Python client libraries for both synchronous and asynchronous operations.
+<a href="https://evolvinglmms-lab.github.io/lean-runner/">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo/logo-wt-dark.webp">
+        <img alt="Lean Runner Logo" src="docs/assets/logo/logo-wt.webp">
+    </picture>
+</a>
+
+<br/>
+
+<h4>🚀 A high-performance server and client system for executing and verifying Lean 4 mathematical proofs</h4>
+
+<br/>
+
+[![Documentation](https://img.shields.io/badge/📖%20Documentation-blue?style=for-the-badge)](https://evolvinglmms-lab.github.io/lean-runner/)
+[![PyPI Server](https://img.shields.io/pypi/v/lmms-lean-server?label=📦%20Server&style=for-the-badge&color=orange)](https://pypi.org/project/lmms-lean-server/)
+[![PyPI Client](https://img.shields.io/pypi/v/lmms-lean-client?label=📦%20Client&style=for-the-badge&color=orange)](https://pypi.org/project/lmms-lean-client/)
+[![Docker](https://img.shields.io/docker/v/pufanyi/lean-server?label=🐳%20Docker&style=for-the-badge&color=blue)](https://hub.docker.com/r/pufanyi/lean-server)
+
+[![Python](https://img.shields.io/badge/Python-3.12+-blue?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![Lean 4](https://img.shields.io/badge/Lean-4-purple?style=flat-square&logo=lean&logoColor=white)](https://lean-lang.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-green?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
+
+---
+
+</div>
+
+
+This project provides a FastAPI-based REST API server that interfaces with the Lean theorem prover, along with Python client libraries for both synchronous and asynchronous operations.
 
 ## Features
 

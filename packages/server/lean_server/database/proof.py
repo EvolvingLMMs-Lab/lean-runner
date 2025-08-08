@@ -2,7 +2,6 @@ import logging
 
 import aiosqlite
 
-from ..config import CONFIG
 from ..proof.lean import LeanProof
 from ..proof.proto import LeanProofConfig, LeanProofResult, LeanProofStatus
 
@@ -10,9 +9,9 @@ logger = logging.getLogger(__name__)
 
 
 class ProofDatabase:
-    def __init__(self):
-        self.sql_path = CONFIG.sqlite.database_path
-        self.timeout = CONFIG.sqlite.timeout
+    def __init__(self, database_path: str, timeout: int):
+        self.sql_path = database_path
+        self.timeout = timeout
 
     async def create_table(self):
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:

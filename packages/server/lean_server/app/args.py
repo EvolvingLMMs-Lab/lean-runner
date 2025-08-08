@@ -16,9 +16,16 @@ def parse_args() -> argparse.Namespace:
         help="Maximum number of concurrent Lean worker threads.",
     )
     parser.add_argument(
-        "--reload",
-        action="store_true",
-        help="Reload the server when code changes are detected.",
+        "--config",
+        type=str,
+        default="default",
+        help="Path to a custom configuration file.",
+    )
+    parser.add_argument(
+        "--lean-workspace",
+        type=str,
+        default="default",
+        help="Path to the Lean workspace.",
     )
     parser.add_argument(
         "--log-level",
