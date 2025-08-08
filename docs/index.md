@@ -1,4 +1,4 @@
-# LMMs Lean Runner
+# ![logo](assets/logo/logo-wt-dark.webp#only-dark)![logo](assets/logo/logo-wt.webp#only-light)
 
 <div class="grid cards" markdown>
 
