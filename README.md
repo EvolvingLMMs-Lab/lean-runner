@@ -3,7 +3,21 @@
 	<img alt="logo" src="docs/assets/logo/logo-wt.webp">
 </picture>
 
-A high-performance server and client system for executing and verifying Lean 4 mathematical proofs. This project provides a FastAPI-based REST API server that interfaces with the Lean theorem prover, along with Python client libraries for both synchronous and asynchronous operations.
+<p align="center">
+  <strong>
+    A high-performance server and client system for executing and verifying Lean 4 mathematical proofs.
+  </strong>
+</p>
+
+<p align="center">
+  <a href="https://evolvinglmms-lab.github.io/lean-runner/">Documentation</a>
+  <a href="https://pypi.org/project/lmms-lean-server/">PyPI (Server)</a>
+  <a href="https://pypi.org/project/lmms-lean-client/">PyPI (Client)</a>
+  <a href="https://hub.docker.com/r/pufanyi/lean-server">Docker (Server)</a>
+</p>
+
+
+This project provides a FastAPI-based REST API server that interfaces with the Lean theorem prover, along with Python client libraries for both synchronous and asynchronous operations.
 
 ## Features
 
