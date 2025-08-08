@@ -6,6 +6,7 @@ copyright: Copyright &copy; 2025 LMMs-Lab
 theme:
   name: material
   logo: assets/logo/logo.svg
+  favicon: assets/logo/logo.svg
   icon:
     repo: fontawesome/brands/github
   palette:
