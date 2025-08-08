@@ -16,6 +16,7 @@ def launch(*, config: Config) -> FastAPI:
 def main():
     args = parse_args()
     config = get_config(args)
+    print(config)
     app = launch(config=config)
     uvicorn.run(
         app,

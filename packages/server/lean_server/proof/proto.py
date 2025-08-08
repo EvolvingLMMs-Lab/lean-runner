@@ -8,6 +8,7 @@ class LeanProofConfig(BaseModel):
     ast: bool = False
     tactics: bool = False
     premises: bool = False
+    timeout: float = 300.0
 
 
 class LeanProofStatus(Enum):

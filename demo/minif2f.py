@@ -1,17 +1,17 @@
-from collections.abc import Iterable
+import json
 
-import datasets
 from lean_client import LeanClient
 from lean_client.proof.proto import LeanProofStatus
 
 
-def get_data(data: datasets.Dataset) -> Iterable[str]:
-    for d in data:
-        yield d["full_code"][0]
+def get_data(data: str) -> list[dict]:
+    with open(data) as f:
+        data = json.load(f)
+    return [d["code"] for d in data]
 
 
 def main():
-    data = datasets.load_dataset("pufanyi/miniF2F-code-compilation")["train"]
+    data = "data/miniF2F-code-compilation.json"
     client = LeanClient("http://localhost:8888")
     results = client.verify_all(
         get_data(data),

@@ -8,7 +8,7 @@ from lean_client import AsyncLeanClient, LeanClient
 logging.basicConfig(level=logging.INFO)
 
 
-HOST = "http://0.0.0.0:8888"
+HOST = "http://0.0.0.0:8080"
 
 
 def check():
@@ -18,7 +18,7 @@ def check():
 
 
 async def check_async():
-    async with AsyncLeanClient(base_url=HOST, timeout=60.0) as client:
+    async with AsyncLeanClient(base_url=HOST) as client:
         result = await client.verify(proof=Path(__file__).parent / "test1.lean")
         print(result)
 
