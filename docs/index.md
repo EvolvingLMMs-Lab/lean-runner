@@ -15,11 +15,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-green?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
----
-
 </div>
-
-
 
 <div class="grid cards" markdown>
 
