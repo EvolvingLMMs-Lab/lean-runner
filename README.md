@@ -13,14 +13,14 @@
 
 <br/>
 
-[![Documentation](https://img.shields.io/badge/📖%20Documentation-blue?style=for-the-badge)](https://evolvinglmms-lab.github.io/lean-runner/)
+[![Documentation](https://img.shields.io/badge/📖%20Documentation-blue?style=for-the-badge)](https://lean-runner.vercel.app/)
 [![PyPI Server](https://img.shields.io/pypi/v/lmms-lean-server?label=📦%20Server&style=for-the-badge&color=orange)](https://pypi.org/project/lmms-lean-server/)
 [![PyPI Client](https://img.shields.io/pypi/v/lmms-lean-client?label=📦%20Client&style=for-the-badge&color=orange)](https://pypi.org/project/lmms-lean-client/)
 [![Docker](https://img.shields.io/docker/v/pufanyi/lean-server?label=🐳%20Docker&style=for-the-badge&color=blue)](https://hub.docker.com/r/pufanyi/lean-server)
 
 [![Python](https://img.shields.io/badge/Python-3.12+-blue?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![Lean 4](https://img.shields.io/badge/Lean-4-purple?style=flat-square&logo=lean&logoColor=white)](https://lean-lang.org)
-[![Mathlib](https://img.shields.io/badge/Mathlib-v4.22.0--rc4-purple?style=flat-square)](https://github.com/leanprover-community/mathlib4)
+[![Mathlib](https://img.shields.io/badge/Mathlib-v4.22.0--rc4-purple?style=flat-square)](https://github.com/leanprover-community/mathlib4/releases/tag/v4.22.0-rc4)
 [![FastAPI](https://img.shields.io/badge/FastAPI-green?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
