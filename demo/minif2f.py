@@ -1,37 +1,34 @@
 import json
-from pathlib import Path
 
 from lean_client import LeanClient
-from lean_client.proof.proto import LeanProofStatus
 
 
-def get_data(data_path: str) -> list[dict]:
-    with open(data_path) as f:
+def get_data(data: str, num: int) -> list[dict]:
+    with open(data) as f:
         data = json.load(f)
-    return [d["code"] for d in data]
+    return [d["code"] for d in data[:num]], data[:num]
 
 
 def main():
-    data_path = Path(__file__).parent / "data" / "to_inference_codes.json"
-    data = get_data(data_path)
+    data = "/mnt/raid10/pufanyi/lmms-lean-runner/demo/data/to_inference_codes.json"
     client = LeanClient("http://localhost:8080")
+    codes, full_data = get_data(data, 10)
     results = client.verify_all(
-        data,
-        max_workers=32,
+        codes,
+        max_workers=20,
         progress_bar=True,
-        total=len(data),
+        total=len(codes),
     )
-    result = 0
-    error_num = 0
-    num = 0
-    for r in results:
-        if r.success:
-            result += 1
-        if r.status != LeanProofStatus.FINISHED:
-            error_num += 1
-        num += 1
-    # print(result)
-    # print(num)
+    final_results = []
+    for r, d in zip(results, full_data, strict=False):
+        final_results.append(
+            {
+                "input": d,
+                "result": r.model_dump_json(),
+            }
+        )
+    with open("minif2f.json", "w") as f:
+        json.dump(final_results, f)
 
 
 if __name__ == "__main__":
