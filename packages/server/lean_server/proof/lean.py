@@ -2,7 +2,7 @@ import asyncio
 import json
 import logging
 
-from ..config import CONFIG
+from ..config import Config
 from ..utils.uuid.uuid import uuid
 from .proto import LeanProofConfig, LeanProofResult, LeanProofStatus
 
@@ -10,12 +10,13 @@ logger = logging.getLogger(__name__)
 
 
 class LeanProof:
-    def __init__(self, *, proof_id: str | None = None, proof: str):
+    def __init__(self, *, proof_id: str | None = None, proof: str, config: Config):
         self.lean_code = proof
         if proof_id is None:
             self.proof_id = uuid()
         else:
             self.proof_id = proof_id
+        self.config = config
 
     async def execute(self, config: LeanProofConfig) -> LeanProofResult:
         try:
@@ -29,13 +30,13 @@ class LeanProof:
             logger.info(f"Executing command: {command}")
 
             proc = await asyncio.create_subprocess_exec(
-                CONFIG.lean.executable,
+                self.config.lean.executable,
                 "exe",
                 "repl",
                 stdin=asyncio.subprocess.PIPE,
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
-                cwd=CONFIG.lean.workspace,
+                cwd=self.config.lean.workspace,
             )
 
             stdout, stderr = await proc.communicate(
