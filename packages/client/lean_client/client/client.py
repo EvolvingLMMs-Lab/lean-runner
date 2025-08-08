@@ -105,14 +105,12 @@ class LeanClient:
 
         proof_content = self._get_proof_content(proof)
 
-        data = {
-            "proof": proof_content,
-            "config": config.model_dump_json()
-            if config
-            else ProofConfig().model_dump_json(),
-        }
+        if config is None:
+            config = ProofConfig()
 
-        response = session.post("/prove/check", data=data)
+        data = {"proof": proof_content, "config": config.model_dump_json()}
+
+        response = session.post("/prove/check", data=data, timeout=config.timeout)
         response.raise_for_status()
 
         return ProofResult.model_validate(response.json())
@@ -145,14 +143,14 @@ class LeanClient:
         if total is None and hasattr(proofs, "__len__"):
             total = len(proofs)
 
-        pbar = tqdm.tqdm(total=total, disable=not progress_bar)
+        pbar = tqdm.tqdm(total=total, disable=not progress_bar, desc="Verifying proofs")
 
         # To handle exceptions gracefully with executor.map, we wrap the call
         def _verify_wrapper(proof_item, proof_config):
             try:
                 return self.verify(proof_item, proof_config)
             except Exception as e:
-                return e, proof_item
+                return e
             finally:
                 pbar.update(1)
 
@@ -160,19 +158,11 @@ class LeanClient:
             # Use partial to fix the `config` argument for the wrapper
             verify_func = partial(_verify_wrapper, proof_config=config)
 
-            # `proofs` could be an iterator, so we convert it to a list to
-            # know the total and to be able to reference it for error logging
-            # if needed.
-            proof_list = list(proofs)
-            if total is None:
-                total = len(proof_list)
-
-            results_iterator = executor.map(verify_func, proof_list)
+            results_iterator = executor.map(verify_func, proofs)
 
             for result in results_iterator:
-                if isinstance(result, tuple) and isinstance(result[0], Exception):
-                    exc, proof_id = result
-                    logger.error(f"Error verifying proof {proof_id}: {exc}")
+                if isinstance(result, Exception):
+                    logger.error(f"Error verifying proof: {result}")
                 else:
                     yield result
 

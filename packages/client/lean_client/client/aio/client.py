@@ -19,7 +19,7 @@ class AsyncLeanClient:
     An asynchronous client for interacting with the Lean Server API.
     """
 
-    def __init__(self, base_url: str, timeout: float = 3600.0):
+    def __init__(self, base_url: str, timeout: float = 300.0):
         """
         Initializes the AsyncLeanClient.
 
@@ -86,7 +86,7 @@ class AsyncLeanClient:
             "config": json.dumps(config) if config else "{}",
         }
 
-        response = await session.post("/prove/check", data=data)
+        response = await session.post("/prove/check", data=data, timeout=config.timeout)
         response.raise_for_status()
 
         return ProofResult.model_validate(response.json())
@@ -126,7 +126,7 @@ class AsyncLeanClient:
         proof_queue = asyncio.Queue(maxsize=max_workers)
         # The queue for completed results.
         results_queue = asyncio.Queue()
-        pbar = tqdm.tqdm(total=total, disable=not progress_bar)
+        pbar = tqdm.tqdm(total=total, disable=not progress_bar, desc="Verifying proofs")
 
         # Consumer: A worker that pulls proofs from the queue and verifies them.
         async def worker():
