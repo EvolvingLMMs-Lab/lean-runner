@@ -1,4 +1,3 @@
-import json
 import logging
 import os
 from collections.abc import Iterable
@@ -23,7 +22,7 @@ class LeanClient:
     The asynchronous client is available via the `aio` attribute.
     """
 
-    def __init__(self, base_url: str, timeout: float = 3600.0):
+    def __init__(self, base_url: str):
         """
         Initializes the LeanClient.
 
@@ -34,14 +33,13 @@ class LeanClient:
         if not base_url.endswith("/"):
             base_url += "/"
         self.base_url = base_url
-        self.timeout = timeout
-        self.aio = AsyncLeanClient(base_url, timeout)
+        self.aio = AsyncLeanClient(base_url)
         self._session: httpx.Client | None = None
 
     def _get_session(self) -> httpx.Client:
         """Initializes or returns the httpx client session."""
         if self._session is None or self._session.is_closed:
-            self._session = httpx.Client(timeout=self.timeout, base_url=self.base_url)
+            self._session = httpx.Client(base_url=self.base_url)
         return self._session
 
     def _get_proof_content(self, file_or_content: str | Path | os.PathLike) -> str:
@@ -78,7 +76,9 @@ class LeanClient:
 
         data = {
             "proof": proof_content,
-            "config": json.dumps(config) if config else "{}",
+            "config": config.model_dump_json()
+            if config
+            else ProofConfig().model_dump_json(),
         }
 
         response = session.post("/prove/submit", data=data)
@@ -107,7 +107,9 @@ class LeanClient:
 
         data = {
             "proof": proof_content,
-            "config": json.dumps(config) if config else "{}",
+            "config": config.model_dump_json()
+            if config
+            else ProofConfig().model_dump_json(),
         }
 
         response = session.post("/prove/check", data=data)

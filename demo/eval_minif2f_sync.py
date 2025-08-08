@@ -12,7 +12,7 @@ def get_data(data: datasets.Dataset) -> Iterable[str]:
 
 def main():
     data = datasets.load_dataset("pufanyi/miniF2F-code-compilation")["train"]
-    client = LeanClient("http://localhost:8080")
+    client = LeanClient("http://localhost:8888")
     results = client.verify_all(
         get_data(data),
         max_workers=32,

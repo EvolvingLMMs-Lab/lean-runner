@@ -19,6 +19,8 @@ def get_lifespan(*, config: Config):
 
         app.state.background_tasks = set()
 
+        app.state.config = config
+
         app.state.proof_database = ProofDatabase(
             database_path=config.sqlite.database_path,
             timeout=config.sqlite.timeout,

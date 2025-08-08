@@ -15,6 +15,7 @@ def launch_prove_router(app: FastAPI):
         *,
         proof: str = Form(...),
         config: str = Form(default="{}"),
+        timeout: float = Form(default=300.0),
     ):
         try:
             lean_proof = LeanProof(proof=proof, config=app.state.config)
@@ -27,6 +28,9 @@ def launch_prove_router(app: FastAPI):
         except HTTPException:
             raise
         except Exception as e:
+            import traceback
+
+            traceback.print_exc()
             raise HTTPException(status_code=500, detail=str(e)) from e
 
     @app.post("/prove/submit")
@@ -34,13 +38,14 @@ def launch_prove_router(app: FastAPI):
         *,
         proof: str = Form(...),
         config: str = Form(default="{}"),
+        timeout: float = Form(default=300.0),
     ):
         try:
             lean_proof = LeanProof(proof=proof, config=app.state.config)
             lean_proof_config = LeanProofConfig.model_validate_json(config)
             proof_manager: ProofManager = app.state.proof_manager
             result = await proof_manager.submit_proof(
-                proof=lean_proof, config=lean_proof_config
+                proof=lean_proof, config=lean_proof_config, timeout=timeout
             )
             return result
         except HTTPException:
