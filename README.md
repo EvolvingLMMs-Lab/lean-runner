@@ -1,5 +1,10 @@
 # Lean-Runner
 
+<picture>
+	<source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/jamessouth/polybar-nightlight/master/imgs/letter_i_dark.png">
+	<img align="left" alt="i" src="https://raw.githubusercontent.com/jamessouth/polybar-nightlight/master/imgs/letter_i.png">
+</picture>
+
 A high-performance server and client system for executing and verifying Lean 4 mathematical proofs. This project provides a FastAPI-based REST API server that interfaces with the Lean theorem prover, along with Python client libraries for both synchronous and asynchronous operations.
 
 ## Features
