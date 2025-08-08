@@ -1,9 +1,11 @@
 <div align="center">
 
-<picture>
-	<source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo/logo-wt-dark.webp">
-	<img alt="Lean Runner Logo" src="docs/assets/logo/logo-wt.webp">
-</picture>
+<a href="https://evolvinglmms-lab.github.io/lean-runner/">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo/logo-wt-dark.webp">
+        <img alt="Lean Runner Logo" src="docs/assets/logo/logo-wt.webp">
+    </picture>
+</a>
 
 <br/>
 
