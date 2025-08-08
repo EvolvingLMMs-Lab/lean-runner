@@ -75,8 +75,7 @@ extra_javascript:
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 nav:
-  - Introduction:
-      - Quick Start: quick-start.md
+  - Quick Start: quick-start.md
   - Client:
       - Overview: client/index.md
       - Installation: client/install.md
