@@ -77,9 +77,9 @@ extra_javascript:
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 nav:
   - Quick Start: quick-start.md
-  - Client:
-      - Overview: client/index.md
-      - Installation: client/install.md
   - Server:
       - Installation via Docker: server/docker.md
       - Installation from Source: server/source.md
+  - Client:
+      - Overview: client/index.md
+      - Installation: client/install.md
