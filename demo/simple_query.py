@@ -8,7 +8,7 @@ from lean_client import AsyncLeanClient, LeanClient
 logging.basicConfig(level=logging.INFO)
 
 
-HOST = "http://0.0.0.0:8888"
+HOST = "http://0.0.0.0:8080"
 
 
 def check():
