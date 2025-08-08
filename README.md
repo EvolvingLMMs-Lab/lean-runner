@@ -9,7 +9,7 @@
 
 <br/>
 
-<h4>🚀 Deploying High-Performance Lean 4 Server in One Click</h4>
+<h2>🚀 Deploying High-Performance Lean 4 Server in One Click</h2>
 
 <br/>
 
