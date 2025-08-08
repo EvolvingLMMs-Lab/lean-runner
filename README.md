@@ -1,6 +1,6 @@
 <div align="center">
 
-<a href="https://evolvinglmms-lab.github.io/lean-runner/">
+<a href="https://lean-runner.vercel.app/">
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="docs/assets/logo/logo-wt-dark.webp">
         <img alt="Lean Runner Logo" src="docs/assets/logo/logo-wt.webp">
