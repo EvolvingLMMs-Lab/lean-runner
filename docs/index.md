@@ -54,7 +54,7 @@ title: Home
 
     Choose between synchronous and asynchronous clients depending on your use case, from interactive development to large-scale batch processing.
 
--   :material-recycle: __Smart Caching (Soon)__
+-   :material-recycle: __Smart Caching__
 
     ---
 

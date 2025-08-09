@@ -32,7 +32,7 @@
 
 - **🔄 Flexible Access Patterns**: Choose between synchronous and asynchronous clients depending on your use case—from interactive development to large-scale batch processing.
 
-- **🧠 Smart Caching (Soon)**: Intelligent content-based hashing ensures identical Lean code is processed only once, dramatically reducing computation time for repeated operations.
+- **🧠 Smart Caching**: Intelligent content-based hashing ensures identical Lean code is processed only once, dramatically reducing computation time for repeated operations.
 
 - **📊 Data Export & Visualization (Soon)**: Easily export data in various formats (Hugging Face, JSON, XML, Arrow, Parquet) and visualize queries with a simple CLI.
 
