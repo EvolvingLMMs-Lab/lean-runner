@@ -73,12 +73,11 @@ class LeanClient:
         session = self._get_session()
 
         proof_content = self._get_proof_content(proof)
+        config = config or ProofConfig()
 
         data = {
             "proof": proof_content,
-            "config": config.model_dump_json()
-            if config
-            else ProofConfig().model_dump_json(),
+            "config": config.model_dump_json(),
         }
 
         response = session.post("/prove/submit", data=data)

@@ -1,5 +1,4 @@
 import asyncio
-import json
 import logging
 import os
 from collections.abc import AsyncIterable, Iterable
@@ -61,10 +60,11 @@ class AsyncLeanClient:
         session = await self._get_session()
 
         proof_content = await self._get_proof_content(proof)
+        config = config or ProofConfig()
 
         data = {
             "proof": proof_content,
-            "config": json.dumps(config) if config else "{}",
+            "config": config.model_dump_json(),
         }
 
         response = await session.post("/prove/submit", data=data)
@@ -80,10 +80,11 @@ class AsyncLeanClient:
         session = await self._get_session()
 
         proof_content = await self._get_proof_content(proof)
+        config = config or ProofConfig()
 
         data = {
             "proof": proof_content,
-            "config": json.dumps(config) if config else "{}",
+            "config": config.model_dump_json(),
         }
 
         response = await session.post("/prove/check", data=data, timeout=config.timeout)
