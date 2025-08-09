@@ -55,9 +55,7 @@ class ProofDatabase:
 
     @staticmethod
     async def calc_proof_hash(lean_code: str) -> str:
-        h = xxhash.xxh128()
-        h.update(lean_code)
-        return h.hexdigest()
+        return xxhash.xxh64(lean_code).hexdigest()
 
     async def proof_exists(self, *, proof: LeanProof) -> str | None:
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
