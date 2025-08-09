@@ -7,7 +7,7 @@
     </picture>
 </a>
 
-[![Documentation](https://img.shields.io/badge/📖%20Documentation-blue?style=flat-square)](https://lean-runner.vercel.app/)
+[![Documentation](https://img.shields.io/badge/Documentation-purple?style=flat-square&logo=materialformkdocs)](https://lean-runner.vercel.app/)
 [![Lean Server](https://img.shields.io/pypi/v/lean-server?label=Lean%20Server&style=flat-square&color=orange&logo=pypi)](https://pypi.org/project/lean-server/)
 [![Lean Runner](https://img.shields.io/pypi/v/lean-runner?label=Lean%20Runner&style=flat-square&color=orange&logo=pypi)](https://pypi.org/project/lean-runner/)
 [![Docker](https://img.shields.io/badge/Hub-blue?label=Docker&style=flat-square&logo=docker&logoColor=white)](https://hub.docker.com/r/pufanyi/lean-server)
