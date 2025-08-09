@@ -7,12 +7,6 @@
     </picture>
 </a>
 
-<br/>
-
-<h3>🚀 Deploying High-Performance Lean 4 Server in One Click</h3>
-
-<br/>
-
 [![Documentation](https://img.shields.io/badge/📖%20Documentation-blue?style=for-the-badge)](https://lean-runner.vercel.app/)
 [![PyPI Server](https://img.shields.io/pypi/v/lmms-lean-server?label=📦%20Server&style=for-the-badge&color=orange)](https://pypi.org/project/lmms-lean-server/)
 [![PyPI Client](https://img.shields.io/pypi/v/lmms-lean-client?label=📦%20Client&style=for-the-badge&color=orange)](https://pypi.org/project/lmms-lean-client/)
