@@ -7,13 +7,12 @@
     </picture>
 </a>
 
-[![Documentation](https://img.shields.io/badge/📖%20Documentation-blue?style=for-the-badge)](https://lean-runner.vercel.app/)
-[![PyPI Server](https://img.shields.io/pypi/v/lmms-lean-server?label=📦%20Server&style=for-the-badge&color=orange)](https://pypi.org/project/lmms-lean-server/)
-[![PyPI Client](https://img.shields.io/pypi/v/lmms-lean-client?label=📦%20Client&style=for-the-badge&color=orange)](https://pypi.org/project/lmms-lean-client/)
-[![Docker](https://img.shields.io/docker/v/pufanyi/lean-server?label=🐳%20Docker&style=for-the-badge&color=blue)](https://hub.docker.com/r/pufanyi/lean-server)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?style=flat-square&logo=github)](https://github.com/EvolvingLMMs-Lab/lean-runner)
+[![Lean Server](https://img.shields.io/pypi/v/lean-server?label=Lean%20Server&style=flat-square&color=orange&logo=pypi)](https://pypi.org/project/lean-server/)
+[![Lean Runner](https://img.shields.io/pypi/v/lean-runner?label=Lean%20Runner&style=flat-square&color=orange&logo=pypi)](https://pypi.org/project/lean-runner/)
+[![Docker](https://img.shields.io/badge/Hub-blue?label=Docker&style=flat-square&logo=docker&logoColor=white)](https://hub.docker.com/r/pufanyi/lean-server)
 
-[![Python](https://img.shields.io/badge/Python-3.12+-blue?style=flat-square&logo=python&logoColor=white)](https://python.org)
-[![Lean 4](https://img.shields.io/badge/Lean-4-purple?style=flat-square&logo=lean&logoColor=white)](https://lean-lang.org)
+[![Lean 4](https://img.shields.io/badge/Lean-4-purple?style=flat-square&logo=lean&logoColor=white)](https://lean-lang.org/doc/reference/4.22.0-rc4/releases/v4.22.0/)
 [![Mathlib](https://img.shields.io/badge/Mathlib-v4.22.0--rc4-purple?style=flat-square)](https://github.com/leanprover-community/mathlib4/releases/tag/v4.22.0-rc4)
 [![FastAPI](https://img.shields.io/badge/FastAPI-green?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
