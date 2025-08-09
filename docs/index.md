@@ -1,4 +1,15 @@
-# ![Home](assets/logo/logo-wt-dark.webp#only-dark)![](assets/logo/logo-wt.webp#only-light)
+---
+title: Home
+---
+
+<style>
+  .md-typeset h1 {
+    display: none;
+  }
+</style>
+
+![](assets/logo/logo-wt-dark.webp#only-dark)
+![](assets/logo/logo-wt.webp#only-light)
 
 <div align="center" markdown>
 
