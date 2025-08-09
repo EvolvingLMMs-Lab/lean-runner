@@ -24,43 +24,43 @@ title: Home
 [![FastAPI](https://img.shields.io/badge/FastAPI-green?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
+<br/>
+
 </div>
 
 <div class="grid cards" markdown>
 
--   :rocket: __Plug & Play__
+-   :material-rocket-launch: __Plug & Play__
 
     ---
 
-    Get started in minutes with Docker's one-click server setup. Our intuitive client abstracts away complex implementation details, letting you focus on what matters—your Lean proofs.
+    Get started in minutes with :material-docker: [Docker](https://www.docker.com/)'s one-click server setup. Our intuitive client abstracts away complex implementation details, letting you focus on what matters—your Lean proofs.
 
-    [:octicons-arrow-right-24: Quick Start](quick-start.md)
-
--   :zap: __High Performance__
+-   :material-rabbit: __High Performance__
 
     ---
 
-    Leverages REPL-based atomized execution with fully asynchronous, multi-threaded architecture to maximize CPU utilization and throughput.
+    Leverages [REPL](https://github.com/leanprover-community/repl)-based atomized execution with fully asynchronous, multi-threaded architecture to maximize CPU utilization and throughput. Efficient interaction with the client using :simple-fastapi: [FastAPI](https://fastapi.tiangolo.com/).
 
--   :shield: __Robust & Reliable__
-
-    ---
-
-    Persistent SQLite logging ensures your work is never lost. Built-in crash recovery and automatic retry mechanisms eliminate the frustration of interrupted workflows.
-
--   :gear: __Flexible Access Patterns__
+-   :material-shield: __Robust & Reliable__
 
     ---
 
-    Choose between synchronous and asynchronous clients depending on your use case—from interactive development to large-scale batch processing.
+    Persistent :simple-sqlite: [SQLite](https://www.sqlite.org) logging ensures your work is never lost. Built-in crash recovery and automatic retry mechanisms eliminate the frustration of interrupted workflows.
 
--   :recycle: __Smart Caching (Soon)__
+-   :material-swap-horizontal: __Flexible Access Patterns__
+
+    ---
+
+    Choose between synchronous and asynchronous clients depending on your use case, from interactive development to large-scale batch processing.
+
+-   :material-recycle: __Smart Caching (Soon)__
 
     ---
 
     Intelligent content-based hashing ensures identical Lean code is processed only once, dramatically reducing computation time for repeated operations.
 
--   :bar_chart: __Data Export & Visualization (Soon)__
+-   :material-chart-line: __Data Export & Visualization (Soon)__
 
     ---
 
