@@ -1,12 +1,8 @@
-import logging
-
 from fastapi import FastAPI, Form, HTTPException
 
 from lean_server.manager.proof_manager import ProofManager
 from lean_server.proof.lean import LeanProof
 from lean_server.proof.proto import LeanProofConfig
-
-logger = logging.getLogger(__name__)
 
 
 def launch_prove_router(app: FastAPI):
@@ -15,7 +11,6 @@ def launch_prove_router(app: FastAPI):
         *,
         proof: str = Form(...),
         config: str = Form(default="{}"),
-        timeout: float = Form(default=300.0),
     ):
         try:
             lean_proof = LeanProof(proof=proof, config=app.state.config)
@@ -28,9 +23,6 @@ def launch_prove_router(app: FastAPI):
         except HTTPException:
             raise
         except Exception as e:
-            import traceback
-
-            traceback.print_exc()
             raise HTTPException(status_code=500, detail=str(e)) from e
 
     @app.post("/prove/submit")
@@ -38,20 +30,19 @@ def launch_prove_router(app: FastAPI):
         *,
         proof: str = Form(...),
         config: str = Form(default="{}"),
-        timeout: float = Form(default=300.0),
     ):
         try:
             lean_proof = LeanProof(proof=proof, config=app.state.config)
             lean_proof_config = LeanProofConfig.model_validate_json(config)
             proof_manager: ProofManager = app.state.proof_manager
             result = await proof_manager.submit_proof(
-                proof=lean_proof, config=lean_proof_config, timeout=timeout
+                proof=lean_proof, config=lean_proof_config
             )
             return result
         except HTTPException:
             raise
         except Exception as e:
-            raise HTTPException(status_code=500, detail=str(e)) from e
+            raise HTTPException(status_code=502, detail=str(e)) from e
 
     @app.get("/prove/result/{proof_id}")
     async def get_result(
