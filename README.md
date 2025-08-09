@@ -45,6 +45,7 @@ lean-runner/
 │   │       ├── app/     # API endpoints and server setup
 │   │       ├── proof/   # Lean proof execution logic
 │   │       ├── manager/ # Proof job management
+│   │       ├── config/  # Configuration files and loading
 │   │       └── database/# SQLite persistence layer
 │   └── client/          # Python client libraries
 │       └── lean_runner/
@@ -90,7 +91,7 @@ cd ..
 
 4. **Configure the server:**
 
-Edit `packages/server/config.yaml` to set your paths:
+Edit `packages/server/config/config.yaml` to set your paths:
 ```yaml
 lean:
   executable: /path/to/your/.elan/bin/lake
