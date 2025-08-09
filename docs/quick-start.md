@@ -37,3 +37,41 @@ docker run --rm -it \
     ```bash
     uv pip install lean-runner
     ```
+
+接下来，使用 LeanClient 来验证一个证明。
+
+=== "Synchronous"
+
+    ```python
+    from lean_runner import LeanClient
+
+    proof = """\
+    import data.real.basic
+
+    theorem test : 1 + 1 = 2 := by norm_num
+    """
+
+    with LeanClient(base_url="http://localhost:8000") as client:
+        result = client.verify(proof=proof)
+        print(result)
+    ```
+
+=== "Asynchronous"
+
+    ```python
+    import asyncio
+    from lean_runner import AsyncLeanClient
+
+    proof = """\
+    import data.real.basic
+    
+    theorem test : 1 + 1 = 2 := by norm_num
+    """
+
+    async def main():
+        async with AsyncLeanClient(base_url="http://localhost:8000") as client:
+            result = await client.verify(proof=proof)
+            print(result)
+
+    asyncio.run(main())
+    ```
