@@ -70,11 +70,11 @@ title: Home
 
 </div>
 
-!!! quote "Citation"
+??? quote "Citation"
     ```bibtex
     @misc{fanyi2025leanrunner,
         title={Lean-Runner: Deploying High-Performance Lean 4 Server in One Click},
-        author={Fanyi Pu, Oscar Qian, Bo Li},
+        author={Fanyi Pu, Oscar Qian, Jinghao Guo, Bo Li},
         year={2025},
         publisher={GitHub},
         howpublished={\url{https://github.com/EvolvingLMMs-Lab/lean-runner}},
