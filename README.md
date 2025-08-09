@@ -7,7 +7,7 @@
     </picture>
 </a>
 
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-blue?style=flat-square&logo=github)](https://github.com/EvolvingLMMs-Lab/lean-runner)
+[![Documentation](https://img.shields.io/badge/Documentation-purple?style=flat-square&logo=materialformkdocs)](https://lean-runner.vercel.app/)
 [![Lean Server](https://img.shields.io/pypi/v/lean-server?label=Lean%20Server&style=flat-square&color=orange&logo=pypi)](https://pypi.org/project/lean-server/)
 [![Lean Runner](https://img.shields.io/pypi/v/lean-runner?label=Lean%20Runner&style=flat-square&color=orange&logo=pypi)](https://pypi.org/project/lean-runner/)
 [![Docker](https://img.shields.io/badge/Hub-blue?label=Docker&style=flat-square&logo=docker&logoColor=white)](https://hub.docker.com/r/pufanyi/lean-server)
@@ -22,6 +22,7 @@
 
 </div>
 
+![](docs/assets/imgs/overview.svg)
 
 This project provides a FastAPI-based REST API server that interfaces with the Lean theorem prover, along with Python client libraries for both synchronous and asynchronous operations.
 
@@ -315,7 +316,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ```bibtex
 @misc{fanyi2025leanrunner,
   title={Lean-Runner: Deploying High-Performance Lean 4 Server in One Click},
-  author={Fanyi Pu, Oscar Qian, Bo Li},
+  author={Fanyi Pu, Oscar Qian, Jinghao Guo, Bo Li},
   year={2025},
   publisher={GitHub},
   howpublished={\url{https://github.com/EvolvingLMMs-Lab/lean-runner}},

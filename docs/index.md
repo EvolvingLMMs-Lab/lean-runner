@@ -69,3 +69,14 @@ title: Home
     Easily export data in various formats (Hugging Face, JSON, XML, Arrow, Parquet) and visualize queries with a simple CLI.
 
 </div>
+
+??? quote "Citation"
+    ```bibtex
+    @misc{fanyi2025leanrunner,
+        title={Lean-Runner: Deploying High-Performance Lean 4 Server in One Click},
+        author={Fanyi Pu, Oscar Qian, Jinghao Guo, Bo Li},
+        year={2025},
+        publisher={GitHub},
+        howpublished={\url{https://github.com/EvolvingLMMs-Lab/lean-runner}},
+    }
+    ```
