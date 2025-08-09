@@ -36,7 +36,7 @@
 
 - **📊 Data Export & Visualization (Soon)**: Easily export data in various formats (Hugging Face, JSON, XML, Arrow, Parquet) and visualize queries with a simple CLI.
 
-## Quick Start
+## Getting Started
 
 Check the [quick start](https://lean-runner.vercel.app/quick-start/) guide for detailed instructions on how to get started with Lean-Runner.
 
