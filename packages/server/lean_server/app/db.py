@@ -46,13 +46,13 @@ def launch_db_router(app: FastAPI):
             ) from e
 
     @app.delete("/db/clean")
-    async def clean_db():
+    async def clean_db(seconds: int = Query(default=0)):
         """
         Clean the database by removing old proof records and orphaned status entries.
         """
         try:
             proof_database: ProofDatabase = app.state.proof_database
-            await proof_database.clean_db()
+            await proof_database.clean_db(seconds)
             return {"message": "Database cleaned successfully"}
         except Exception as e:
             raise HTTPException(
