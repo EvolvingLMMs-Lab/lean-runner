@@ -5,8 +5,8 @@ repo_url: https://github.com/EvolvingLmms-lab/lean-runner
 copyright: Copyright &copy; 2025 LMMs-Lab
 theme:
   name: material
-  logo: assets/logo/logo.svg
-  favicon: assets/logo/logo.svg
+  logo: assets/logo/logo.webp
+  favicon: assets/logo/logo.webp
   icon:
     repo: fontawesome/brands/github
   palette:
