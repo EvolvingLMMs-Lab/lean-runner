@@ -24,45 +24,41 @@ title: Home
 [![FastAPI](https://img.shields.io/badge/FastAPI-green?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
-<br/>
-
 </div>
-
-![](assets/imgs/overview.webp)
 
 <div class="grid cards" markdown>
 
--   :package: __Plug & Play__
+-   :rocket: __Plug & Play__
 
     ---
 
-    Get started in minutes. Docker provides one-click server setup, and the simple client abstracts away implementation details.
+    Get started in minutes with Docker's one-click server setup. Our intuitive client abstracts away complex implementation details, letting you focus on what matters—your Lean proofs.
 
     [:octicons-arrow-right-24: Quick Start](quick-start.md)
 
--   :zap: __Efficient__
+-   :zap: __High Performance__
 
     ---
 
-    Fully asynchronous and multi-threaded architecture to maximize CPU utilization.
+    Leverages REPL-based atomized execution with fully asynchronous, multi-threaded architecture to maximize CPU utilization and throughput.
 
--   :shield: __Reliable__
-
-    ---
-
-    All logs are persistently stored in a SQLite database for easy access. Say goodbye to the frustration of crashes and re-runs.
-
--   :gear: __Flexible__
+-   :shield: __Robust & Reliable__
 
     ---
 
-    Supports both synchronous and asynchronous access patterns to fit your needs.
+    Persistent SQLite logging ensures your work is never lost. Built-in crash recovery and automatic retry mechanisms eliminate the frustration of interrupted workflows.
+
+-   :gear: __Flexible Access Patterns__
+
+    ---
+
+    Choose between synchronous and asynchronous clients depending on your use case—from interactive development to large-scale batch processing.
 
 -   :recycle: __Smart Caching (Soon)__
 
     ---
 
-    Identical Lean code is only processed once, thanks to smart hashing. Say goodbye to the hassle of configuring continual runs.
+    Intelligent content-based hashing ensures identical Lean code is processed only once, dramatically reducing computation time for repeated operations.
 
 -   :bar_chart: __Data Export & Visualization (Soon)__
 
@@ -72,13 +68,18 @@ title: Home
 
 </div>
 
-??? quote "Citation"
-    ```bibtex
-    @misc{fanyi2025leanrunner,
-        title={Lean-Runner: Deploying High-Performance Lean 4 Server in One Click},
-        author={Fanyi Pu, Oscar Qian, Jinghao Guo, Bo Li},
-        year={2025},
-        publisher={GitHub},
-        howpublished={\url{https://github.com/EvolvingLMMs-Lab/lean-runner}},
-    }
-    ```
+## Architecture
+
+![](assets/imgs/overview.webp)
+
+## Citation
+
+```bibtex
+@misc{fanyi2025leanrunner,
+    title={Lean-Runner: Deploying High-Performance Lean 4 Server in One Click},
+    author={Fanyi Pu, Oscar Qian, Jinghao Guo, Bo Li},
+    year={2025},
+    publisher={GitHub},
+    howpublished={\url{https://github.com/EvolvingLMMs-Lab/lean-runner}},
+}
+```

@@ -22,19 +22,26 @@
 
 </div>
 
+## Why Lean-Runner?
+
+- **🚀 Plug & Play**: Get started in minutes with Docker's one-click server setup. Our intuitive client abstracts away complex implementation details, letting you focus on what matters—your Lean proofs.
+
+- **⚡ High Performance**: Leverages REPL-based atomized execution with fully asynchronous, multi-threaded architecture to maximize CPU utilization and throughput.
+
+- **🛡️ Robust & Reliable**: Persistent SQLite logging ensures your work is never lost. Built-in crash recovery and automatic retry mechanisms eliminate the frustration of interrupted workflows.
+
+- **🔄 Flexible Access Patterns**: Choose between synchronous and asynchronous clients depending on your use case—from interactive development to large-scale batch processing.
+
+- **🧠 Smart Caching (Soon)**: Intelligent content-based hashing ensures identical Lean code is processed only once, dramatically reducing computation time for repeated operations.
+
+- **📊 Data Export & Visualization (Soon)**: Easily export data in various formats (Hugging Face, JSON, XML, Arrow, Parquet) and visualize queries with a simple CLI.
+
+## Architecture
+
+Lean-Runner 使用
+
 ![](docs/assets/imgs/overview.webp)
 
-This project provides a FastAPI-based REST API server that interfaces with the Lean theorem prover, along with Python client libraries for both synchronous and asynchronous operations.
-
-## Features
-
-- **REST API Server**: FastAPI-based server for processing Lean proofs
-- **Dual Client Support**: Both synchronous and asynchronous Python clients
-- **Concurrent Processing**: Semaphore-based concurrency control for handling multiple proof requests
-- **Database Persistence**: SQLite storage for proof results with unique identifiers
-- **Flexible Input**: Accept proofs as strings, file paths, or Path objects
-- **Comprehensive Error Handling**: Detailed error reporting and status tracking
-- **Mathlib Integration**: Full support for Mathlib4 mathematical library
 
 ## Architecture
 
