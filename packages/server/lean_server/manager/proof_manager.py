@@ -37,9 +37,7 @@ class ProofManager:
         task.add_done_callback(self.background_tasks.discard)
         return {"id": proof.proof_id}
 
-    async def run_proof(
-        self, *, proof: LeanProof, config: LeanProofConfig
-    )   :
+    async def run_proof(self, *, proof: LeanProof, config: LeanProofConfig):
         tmp = await self.proof_database.proof_exists(proof=proof)
         if tmp:
             result = await self.get_result(tmp)

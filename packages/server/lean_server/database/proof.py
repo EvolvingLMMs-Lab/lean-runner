@@ -3,11 +3,11 @@ import logging
 from collections.abc import AsyncIterator
 
 import aiosqlite
+import xxhash
 
 from ..proof.lean import LeanProof
 from ..proof.proto import LeanProofConfig, LeanProofResult, LeanProofStatus
 
-import xxhash
 logger = logging.getLogger(__name__)
 
 
@@ -52,12 +52,14 @@ class ProofDatabase:
                 """
             )
             await db.commit()
+
     @staticmethod
     async def calc_proof_hash(lean_code: str) -> str:
         h = xxhash.xxh64()
         h.update(lean_code)
         return h.hexdigest()
-    async def proof_exists(self, *, proof: LeanProof) -> str|None:
+
+    async def proof_exists(self, *, proof: LeanProof) -> str | None:
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
             tmp = await self.calc_proof_hash(proof.lean_code)
             cursor = await db.execute(
@@ -68,6 +70,7 @@ class ProofDatabase:
                 if row[1] == proof.lean_code:
                     return row[0]
             return None
+
     async def insert_hash(self, *, proof: LeanProof) -> None:
         tmp = await self.calc_proof_hash(proof.lean_code)
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
@@ -76,6 +79,7 @@ class ProofDatabase:
                 (proof.proof_id, proof.lean_code, tmp),
             )
             await db.commit()
+
     async def update_status(self, *, proof_id: str, status: LeanProofStatus):
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
             await db.execute(
