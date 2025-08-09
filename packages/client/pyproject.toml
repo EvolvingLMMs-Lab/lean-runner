@@ -1,5 +1,5 @@
 [project]
-name = "lmms-lean-client"
+name = "lean-runner"
 version = "0.0.1.dev4"
 description = "A Python client for the Lean Theorem Prover Server API."
 readme = "README.md"
