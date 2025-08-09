@@ -42,24 +42,25 @@ Lean-Runner leverages a powerful Server-Client architecture that smartly places 
 
 ![](docs/assets/imgs/overview.webp)
 
-## Architecture
+## Project Structure
 
-```
+```text
 lean-runner/
 ├── packages/
-│   ├── server/          # FastAPI server implementation
+│   ├── server/             # FastAPI server implementation
 │   │   └── lean_server/
-│   │       ├── app/     # API endpoints and server setup
-│   │       ├── proof/   # Lean proof execution logic
-│   │       ├── manager/ # Proof job management
-│   │       ├── config/  # Configuration files and loading
-│   │       └── database/# SQLite persistence layer
-│   └── client/          # Python client libraries
+│   │       ├── app/        # API endpoints and server setup
+│   │       ├── proof/      # Lean proof execution logic
+│   │       ├── manager/    # Proof job management
+│   │       ├── config/     # Configuration files and loading
+│   │       ├── database/   # SQLite persistence layer
+│   │       └── utils/      # Utility functions
+│   └── client/             # Python client libraries
 │       └── lean_runner/
-│           ├── client/  # Sync and async client implementations
-│           └── proof/   # Shared data models
-├── playground/          # Lean workspace with dependencies
-└── demo/               # Example scripts and test files
+│           ├── client/     # Sync and async client implementations
+│           └── proof/      # Proof data protocol
+├── playground/             # Lean workspace with dependencies
+└── demo/                   # Example scripts and test files
 ```
 
 ## Installation
