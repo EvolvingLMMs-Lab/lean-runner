@@ -3,16 +3,18 @@ import json
 from lean_client import LeanClient
 
 
-def get_data(data: str, num: int) -> list[dict]:
+def get_data(data: str, num: int = -1) -> list[dict]:
     with open(data) as f:
         data = json.load(f)
+    if num == -1:
+        return [d["code"] for d in data], data
     return [d["code"] for d in data[:num]], data[:num]
 
 
 def main():
-    data = "/mnt/raid10/pufanyi/lmms-lean-runner/demo/data/to_inference_codes.json"
-    client = LeanClient("http://localhost:8080")
-    codes, full_data = get_data(data, 10)
+    data = "/data/pufanyi/lmms-lean-runner/demo/data/to_inference_codes.json"
+    client = LeanClient("http://localhost:8888")
+    codes, full_data = get_data(data)
     results = client.verify_all(
         codes,
         max_workers=20,
