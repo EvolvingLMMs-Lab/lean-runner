@@ -1,8 +1,8 @@
 from collections.abc import Iterable
 
 import datasets
-from lean_client import LeanClient
-from lean_client.proof.proto import LeanProofStatus
+from lean_runner import LeanClient
+from lean_runner.proof.proto import LeanProofStatus
 
 
 def get_data(data: datasets.Dataset) -> Iterable[str]:

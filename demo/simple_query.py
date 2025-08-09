@@ -3,7 +3,7 @@ import logging
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-from lean_client import AsyncLeanClient, LeanClient
+from lean_runner import AsyncLeanClient, LeanClient
 
 logging.basicConfig(level=logging.INFO)
 

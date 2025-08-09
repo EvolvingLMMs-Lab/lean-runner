@@ -2,7 +2,7 @@ import time
 from collections.abc import Iterable
 from pathlib import Path
 
-from lean_client import LeanClient
+from lean_runner import LeanClient
 
 # --- Configuration ---
 # Make sure the lean server is running and accessible at this address.

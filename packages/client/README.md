@@ -29,7 +29,7 @@ Here is a basic usage example:
 
 ```python
 import asyncio
-from lean_client import LeanClient
+from lean_runner import LeanClient
 
 async def main():
     # Assumes the server is running on http://localhost:8000
@@ -79,7 +79,7 @@ result = await client.check_proof(proof_file)
 ```python
 import asyncio
 from pathlib import Path
-from lean_client import LeanClient
+from lean_runner import LeanClient
 
 async def check_proof_from_file():
     async with LeanClient("http://localhost:8000") as client:

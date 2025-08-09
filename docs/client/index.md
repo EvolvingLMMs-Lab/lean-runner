@@ -22,7 +22,7 @@ This is the simplest way to use the client. The `verify` method sends the proof 
 
 ```python
 from pathlib import Path
-from lean_client import LeanClient  # Import client
+from lean_runner import LeanClient  # Import client
 
 # Initialize the client
 with LeanClient(base_url="http://0.0.0.0:8080") as client:
@@ -43,7 +43,7 @@ For non-blocking operations, you can use the `AsyncLeanClient`. This is useful i
 ```python
 import asyncio
 from pathlib import Path
-from lean_client import AsyncLeanClient  # Import the async client
+from lean_runner import AsyncLeanClient  # Import the async client
 
 # Define the main asynchronous function
 async def main():
@@ -80,7 +80,7 @@ The synchronous `verify_all` method uses a thread pool to verify proofs from any
 
 ```python
 from pathlib import Path
-from lean_client import LeanClient  # Import client
+from lean_runner import LeanClient  # Import client
 
 # A generator to simulate a streaming data source
 def proof_generator():
@@ -119,7 +119,7 @@ The asynchronous version, `AsyncLeanClient.verify_all`, is even more powerful. I
 import asyncio
 from pathlib import Path
 from collections.abc import AsyncIterable
-from lean_client import AsyncLeanClient  # Import async client
+from lean_runner import AsyncLeanClient  # Import async client
 
 # An async generator to simulate a streaming data source
 async def proof_generator() -> AsyncIterable[Path]:
@@ -159,7 +159,7 @@ This example submits multiple proofs and then polls for their results in a loop,
 ```python
 import time
 from pathlib import Path
-from lean_client import LeanClient
+from lean_runner import LeanClient
 from rich.console import Console
 
 def main():
@@ -201,7 +201,7 @@ The asynchronous version is more efficient for handling multiple concurrent requ
 ```python
 import asyncio
 from pathlib import Path
-from lean_client import AsyncLeanClient  # Import async client
+from lean_runner import AsyncLeanClient  # Import async client
 
 async def main():
     """Submit multiple proofs and display their status in a live table."""

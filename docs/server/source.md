@@ -237,7 +237,7 @@ Test that the server is working correctly:
 
 === "Using Python client"
     ```python
-    from lean_client import LeanClient
+    from lean_runner import LeanClient
 
     with LeanClient(base_url="http://localhost:8000") as client:
         result = client.verify(proof="theorem test : 1 + 1 = 2 := by norm_num")

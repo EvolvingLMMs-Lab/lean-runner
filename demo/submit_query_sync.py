@@ -2,8 +2,8 @@ import logging
 import time
 from pathlib import Path
 
-from lean_client import LeanClient
-from lean_client.proof.proto import LeanProofStatus, Proof, ProofResult
+from lean_runner import LeanClient
+from lean_runner.proof.proto import LeanProofStatus, Proof, ProofResult
 from rich.console import Console
 from rich.live import Live
 from rich.panel import Panel

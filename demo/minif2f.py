@@ -1,6 +1,6 @@
 import json
 
-from lean_client import LeanClient
+from lean_runner import LeanClient
 
 
 def get_data(data: str, num: int = -1) -> list[dict]:

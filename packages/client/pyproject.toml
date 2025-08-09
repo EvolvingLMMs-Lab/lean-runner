@@ -23,7 +23,7 @@ dependencies = [
 Repository = "https://github.com/pufanyi/lean-server"
 
 [tool.setuptools.packages.find]
-include = ["lean_client*"]
+include = ["lean_runner*"]
 
 [build-system]
 requires = ["setuptools>=61.0"]

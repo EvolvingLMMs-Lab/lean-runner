@@ -6,7 +6,7 @@ Test script to demonstrate file support in LeanClient.
 import asyncio
 from pathlib import Path
 
-from lean_client import LeanClient
+from lean_runner import LeanClient
 
 
 async def test_file_support():

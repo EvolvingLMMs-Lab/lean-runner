@@ -47,7 +47,7 @@ lean-runner/
 │   │       ├── manager/ # Proof job management
 │   │       └── database/# SQLite persistence layer
 │   └── client/          # Python client libraries
-│       └── lean_client/
+│       └── lean_runner/
 │           ├── client/  # Sync and async client implementations
 │           └── proof/   # Shared data models
 ├── playground/          # Lean workspace with dependencies
@@ -116,7 +116,7 @@ lean-server --host 0.0.0.0 --port 8000
 
 #### Synchronous Client
 ```python
-from lean_client import LeanClient
+from lean_runner import LeanClient
 from pathlib import Path
 
 # Connect to server
@@ -135,7 +135,7 @@ with LeanClient(base_url="http://localhost:8000") as client:
 #### Asynchronous Client
 ```python
 import asyncio
-from lean_client import AsyncLeanClient
+from lean_runner import AsyncLeanClient
 
 async def verify_proof():
     async with AsyncLeanClient(base_url="http://localhost:8000") as client:
@@ -154,7 +154,7 @@ asyncio.run(verify_proof())
 #### Batch Processing
 ```python
 import asyncio
-from lean_client import AsyncLeanClient
+from lean_runner import AsyncLeanClient
 
 async def verify_multiple():
     async with AsyncLeanClient(base_url="http://localhost:8000") as client:

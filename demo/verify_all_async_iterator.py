@@ -2,7 +2,7 @@ import asyncio
 from collections.abc import AsyncIterable
 from pathlib import Path
 
-from lean_client import AsyncLeanClient
+from lean_runner import AsyncLeanClient
 
 # --- Configuration ---
 # Make sure the lean server is running and accessible at this address.
