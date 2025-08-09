@@ -55,7 +55,7 @@ class ProofDatabase:
 
     @staticmethod
     async def calc_proof_hash(lean_code: str) -> str:
-        h = xxhash.xxh64()
+        h = xxhash.xxh128()
         h.update(lean_code)
         return h.hexdigest()
 
@@ -63,7 +63,7 @@ class ProofDatabase:
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
             tmp = await self.calc_proof_hash(proof.lean_code)
             cursor = await db.execute(
-                "SELECT id,proof FROM hash WHERE value = ?",
+                "SELECT id, proof FROM hash WHERE value = ?",
                 (tmp,),
             )
             async for row in cursor:
