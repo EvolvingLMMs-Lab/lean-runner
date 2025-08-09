@@ -9,7 +9,7 @@ This document provides instructions and examples on how to use the `lean-client`
 You can install the client directly from PyPI:
 
 ```bash
-pip install lmms-lean-client
+pip install lean-runner
 ```
 
 ## Quick Start: Verifying a Proof

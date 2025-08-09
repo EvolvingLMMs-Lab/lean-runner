@@ -12,7 +12,7 @@ def get_data(data: str, num: int = -1) -> list[dict]:
 
 
 def main():
-    data = "/data/pufanyi/lmms-lean-runner/demo/data/to_inference_codes.json"
+    data = "/data/pufanyi/lean-runner/demo/data/to_inference_codes.json"
     client = LeanClient("http://localhost:8888")
     codes, full_data = get_data(data)
     results = client.verify_all(

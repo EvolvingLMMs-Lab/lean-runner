@@ -1,15 +1,15 @@
 ## Installation
 
-`lmms-lean-client` 已经上传到了 [PyPI](https://pypi.org/project/lmms-lean-client/) 上
+`lean-runner` 已经上传到了 [PyPI](https://pypi.org/project/lean-runner/) 上
 
 === "uv"
 
     ```bash
-    uv pip install lmms-lean-client
+    uv pip install lean-runner
     ```
 
 === "pip"
 
     ```bash
-    pip install lmms-lean-client
+    pip install lean-runner
     ```
