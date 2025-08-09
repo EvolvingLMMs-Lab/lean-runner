@@ -22,7 +22,7 @@
 
 </div>
 
-![](docs/assets/imgs/overview.svg)
+![](docs/assets/imgs/overview.webp)
 
 This project provides a FastAPI-based REST API server that interfaces with the Lean theorem prover, along with Python client libraries for both synchronous and asynchronous operations.
 
