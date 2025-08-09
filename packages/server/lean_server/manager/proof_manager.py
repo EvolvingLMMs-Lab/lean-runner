@@ -26,6 +26,11 @@ class ProofManager:
         proof: LeanProof,
         config: LeanProofConfig,
     ):
+        tmp = await self.proof_database.proof_exists(proof=proof)
+        if tmp:
+            logger.info(f"Proof already exists: {tmp}, returning cached proof ID")
+            return {"id": tmp}
+        await self.proof_database.insert_hash(proof=proof)
         task = asyncio.create_task(self.run_proof(proof=proof, config=config))
         logger.info(f"Submitted proof: {proof.proof_id}")
         self.background_tasks.add(task)
@@ -34,7 +39,13 @@ class ProofManager:
 
     async def run_proof(
         self, *, proof: LeanProof, config: LeanProofConfig
-    ) -> dict | None:
+    )   :
+        tmp = await self.proof_database.proof_exists(proof=proof)
+        if tmp:
+            result = await self.get_result(tmp)
+            logger.info(f"Proof already exists: {tmp}, returning cached result")
+            return result
+        await self.proof_database.insert_hash(proof=proof)
         await self.proof_database.update_status(
             proof_id=proof.proof_id, status=LeanProofStatus.PENDING
         )

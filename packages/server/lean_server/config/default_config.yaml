@@ -1,9 +1,9 @@
 lean:
-  executable: /root/.elan/bin/lake
-  workspace: /app/lean-runner/playground
+  executable: /home/fypu/.elan/bin/lake
+  workspace: /home/data2/ggg/lean-runner/playground
   lean_timeout: 300 # Timeout for Lean process execution in seconds
 sqlite:
-  database_path: /app/lean-runner/lean_server.db
+  database_path: /home/data2/ggg/lean-runner/lean_server.db
   timeout: 10
 logging:
   version: 1
