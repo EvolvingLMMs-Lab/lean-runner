@@ -28,6 +28,8 @@ title: Home
 
 </div>
 
+![](assets/imgs/overview.webp)
+
 <div class="grid cards" markdown>
 
 -   :package: __Plug & Play__

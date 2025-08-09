@@ -41,6 +41,7 @@ theme:
 plugins:
   - search
   - macros
+  - glightbox
   - minify:
       minify_html: true
       minify_js: true
