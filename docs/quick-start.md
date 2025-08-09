@@ -2,15 +2,16 @@
 
 ## Server
 
-我们需要使用 Docker 来运行 Lean-Runner 的 server 端。如果你没有安装 Docker，请 follow 这个[教程](https://docs.docker.com/engine/install/) 进行安装。
+!!! tip "Docker Engine Required"
+    Run the Lean-Runner server using Docker. If Docker is not installed, follow this [tutorial](https://docs.docker.com/engine/install/) to install it.
 
-如果你不是第一次运行 Lean-Runner，你需要使用 docker pull 来确保你使用的是最新的镜像。
+For existing users, pull the latest image to ensure you have the most recent version.
 
 ```sh
 docker pull pufanyi/lean-server:latest
 ```
 
-接下来，使用一句 `docker run` 启动 server。
+Start the server with a single `docker run` command:
 
 ```sh
 PORT=8080
@@ -24,7 +25,7 @@ docker run --rm -it \
 
 ## Client
 
-使用 PyPI 安装 Lean-Runner 的 client 端。
+Install the Lean-Runner client from PyPI:
 
 === "pip"
 
@@ -38,40 +39,44 @@ docker run --rm -it \
     uv pip install lean-runner
     ```
 
-接下来，使用 LeanClient 来验证一个证明。
+Use LeanClient to verify a proof. The client supports both synchronous and asynchronous operations:
 
-=== "Synchronous"
+!!! example "Lean proof verification"
 
-    ```python
-    from lean_runner import LeanClient
+    === "Synchronous"
 
-    proof = """\
-    import data.real.basic
+        ```python
+        from lean_runner import LeanClient
 
-    theorem test : 1 + 1 = 2 := by norm_num
-    """
+        # Define a simple Lean 4 proof
+        proof = """\
+        import Mathlib.Tactic.NormNum
+        theorem test : 2 + 2 = 4 := by norm_num
+        """
 
-    with LeanClient(base_url="http://localhost:8000") as client:
-        result = client.verify(proof=proof)
-        print(result)
-    ```
-
-=== "Asynchronous"
-
-    ```python
-    import asyncio
-    from lean_runner import AsyncLeanClient
-
-    proof = """\
-    import data.real.basic
-    
-    theorem test : 1 + 1 = 2 := by norm_num
-    """
-
-    async def main():
-        async with AsyncLeanClient(base_url="http://localhost:8000") as client:
-            result = await client.verify(proof=proof)
+        # Create client and verify the proof
+        with LeanClient(base_url="http://localhost:8080") as client:
+            result = client.verify(proof=proof)
             print(result)
+        ```
 
-    asyncio.run(main())
-    ```
+    === "Asynchronous"
+
+        ```python
+        import asyncio
+        from lean_runner import AsyncLeanClient
+
+        # Define a simple Lean 4 proof
+        proof = """\
+        import Mathlib.Tactic.NormNum
+        theorem test : 2 + 2 = 4 := by norm_num
+        """
+
+        async def main():
+            # Create async client and verify the proof
+            async with AsyncLeanClient(base_url="http://localhost:8080") as client:
+                result = await client.verify(proof=proof)
+                print(result)
+
+        asyncio.run(main())
+        ```
