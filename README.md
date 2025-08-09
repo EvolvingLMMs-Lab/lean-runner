@@ -22,7 +22,6 @@
 
 </div>
 
-
 This project provides a FastAPI-based REST API server that interfaces with the Lean theorem prover, along with Python client libraries for both synchronous and asynchronous operations.
 
 ## Features
@@ -314,7 +313,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ```bibtex
 @misc{fanyi2025leanrunner,
   title={Lean-Runner: Deploying High-Performance Lean 4 Server in One Click},
-  author={Fanyi Pu, Oscar Qian, Bo Li},
+  author={Fanyi Pu, Oscar Qian, Jinghao Guo, Bo Li},
   year={2025},
   publisher={GitHub},
   howpublished={\url{https://github.com/EvolvingLMMs-Lab/lean-runner}},
