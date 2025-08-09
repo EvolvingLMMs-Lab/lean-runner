@@ -38,7 +38,7 @@
 
 ## Quick Start
 
-Check the [Quick Start](https://lean-runner.vercel.app/quick-start/) guide for detailed instructions on how to get started with Lean-Runner.
+Check the [quick start](https://lean-runner.vercel.app/quick-start/) guide for detailed instructions on how to get started with Lean-Runner.
 
 ## Architecture
 
