@@ -1,15 +1,15 @@
-# 🚀 Build Lean Server from Source
+# Build Lean Server from Source
 
 This guide walks you through setting up the Lean Server from source code, providing a high-performance REST API for executing and verifying Lean 4 mathematical proofs.
 
-## 📋 Prerequisites
+## Prerequisites
 
 Before starting, ensure you have the following installed on your system:
 
 - **Conda or uv**: 我们强烈建议你使用 uv，可以 follow [这个 link](https://docs.astral.sh/uv/getting-started/installation/) 进行安装。
 - **elan**: 你可以 follow [这个教程](https://lean-lang.org/install/manual/) 来安装 elan。
 
-## 🛠️ Installation Steps
+## Installation Steps
 
 ### 1. Clone the Repository
 
@@ -24,13 +24,6 @@ cd lean-runner
 ### 2. Set Up Python Environment
 
 Create and activate a Python virtual environment with the required Python version:
-
-=== "Conda"
-    ```bash
-    # Create a new conda environment with Python 3.12
-    conda create -n lean-server python=3.12
-    conda activate lean-server
-    ```
 
 === "uv (Linux/macOS)"
     ```bash
@@ -50,20 +43,28 @@ Create and activate a Python virtual environment with the required Python versio
     .venv\Scripts\activate
     ```
 
+=== "Conda"
+    ```bash
+    # Create a new conda environment with Python 3.12
+    conda create -n lean-server python=3.12
+    conda activate lean-server
+    ```
+
+
 ### 3. Install Server Package
 
 Install the server package in editable mode to enable development:
 
-=== "Standard Installation"
+=== "uv"
     ```bash
     # Install the server package with all dependencies
     uv pip install -e packages/server
     ```
 
-=== "Development Installation"
+=== "Conda"
     ```bash
-    # Install with development dependencies (testing, linting, etc.)
-    uv pip install -e "packages/server[dev]"
+    # Install the server package with all dependencies
+    python -m pip install -e packages/server
     ```
 
 ### 4. Build Lean Dependencies
@@ -81,9 +82,10 @@ lake build
 cd ..
 ```
 
-**Note**: The initial build process downloads and compiles Mathlib4 and other dependencies, which can take 10-30 minutes depending on your system.
+!!! tip "Build Time"
+    The initial build process downloads and compiles Mathlib4 and other dependencies, which can take 10-30 minutes depending on your system.
 
-## 🚀 Running the Server
+## Running the Server
 
 ### Basic Server Startup
 
@@ -94,30 +96,7 @@ Start the server with default settings:
 source .venv/bin/activate
 
 # Start the server
-lean-server
-```
-
-### Advanced Configuration
-
-For production or custom setups, you can specify various options:
-
-```bash
-# Set environment variables for configuration
-export HOST=0.0.0.0        # Listen on all interfaces
-export PORT=8000           # Server port
-export CONCURRENCY=32      # Maximum concurrent requests
-
-# Start server with custom settings
-lean-server --host=$HOST --port=$PORT --concurrency=$CONCURRENCY
-```
-
-### Development Mode
-
-For development, enable auto-reload to automatically restart the server when code changes:
-
-```bash
-# Start in development mode with auto-reload
-lean-server --host=0.0.0.0 --port=8000 --reload
+lean-server --port=8888 --concurrency=32
 ```
 
 ### Command Line Options
@@ -129,72 +108,46 @@ The `lean-server` command supports the following options:
 | `--host` | `127.0.0.1` | Host address to bind to |
 | `--port` | `8000` | Port number to listen on |
 | `--concurrency` | `10` | Maximum number of concurrent proof verifications |
-| `--reload` | `False` | Enable auto-reload for development |
-| `--config` | `config.yaml` | Path to configuration file |
+| `--config` | `config.yaml` | Path to [configuration file](./config.md) |
 | `--log-level` | `INFO` | Logging level (DEBUG, INFO, WARNING, ERROR) |
 
-### Example Configurations
+!!! example "Example Configurations"
 
-=== "Local Development"
-    ```bash
-    lean-server --host=127.0.0.1 --port=8000 --reload --log-level=DEBUG
-    ```
+    === "Local Development"
+        ```bash
+        lean-server --host=127.0.0.1 --port=8000 --reload --log-level=DEBUG
+        ```
 
-    **Features:**
-    - Local access only
-    - Auto-reload on code changes
-    - Detailed debug logging
-    - Good for development and testing
+        **Features:**
 
-=== "Production Deployment"
-    ```bash
-    lean-server --host=0.0.0.0 --port=8000 --concurrency=50 --log-level=INFO
-    ```
+        - Local access only
+        - Auto-reload on code changes
+        - Detailed debug logging
+        - Good for development and testing
+    === "Production Deployment"
+        ```bash
+        lean-server --host=0.0.0.0 --port=8000 --concurrency=32--log-level=INFO
+        ```
 
-    **Features:**
-    - External access enabled
-    - Moderate concurrency
-    - Standard logging
-    - Balanced performance
+        **Features:**
 
-=== "High-Performance Setup"
-    ```bash
-    lean-server --host=0.0.0.0 --port=8000 --concurrency=100 --log-level=WARNING
-    ```
+        - External access enabled
+        - Moderate concurrency
+        - Standard logging
+        - Balanced performance
 
-    **Features:**
-    - Maximum concurrency
-    - Minimal logging overhead
-    - Optimized for throughput
-    - Requires sufficient system resources
+    === "High-Performance Setup"
+        ```bash
+        lean-server --host=0.0.0.0 --port=8000 --concurrency=128 --log-level=WARNING
+        ```
 
-## 📁 Configuration File
+        **Features:**
 
-Create a `config.yaml` file in the project root for persistent configuration:
+        - Maximum concurrency
+        - Minimal logging overhead
+        - Optimized for throughput
+        - Requires sufficient system resources
 
-```yaml
-# Server configuration
-server:
-  host: "0.0.0.0"
-  port: 8000
-  concurrency: 32
-
-# Lean configuration
-lean:
-  executable: "/home/user/.elan/bin/lake"
-  workspace: "/path/to/lean-runner/playground"
-  timeout: 30  # Timeout for proof verification in seconds
-
-# Database configuration
-database:
-  path: "./lean_server.db"
-  timeout: 10
-
-# Logging configuration
-logging:
-  level: "INFO"
-  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-```
 
 ## 🧪 Verify Installation
 
@@ -229,36 +182,52 @@ Test that the server is working correctly:
 
 **Expected response:**
 ```json
-{"status": "healthy", "version": "1.0.0"}
+{"status": "ok", "message": "Lean Server is running", "version": "0.0.1"}
 ```
 
 ### 2. Test Proof Verification
 
 === "Using curl"
     ```bash
-    # Test with a simple proof
-    curl -X POST http://localhost:8000/prove/check \
-      -H "Content-Type: application/json" \
-      -d '{"proof": "theorem test : 1 + 1 = 2 := by norm_num"}'
+    curl -X POST http://localhost:2333/prove/check \
+      -F "proof=import Mathlib.Tactic.NormNum
+          theorem test : 2 + 2 = 4 := by norm_num"
     ```
+    <div class="result" markdown>
+    ```json
+    {
+        "status": "success",
+        "messages": ["Proof verification completed successfully"],
+        "proof_id": "abc123..."
+    }
+    ```
+    </div>
+
 
 === "Using Python client"
     ```python
     from lean_runner import LeanClient
 
+    proof = """\
+    import Mathlib.Data.Real.Basic
+
+    theorem test : 1 + 1 = 2 := by norm_num
+    """
+
     with LeanClient(base_url="http://localhost:8000") as client:
-        result = client.verify(proof="theorem test : 1 + 1 = 2 := by norm_num")
+        result = client.verify(proof=proof)
         print(result)
     ```
+    <div class="result" markdown>
+    ```json
+    {
+        "status": "success",
+        "messages": ["Proof verification completed successfully"],
+        "proof_id": "abc123..."
+    }
+    ```
+    </div>
 
-**Expected response:**
-```json
-{
-  "status": "success",
-  "messages": ["Proof verification completed successfully"],
-  "proof_id": "abc123..."
-}
-```
 
 ## 🔧 Troubleshooting
 
