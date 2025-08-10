@@ -1,4 +1,4 @@
-# Configuration File
+# Configuration
 
 The Lean Runner server can be configured through both command-line arguments and a YAML configuration file. Command-line arguments will always take precedence over the configuration file.
 
