@@ -1,25 +1,22 @@
 from enum import Enum
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ProofConfig(BaseModel):
-    """
-    Configuration for a proof verification request.
+    """Configuration for a proof verification request."""
 
-    Attributes:
-        all_tactics: Whether to return all tactics.
-        ast: Whether to return the abstract syntax tree.
-        tactics: Whether to return tactics.
-        premises: Whether to return premises.
-        timeout: The timeout for the verification in seconds.
-    """
-
-    all_tactics: bool = False
-    ast: bool = False
-    tactics: bool = False
-    premises: bool = False
-    timeout: float = 300.0
+    all_tactics: bool = Field(
+        False, description="Whether to return all tactics."
+    )
+    ast: bool = Field(
+        False, description="Whether to return the abstract syntax tree."
+    )
+    tactics: bool = Field(False, description="Whether to return tactics.")
+    premises: bool = Field(False, description="Whether to return premises.")
+    timeout: float = Field(
+        300.0, description="The timeout for the verification in seconds."
+    )
 
 
 class LeanProofStatus(Enum):
@@ -34,28 +31,24 @@ class LeanProofStatus(Enum):
 
 
 class ProofResult(BaseModel):
-    """
-    The result of a proof verification.
+    """The result of a proof verification."""
 
-    Attributes:
-        success: Whether the proof was successful. Can be None if not finished.
-        status: The status of the proof verification.
-        result: The result data from the verification.
-        error_message: An error message if the verification failed.
-    """
-
-    success: bool | None = None
-    status: LeanProofStatus
-    result: dict | None = None
-    error_message: str | None = None
+    success: bool | None = Field(
+        None,
+        description="Whether the proof was successful. Can be None if not finished.",
+    )
+    status: LeanProofStatus = Field(
+        ..., description="The status of the proof verification."
+    )
+    result: dict | None = Field(
+        None, description="The result data from the verification."
+    )
+    error_message: str | None = Field(
+        None, description="An error message if the verification failed."
+    )
 
 
 class Proof(BaseModel):
-    """
-    Represents a proof task submitted to the server.
+    """Represents a proof task submitted to the server."""
 
-    Attributes:
-        id: The unique identifier for the proof task.
-    """
-
-    id: str
+    id: str = Field(..., description="The unique identifier for the proof task.")
