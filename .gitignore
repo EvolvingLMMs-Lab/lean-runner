@@ -19,3 +19,8 @@ lean_server.db
 
 uv.lock
 site/
+
+# Sphinx docs artifacts
+sphinx_docs/*/build/
+sphinx_docs/client/source/lean_runner*.rst
+sphinx_docs/server/source/lean_server*.rst
