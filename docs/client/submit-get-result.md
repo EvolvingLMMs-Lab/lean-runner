@@ -63,7 +63,7 @@ First, `client.submit()` sends a proof to the server and returns a `Proof` objec
     ```
 
     <div class="result" markdown>
-    ```json
+    ```text
     Proof submitted with ID: 019894b0-554f-76e0-93db-0df8e92271ab
     {
         "success": null,
@@ -139,11 +139,45 @@ The `client.submit()` coroutine sends the proof, and `client.get_result()` fetch
             submitted_proof = await client.submit(proof_content)
             print(f"Proof submitted with ID: {submitted_proof.id}")
 
+            result = await client.get_result(submitted_proof)
+            print(result.model_dump_json(indent=4))
+
             # Wait and retrieve the result
             await asyncio.sleep(1) # Simulate waiting
             result = await client.get_result(submitted_proof)
-            print(result.model_dump_json(indent=2))
+            print(result.model_dump_json(indent=4))
+
+            await asyncio.sleep(1)
+            result = await client.get_result(submitted_proof)
+            print(result.model_dump_json(indent=4))
 
     if __name__ == "__main__":
         asyncio.run(main())
     ```
+
+    <div class="result" markdown>
+    ```text
+    Proof submitted with ID: 019894b2-bf2b-77b1-9f82-774234ce1ea8
+    {
+        "success": null,
+        "status": "pending",
+        "result": null,
+        "error_message": null
+    }
+    {
+        "success": null,
+        "status": "running",
+        "result": null,
+        "error_message": null
+    }
+    {
+        "success": true,
+        "status": "finished",
+        "result": {
+            "env": 0,
+            "messages": []
+        },
+        "error_message": null
+    }
+    ```
+    </div>
