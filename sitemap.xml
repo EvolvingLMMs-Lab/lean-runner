@@ -5,10 +5,6 @@
          <lastmod>2025-08-10</lastmod>
     </url>
     <url>
-         <loc>https://lean-runner.vercel.app/docs/</loc>
-         <lastmod>2025-08-10</lastmod>
-    </url>
-    <url>
          <loc>https://lean-runner.vercel.app/quick-start/</loc>
          <lastmod>2025-08-10</lastmod>
     </url>
@@ -34,6 +30,10 @@
     </url>
     <url>
          <loc>https://lean-runner.vercel.app/client/verify-all/</loc>
+         <lastmod>2025-08-10</lastmod>
+    </url>
+    <url>
+         <loc>https://lean-runner.vercel.app/dev/docs/</loc>
          <lastmod>2025-08-10</lastmod>
     </url>
     <url>
