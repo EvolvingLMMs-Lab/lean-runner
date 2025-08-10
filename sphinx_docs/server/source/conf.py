@@ -36,8 +36,15 @@ exclude_patterns = []
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "furo"
-html_static_path = ["_static"]
-html_logo = "_static/logo.webp"
+html_static_path = ["_static", "../../../docs/assets"]
+html_logo = "../../../docs/assets/logo/logo-wt.webp"
+html_favicon = "../../../docs/assets/logo/logo-wt.webp"
+
+# Furo theme options for better logo handling
+html_theme_options = {
+    "light_logo": "logo/logo-wt.webp",
+    "dark_logo": "logo/logo-wt-dark.webp",
+}
 
 # This is the critical setting for deploying to a subdirectory
 html_baseurl = "/dev/docs/server/"
