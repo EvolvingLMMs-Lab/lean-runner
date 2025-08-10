@@ -198,7 +198,12 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
 <ul>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../modules/">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../lean_server/">lean_server package</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of lean_server package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../lean_server.app/">lean_server.app package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lean_server.config/">lean_server.config package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lean_server.database/">lean_server.database package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lean_server.manager/">lean_server.manager package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lean_server.proof/">lean_server.proof package</a></li>
 </ul>
 </li>
 </ul>
@@ -238,13 +243,83 @@
           
 <section class="genindex-section">
   <h1 id="index">Index</h1>
-  <div class="genindex-jumpbox"><a href="#C"><strong>C</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#H"><strong>H</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#S"><strong>S</strong></a></div>
+  <div class="genindex-jumpbox"><a href="#A"><strong>A</strong></a> | <a href="#C"><strong>C</strong></a> | <a href="#D"><strong>D</strong></a> | <a href="#E"><strong>E</strong></a> | <a href="#F"><strong>F</strong></a> | <a href="#G"><strong>G</strong></a> | <a href="#H"><strong>H</strong></a> | <a href="#I"><strong>I</strong></a> | <a href="#L"><strong>L</strong></a> | <a href="#M"><strong>M</strong></a> | <a href="#P"><strong>P</strong></a> | <a href="#R"><strong>R</strong></a> | <a href="#S"><strong>S</strong></a> | <a href="#T"><strong>T</strong></a> | <a href="#U"><strong>U</strong></a> | <a href="#W"><strong>W</strong></a></div>
 </section>
+<section id="A" class="genindex-section">
+  <h2>A</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="../lean_server.proof/#lean_server.proof.proto.LeanProofConfig.all_tactics">all_tactics (lean_server.proof.proto.LeanProofConfig attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="../lean_server.proof/#lean_server.proof.proto.LeanProofConfig.ast">ast (lean_server.proof.proto.LeanProofConfig attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
 <section id="C" class="genindex-section">
   <h2>C</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="../modules/#lean_server.config.Config">Config (class in lean_server.config)</a>
+        <li><a href="../lean_server.database/#lean_server.database.proof.ProofDatabase.calc_proof_hash">calc_proof_hash() (lean_server.database.proof.ProofDatabase static method)</a>
+</li>
+        <li><a href="../lean_server.database/#lean_server.database.proof.ProofDatabase.clean_db">clean_db() (lean_server.database.proof.ProofDatabase method)</a>
+</li>
+        <li><a href="../lean_server.config/#lean_server.config.config.LeanConfig.concurrency">concurrency (lean_server.config.config.LeanConfig attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="../lean_server.config/#lean_server.config.Config">Config (class in lean_server.config)</a>
+
+        <ul>
+          <li><a href="../lean_server.config/#lean_server.config.config.Config">(class in lean_server.config.config)</a>
+</li>
+        </ul></li>
+        <li><a href="../lean_server.database/#lean_server.database.proof.ProofDatabase.create_table">create_table() (lean_server.database.proof.ProofDatabase method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="D" class="genindex-section">
+  <h2>D</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="../lean_server.config/#lean_server.config.config.SQLiteConfig.database_path">database_path (lean_server.config.config.SQLiteConfig attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="E" class="genindex-section">
+  <h2>E</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="../lean_server.proof/#lean_server.proof.proto.LeanProofStatus.ERROR">ERROR (lean_server.proof.proto.LeanProofStatus attribute)</a>
+</li>
+        <li><a href="../lean_server.proof/#lean_server.proof.proto.LeanProofResult.error_message">error_message (lean_server.proof.proto.LeanProofResult attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="../lean_server.config/#lean_server.config.config.LeanConfig.executable">executable (lean_server.config.config.LeanConfig attribute)</a>
+</li>
+        <li><a href="../lean_server.proof/#lean_server.proof.lean.LeanProof.execute">execute() (lean_server.proof.lean.LeanProof method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="F" class="genindex-section">
+  <h2>F</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="../lean_server.database/#lean_server.database.proof.ProofDatabase.fetch">fetch() (lean_server.database.proof.ProofDatabase method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="../lean_server.proof/#lean_server.proof.proto.LeanProofStatus.FINISHED">FINISHED (lean_server.proof.proto.LeanProofStatus attribute)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -254,8 +329,22 @@
   <h2>G</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="../modules/#lean_server.config.get_config">get_config() (in module lean_server.config)</a>
+        <li><a href="../lean_server.config/#lean_server.config.get_config">get_config() (in module lean_server.config)</a>
+
+        <ul>
+          <li><a href="../lean_server.config/#lean_server.config.config.get_config">(in module lean_server.config.config)</a>
 </li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="../lean_server.app/#lean_server.app.lifespan.get_lifespan">get_lifespan() (in module lean_server.app.lifespan)</a>
+</li>
+        <li><a href="../lean_server.database/#lean_server.database.proof.ProofDatabase.get_result">get_result() (lean_server.database.proof.ProofDatabase method)</a>
+
+        <ul>
+          <li><a href="../lean_server.manager/#lean_server.manager.proof_manager.ProofManager.get_result">(lean_server.manager.proof_manager.ProofManager method)</a>
+</li>
+        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -264,7 +353,25 @@
   <h2>H</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="../modules/#lean_server.config.Config.host">host (lean_server.config.Config attribute)</a>
+        <li><a href="../lean_server.config/#lean_server.config.Config.host">host (lean_server.config.Config attribute)</a>
+
+        <ul>
+          <li><a href="../lean_server.config/#lean_server.config.config.Config.host">(lean_server.config.config.Config attribute)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="I" class="genindex-section">
+  <h2>I</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="../lean_server.database/#lean_server.database.proof.ProofDatabase.insert_hash">insert_hash() (lean_server.database.proof.ProofDatabase method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="../lean_server.database/#lean_server.database.proof.ProofDatabase.insert_proof">insert_proof() (lean_server.database.proof.ProofDatabase method)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -274,56 +381,157 @@
   <h2>L</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="../modules/#lean_server.app.serve.launch">launch() (in module lean_server.app.serve)</a>
+        <li><a href="../lean_server.app/#lean_server.app.serve.launch">launch() (in module lean_server.app.serve)</a>
 </li>
-        <li><a href="../modules/#lean_server.config.Config.lean">lean (lean_server.config.Config attribute)</a>
+        <li><a href="../lean_server.app/#lean_server.app.db.launch_db_router">launch_db_router() (in module lean_server.app.db)</a>
 </li>
+        <li><a href="../lean_server.app/#lean_server.app.utils.launch_health_router">launch_health_router() (in module lean_server.app.utils)</a>
+</li>
+        <li><a href="../lean_server.app/#lean_server.app.prove.launch_prove_router">launch_prove_router() (in module lean_server.app.prove)</a>
+</li>
+        <li><a href="../lean_server.config/#lean_server.config.Config.lean">lean (lean_server.config.Config attribute)</a>
+
+        <ul>
+          <li><a href="../lean_server.config/#lean_server.config.config.Config.lean">(lean_server.config.config.Config attribute)</a>
+</li>
+        </ul></li>
         <li>
     lean_server
 
         <ul>
-          <li><a href="../modules/#module-lean_server">module</a>
+          <li><a href="../lean_server/#module-lean_server">module</a>
+</li>
+        </ul></li>
+        <li>
+    lean_server.app
+
+        <ul>
+          <li><a href="../lean_server.app/#module-lean_server.app">module</a>
+</li>
+        </ul></li>
+        <li>
+    lean_server.app.args
+
+        <ul>
+          <li><a href="../lean_server.app/#module-lean_server.app.args">module</a>
+</li>
+        </ul></li>
+        <li>
+    lean_server.app.db
+
+        <ul>
+          <li><a href="../lean_server.app/#module-lean_server.app.db">module</a>
+</li>
+        </ul></li>
+        <li>
+    lean_server.app.lifespan
+
+        <ul>
+          <li><a href="../lean_server.app/#module-lean_server.app.lifespan">module</a>
+</li>
+        </ul></li>
+        <li>
+    lean_server.app.prove
+
+        <ul>
+          <li><a href="../lean_server.app/#module-lean_server.app.prove">module</a>
 </li>
         </ul></li>
         <li>
     lean_server.app.serve
 
         <ul>
-          <li><a href="../modules/#module-lean_server.app.serve">module</a>
+          <li><a href="../lean_server.app/#module-lean_server.app.serve">module</a>
+</li>
+        </ul></li>
+        <li>
+    lean_server.app.utils
+
+        <ul>
+          <li><a href="../lean_server.app/#module-lean_server.app.utils">module</a>
 </li>
         </ul></li>
         <li>
     lean_server.config
 
         <ul>
-          <li><a href="../modules/#module-lean_server.config">module</a>
+          <li><a href="../lean_server.config/#module-lean_server.config">module</a>
 </li>
         </ul></li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li>
+    lean_server.config.config
+
+        <ul>
+          <li><a href="../lean_server.config/#module-lean_server.config.config">module</a>
+</li>
+        </ul></li>
+        <li>
     lean_server.database
 
         <ul>
-          <li><a href="../modules/#module-lean_server.database">module</a>
+          <li><a href="../lean_server.database/#module-lean_server.database">module</a>
+</li>
+        </ul></li>
+        <li>
+    lean_server.database.proof
+
+        <ul>
+          <li><a href="../lean_server.database/#module-lean_server.database.proof">module</a>
 </li>
         </ul></li>
         <li>
     lean_server.manager
 
         <ul>
-          <li><a href="../modules/#module-lean_server.manager">module</a>
+          <li><a href="../lean_server.manager/#module-lean_server.manager">module</a>
 </li>
         </ul></li>
         <li>
-    lean_server.utils
+    lean_server.manager.proof_manager
 
         <ul>
-          <li><a href="../modules/#module-lean_server.utils">module</a>
+          <li><a href="../lean_server.manager/#module-lean_server.manager.proof_manager">module</a>
 </li>
         </ul></li>
-        <li><a href="../modules/#lean_server.config.Config.logging">logging (lean_server.config.Config attribute)</a>
+        <li>
+    lean_server.proof
+
+        <ul>
+          <li><a href="../lean_server.proof/#module-lean_server.proof">module</a>
 </li>
+        </ul></li>
+        <li>
+    lean_server.proof.lean
+
+        <ul>
+          <li><a href="../lean_server.proof/#module-lean_server.proof.lean">module</a>
+</li>
+        </ul></li>
+        <li>
+    lean_server.proof.proto
+
+        <ul>
+          <li><a href="../lean_server.proof/#module-lean_server.proof.proto">module</a>
+</li>
+        </ul></li>
+        <li><a href="../lean_server.config/#lean_server.config.config.LeanConfig">LeanConfig (class in lean_server.config.config)</a>
+</li>
+        <li><a href="../lean_server.proof/#lean_server.proof.lean.LeanProof">LeanProof (class in lean_server.proof.lean)</a>
+</li>
+        <li><a href="../lean_server.proof/#lean_server.proof.proto.LeanProofConfig">LeanProofConfig (class in lean_server.proof.proto)</a>
+</li>
+        <li><a href="../lean_server.proof/#lean_server.proof.proto.LeanProofResult">LeanProofResult (class in lean_server.proof.proto)</a>
+</li>
+        <li><a href="../lean_server.proof/#lean_server.proof.proto.LeanProofStatus">LeanProofStatus (class in lean_server.proof.proto)</a>
+</li>
+        <li><a href="../lean_server.config/#lean_server.config.Config.logging">logging (lean_server.config.Config attribute)</a>
+
+        <ul>
+          <li><a href="../lean_server.config/#lean_server.config.config.Config.logging">(lean_server.config.config.Config attribute)</a>
+</li>
+        </ul></li>
     </ul></td>
   </tr></table>
 </section>
@@ -332,25 +540,59 @@
   <h2>M</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="../modules/#lean_server.app.serve.main">main() (in module lean_server.app.serve)</a>
+        <li><a href="../lean_server.app/#lean_server.app.serve.main">main() (in module lean_server.app.serve)</a>
 </li>
-        <li><a href="../modules/#lean_server.config.Config.model_config">model_config (lean_server.config.Config attribute)</a>
+        <li><a href="../lean_server.config/#lean_server.config.Config.model_config">model_config (lean_server.config.Config attribute)</a>
+
+        <ul>
+          <li><a href="../lean_server.config/#lean_server.config.config.Config.model_config">(lean_server.config.config.Config attribute)</a>
 </li>
+          <li><a href="../lean_server.config/#lean_server.config.config.LeanConfig.model_config">(lean_server.config.config.LeanConfig attribute)</a>
+</li>
+          <li><a href="../lean_server.config/#lean_server.config.config.SQLiteConfig.model_config">(lean_server.config.config.SQLiteConfig attribute)</a>
+</li>
+          <li><a href="../lean_server.proof/#lean_server.proof.proto.LeanProofConfig.model_config">(lean_server.proof.proto.LeanProofConfig attribute)</a>
+</li>
+          <li><a href="../lean_server.proof/#lean_server.proof.proto.LeanProofResult.model_config">(lean_server.proof.proto.LeanProofResult attribute)</a>
+</li>
+        </ul></li>
         <li>
     module
 
         <ul>
-          <li><a href="../modules/#module-lean_server">lean_server</a>
+          <li><a href="../lean_server/#module-lean_server">lean_server</a>
 </li>
-          <li><a href="../modules/#module-lean_server.app.serve">lean_server.app.serve</a>
+          <li><a href="../lean_server.app/#module-lean_server.app">lean_server.app</a>
 </li>
-          <li><a href="../modules/#module-lean_server.config">lean_server.config</a>
+          <li><a href="../lean_server.app/#module-lean_server.app.args">lean_server.app.args</a>
 </li>
-          <li><a href="../modules/#module-lean_server.database">lean_server.database</a>
+          <li><a href="../lean_server.app/#module-lean_server.app.db">lean_server.app.db</a>
 </li>
-          <li><a href="../modules/#module-lean_server.manager">lean_server.manager</a>
+          <li><a href="../lean_server.app/#module-lean_server.app.lifespan">lean_server.app.lifespan</a>
 </li>
-          <li><a href="../modules/#module-lean_server.utils">lean_server.utils</a>
+          <li><a href="../lean_server.app/#module-lean_server.app.prove">lean_server.app.prove</a>
+</li>
+          <li><a href="../lean_server.app/#module-lean_server.app.serve">lean_server.app.serve</a>
+</li>
+          <li><a href="../lean_server.app/#module-lean_server.app.utils">lean_server.app.utils</a>
+</li>
+          <li><a href="../lean_server.config/#module-lean_server.config">lean_server.config</a>
+</li>
+          <li><a href="../lean_server.config/#module-lean_server.config.config">lean_server.config.config</a>
+</li>
+          <li><a href="../lean_server.database/#module-lean_server.database">lean_server.database</a>
+</li>
+          <li><a href="../lean_server.database/#module-lean_server.database.proof">lean_server.database.proof</a>
+</li>
+          <li><a href="../lean_server.manager/#module-lean_server.manager">lean_server.manager</a>
+</li>
+          <li><a href="../lean_server.manager/#module-lean_server.manager.proof_manager">lean_server.manager.proof_manager</a>
+</li>
+          <li><a href="../lean_server.proof/#module-lean_server.proof">lean_server.proof</a>
+</li>
+          <li><a href="../lean_server.proof/#module-lean_server.proof.lean">lean_server.proof.lean</a>
+</li>
+          <li><a href="../lean_server.proof/#module-lean_server.proof.proto">lean_server.proof.proto</a>
 </li>
         </ul></li>
     </ul></td>
@@ -361,7 +603,43 @@
   <h2>P</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="../modules/#lean_server.config.Config.port">port (lean_server.config.Config attribute)</a>
+        <li><a href="../lean_server.app/#lean_server.app.args.parse_args">parse_args() (in module lean_server.app.args)</a>
+</li>
+        <li><a href="../lean_server.proof/#lean_server.proof.proto.LeanProofStatus.PENDING">PENDING (lean_server.proof.proto.LeanProofStatus attribute)</a>
+</li>
+        <li><a href="../lean_server.config/#lean_server.config.Config.port">port (lean_server.config.Config attribute)</a>
+
+        <ul>
+          <li><a href="../lean_server.config/#lean_server.config.config.Config.port">(lean_server.config.config.Config attribute)</a>
+</li>
+        </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="../lean_server.proof/#lean_server.proof.proto.LeanProofConfig.premises">premises (lean_server.proof.proto.LeanProofConfig attribute)</a>
+</li>
+        <li><a href="../lean_server.database/#lean_server.database.proof.ProofDatabase.proof_exists">proof_exists() (lean_server.database.proof.ProofDatabase method)</a>
+</li>
+        <li><a href="../lean_server.database/#lean_server.database.proof.ProofDatabase">ProofDatabase (class in lean_server.database.proof)</a>
+</li>
+        <li><a href="../lean_server.manager/#lean_server.manager.proof_manager.ProofManager">ProofManager (class in lean_server.manager.proof_manager)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="R" class="genindex-section">
+  <h2>R</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="../lean_server.proof/#lean_server.proof.proto.LeanProofResult.result">result (lean_server.proof.proto.LeanProofResult attribute)</a>
+</li>
+        <li><a href="../lean_server.database/#lean_server.database.proof.ProofDatabase.result_exists">result_exists() (lean_server.database.proof.ProofDatabase method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="../lean_server.manager/#lean_server.manager.proof_manager.ProofManager.run_proof">run_proof() (lean_server.manager.proof_manager.ProofManager method)</a>
+</li>
+        <li><a href="../lean_server.proof/#lean_server.proof.proto.LeanProofStatus.RUNNING">RUNNING (lean_server.proof.proto.LeanProofStatus attribute)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -371,7 +649,59 @@
   <h2>S</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="../modules/#lean_server.config.Config.sqlite">sqlite (lean_server.config.Config attribute)</a>
+        <li><a href="../lean_server.config/#lean_server.config.Config.sqlite">sqlite (lean_server.config.Config attribute)</a>
+
+        <ul>
+          <li><a href="../lean_server.config/#lean_server.config.config.Config.sqlite">(lean_server.config.config.Config attribute)</a>
+</li>
+        </ul></li>
+        <li><a href="../lean_server.config/#lean_server.config.config.SQLiteConfig">SQLiteConfig (class in lean_server.config.config)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="../lean_server.proof/#lean_server.proof.proto.LeanProofResult.status">status (lean_server.proof.proto.LeanProofResult attribute)</a>
+</li>
+        <li><a href="../lean_server.manager/#lean_server.manager.proof_manager.ProofManager.submit_proof">submit_proof() (lean_server.manager.proof_manager.ProofManager method)</a>
+</li>
+        <li><a href="../lean_server.proof/#lean_server.proof.proto.LeanProofResult.success">success (lean_server.proof.proto.LeanProofResult attribute)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="T" class="genindex-section">
+  <h2>T</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="../lean_server.proof/#lean_server.proof.proto.LeanProofConfig.tactics">tactics (lean_server.proof.proto.LeanProofConfig attribute)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="../lean_server.config/#lean_server.config.config.SQLiteConfig.timeout">timeout (lean_server.config.config.SQLiteConfig attribute)</a>
+
+        <ul>
+          <li><a href="../lean_server.proof/#lean_server.proof.proto.LeanProofConfig.timeout">(lean_server.proof.proto.LeanProofConfig attribute)</a>
+</li>
+        </ul></li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="U" class="genindex-section">
+  <h2>U</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="../lean_server.database/#lean_server.database.proof.ProofDatabase.update_status">update_status() (lean_server.database.proof.ProofDatabase method)</a>
+</li>
+    </ul></td>
+  </tr></table>
+</section>
+
+<section id="W" class="genindex-section">
+  <h2>W</h2>
+  <table style="width: 100%" class="indextable genindextable"><tr>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="../lean_server.config/#lean_server.config.config.LeanConfig.workspace">workspace (lean_server.config.config.LeanConfig attribute)</a>
 </li>
     </ul></td>
   </tr></table>

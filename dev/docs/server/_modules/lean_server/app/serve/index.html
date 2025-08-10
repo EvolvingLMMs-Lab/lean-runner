@@ -199,7 +199,12 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
 <ul>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../modules/">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../lean_server/">lean_server package</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of lean_server package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../lean_server.app/">lean_server.app package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../lean_server.config/">lean_server.config package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../lean_server.database/">lean_server.database package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../lean_server.manager/">lean_server.manager package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../lean_server.proof/">lean_server.proof package</a></li>
 </ul>
 </li>
 </ul>
@@ -249,7 +254,7 @@
 
 
 <div class="viewcode-block" id="launch">
-<a class="viewcode-back" href="../../../../modules/#lean_server.app.serve.launch">[docs]</a>
+<a class="viewcode-back" href="../../../../lean_server.app/#lean_server.app.serve.launch">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">launch</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FastAPI</span><span class="p">:</span>
     <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">(</span><span class="n">lifespan</span><span class="o">=</span><span class="n">get_lifespan</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">))</span>
     <span class="n">launch_health_router</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
@@ -260,7 +265,7 @@
 
 
 <div class="viewcode-block" id="main">
-<a class="viewcode-back" href="../../../../modules/#lean_server.app.serve.main">[docs]</a>
+<a class="viewcode-back" href="../../../../lean_server.app/#lean_server.app.serve.main">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
     <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>

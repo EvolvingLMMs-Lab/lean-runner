@@ -12,7 +12,7 @@ The lean-server package provides a FastAPI-based server for running Lean proof v
    :maxdepth: 2
    :caption: API Reference:
 
-   modules
+   lean_server
 
 Indices and tables
 ==================

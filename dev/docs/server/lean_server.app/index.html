@@ -3,11 +3,11 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex/" /><link rel="search" title="Search" href="../search/" /><link rel="prev" title="Welcome to lean-server’s documentation!" href="../" />
-        <link rel="canonical" href="/docs/server/modules/" />
+<link rel="index" title="Index" href="../genindex/" /><link rel="search" title="Search" href="../search/" /><link rel="next" title="lean_server.config package" href="../lean_server.config/" /><link rel="prev" title="lean_server package" href="../lean_server/" />
+        <link rel="canonical" href="/docs/server/lean_server.app/" />
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.07.19 -->
-        <title>API Reference - lmms-server documentation</title>
+        <title>lean_server.app package - lmms-server documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=25af2a20" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -200,7 +200,12 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
 <ul class="current">
-<li class="toctree-l1 current has-children current-page"><a class="current reference internal" href="#">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../lean_server/">lean_server package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of lean_server package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">lean_server.app package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lean_server.config/">lean_server.config package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lean_server.database/">lean_server.database package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lean_server.manager/">lean_server.manager package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../lean_server.proof/">lean_server.proof package</a></li>
 </ul>
 </li>
 </ul>
@@ -223,7 +228,7 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="../_sources/modules.rst.txt" title="View this page">
+  <a class="muted-link" href="../_sources/lean_server.app.rst.txt" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
@@ -243,18 +248,48 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="api-reference">
-<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading">¶</a></h1>
-<div class="toctree-wrapper compound">
-</div>
-<section id="module-lean_server">
-<span id="lean-server"></span><h2>Lean Server<a class="headerlink" href="#module-lean_server" title="Link to this heading">¶</a></h2>
+          <section id="lean-server-app-package">
+<h1>lean_server.app package<a class="headerlink" href="#lean-server-app-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-lean_server.app.args">
+<span id="lean-server-app-args-module"></span><h2>lean_server.app.args module<a class="headerlink" href="#module-lean_server.app.args" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="lean_server.app.args.parse_args">
+<span class="sig-prename descclassname"><span class="pre">lean_server.app.args.</span></span><span class="sig-name descname"><span class="pre">parse_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Namespace</span></span></span><a class="reference internal" href="../_modules/lean_server/app/args/#parse_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.app.args.parse_args" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-lean_server.app.db">
+<span id="lean-server-app-db-module"></span><h2>lean_server.app.db module<a class="headerlink" href="#module-lean_server.app.db" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="lean_server.app.db.launch_db_router">
+<span class="sig-prename descclassname"><span class="pre">lean_server.app.db.</span></span><span class="sig-name descname"><span class="pre">launch_db_router</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">FastAPI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lean_server/app/db/#launch_db_router"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.app.db.launch_db_router" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-lean_server.app.lifespan">
+<span id="lean-server-app-lifespan-module"></span><h2>lean_server.app.lifespan module<a class="headerlink" href="#module-lean_server.app.lifespan" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="lean_server.app.lifespan.get_lifespan">
+<span class="sig-prename descclassname"><span class="pre">lean_server.app.lifespan.</span></span><span class="sig-name descname"><span class="pre">get_lifespan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lean_server.config/#lean_server.config.config.Config" title="lean_server.config.config.Config"><span class="pre">Config</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lean_server/app/lifespan/#get_lifespan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.app.lifespan.get_lifespan" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-lean_server.app.prove">
+<span id="lean-server-app-prove-module"></span><h2>lean_server.app.prove module<a class="headerlink" href="#module-lean_server.app.prove" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="lean_server.app.prove.launch_prove_router">
+<span class="sig-prename descclassname"><span class="pre">lean_server.app.prove.</span></span><span class="sig-name descname"><span class="pre">launch_prove_router</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">FastAPI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lean_server/app/prove/#launch_prove_router"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.app.prove.launch_prove_router" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </section>
 <section id="module-lean_server.app.serve">
-<span id="app-module"></span><h2>App Module<a class="headerlink" href="#module-lean_server.app.serve" title="Link to this heading">¶</a></h2>
+<span id="lean-server-app-serve-module"></span><h2>lean_server.app.serve module<a class="headerlink" href="#module-lean_server.app.serve" title="Link to this heading">¶</a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="lean_server.app.serve.launch">
-<span class="sig-prename descclassname"><span class="pre">lean_server.app.serve.</span></span><span class="sig-name descname"><span class="pre">launch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lean_server.config.Config" title="lean_server.config.config.Config"><span class="pre">Config</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">FastAPI</span></span></span><a class="reference internal" href="../_modules/lean_server/app/serve/#launch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.app.serve.launch" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">lean_server.app.serve.</span></span><span class="sig-name descname"><span class="pre">launch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lean_server.config/#lean_server.config.config.Config" title="lean_server.config.config.Config"><span class="pre">Config</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">FastAPI</span></span></span><a class="reference internal" href="../_modules/lean_server/app/serve/#launch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.app.serve.launch" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
@@ -263,59 +298,16 @@
 <dd></dd></dl>
 
 </section>
-<section id="module-lean_server.database">
-<span id="database-module"></span><h2>Database Module<a class="headerlink" href="#module-lean_server.database" title="Link to this heading">¶</a></h2>
-</section>
-<section id="module-lean_server.manager">
-<span id="manager-module"></span><h2>Manager Module<a class="headerlink" href="#module-lean_server.manager" title="Link to this heading">¶</a></h2>
-</section>
-<section id="module-lean_server.utils">
-<span id="utils-module"></span><h2>Utils Module<a class="headerlink" href="#module-lean_server.utils" title="Link to this heading">¶</a></h2>
-</section>
-<section id="module-lean_server.config">
-<span id="config-module"></span><h2>Config Module<a class="headerlink" href="#module-lean_server.config" title="Link to this heading">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="lean_server.config.Config">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lean_server.config.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lean</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">LeanConfig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sqlite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SQLiteConfig</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lean_server/config/config/#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.config.Config" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="lean_server.config.Config.host">
-<span class="sig-name descname"><span class="pre">host</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#lean_server.config.Config.host" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="lean_server.config.Config.lean">
-<span class="sig-name descname"><span class="pre">lean</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">LeanConfig</span></em><a class="headerlink" href="#lean_server.config.Config.lean" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="lean_server.config.Config.logging">
-<span class="sig-name descname"><span class="pre">logging</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#lean_server.config.Config.logging" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="lean_server.config.Config.model_config">
-<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#lean_server.config.Config.model_config" title="Link to this definition">¶</a></dt>
-<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="lean_server.config.Config.port">
-<span class="sig-name descname"><span class="pre">port</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#lean_server.config.Config.port" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="lean_server.config.Config.sqlite">
-<span class="sig-name descname"><span class="pre">sqlite</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">SQLiteConfig</span></em><a class="headerlink" href="#lean_server.config.Config.sqlite" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<section id="module-lean_server.app.utils">
+<span id="lean-server-app-utils-module"></span><h2>lean_server.app.utils module<a class="headerlink" href="#module-lean_server.app.utils" title="Link to this heading">¶</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="lean_server.config.get_config">
-<span class="sig-prename descclassname"><span class="pre">lean_server.config.</span></span><span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Namespace</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#lean_server.config.Config" title="lean_server.config.config.Config"><span class="pre">Config</span></a></span></span><a class="reference internal" href="../_modules/lean_server/config/config/#get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.config.get_config" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="lean_server.app.utils.launch_health_router">
+<span class="sig-prename descclassname"><span class="pre">lean_server.app.utils.</span></span><span class="sig-name descname"><span class="pre">launch_health_router</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">FastAPI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lean_server/app/utils/#launch_health_router"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.app.utils.launch_health_router" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</section>
+<section id="module-lean_server.app">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-lean_server.app" title="Link to this heading">¶</a></h2>
 </section>
 </section>
 
@@ -324,15 +316,23 @@
       <footer>
         
         <div class="related-pages">
-          
-          <a class="prev-page" href="../">
+          <a class="next-page" href="../lean_server.config/">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">lean_server.config package</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../lean_server/">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Home</div>
+                <div class="title">lean_server package</div>
                 
               </div>
             </a>
@@ -366,29 +366,34 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">API Reference</a><ul>
-<li><a class="reference internal" href="#module-lean_server">Lean Server</a></li>
-<li><a class="reference internal" href="#module-lean_server.app.serve">App Module</a><ul>
+<li><a class="reference internal" href="#">lean_server.app package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-lean_server.app.args">lean_server.app.args module</a><ul>
+<li><a class="reference internal" href="#lean_server.app.args.parse_args"><code class="docutils literal notranslate"><span class="pre">parse_args()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-lean_server.app.db">lean_server.app.db module</a><ul>
+<li><a class="reference internal" href="#lean_server.app.db.launch_db_router"><code class="docutils literal notranslate"><span class="pre">launch_db_router()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-lean_server.app.lifespan">lean_server.app.lifespan module</a><ul>
+<li><a class="reference internal" href="#lean_server.app.lifespan.get_lifespan"><code class="docutils literal notranslate"><span class="pre">get_lifespan()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-lean_server.app.prove">lean_server.app.prove module</a><ul>
+<li><a class="reference internal" href="#lean_server.app.prove.launch_prove_router"><code class="docutils literal notranslate"><span class="pre">launch_prove_router()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-lean_server.app.serve">lean_server.app.serve module</a><ul>
 <li><a class="reference internal" href="#lean_server.app.serve.launch"><code class="docutils literal notranslate"><span class="pre">launch()</span></code></a></li>
 <li><a class="reference internal" href="#lean_server.app.serve.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-lean_server.database">Database Module</a></li>
-<li><a class="reference internal" href="#module-lean_server.manager">Manager Module</a></li>
-<li><a class="reference internal" href="#module-lean_server.utils">Utils Module</a></li>
-<li><a class="reference internal" href="#module-lean_server.config">Config Module</a><ul>
-<li><a class="reference internal" href="#lean_server.config.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul>
-<li><a class="reference internal" href="#lean_server.config.Config.host"><code class="docutils literal notranslate"><span class="pre">Config.host</span></code></a></li>
-<li><a class="reference internal" href="#lean_server.config.Config.lean"><code class="docutils literal notranslate"><span class="pre">Config.lean</span></code></a></li>
-<li><a class="reference internal" href="#lean_server.config.Config.logging"><code class="docutils literal notranslate"><span class="pre">Config.logging</span></code></a></li>
-<li><a class="reference internal" href="#lean_server.config.Config.model_config"><code class="docutils literal notranslate"><span class="pre">Config.model_config</span></code></a></li>
-<li><a class="reference internal" href="#lean_server.config.Config.port"><code class="docutils literal notranslate"><span class="pre">Config.port</span></code></a></li>
-<li><a class="reference internal" href="#lean_server.config.Config.sqlite"><code class="docutils literal notranslate"><span class="pre">Config.sqlite</span></code></a></li>
+<li><a class="reference internal" href="#module-lean_server.app.utils">lean_server.app.utils module</a><ul>
+<li><a class="reference internal" href="#lean_server.app.utils.launch_health_router"><code class="docutils literal notranslate"><span class="pre">launch_health_router()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#lean_server.config.get_config"><code class="docutils literal notranslate"><span class="pre">get_config()</span></code></a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#module-lean_server.app">Module contents</a></li>
 </ul>
 </li>
 </ul>

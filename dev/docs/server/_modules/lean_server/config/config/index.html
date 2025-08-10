@@ -199,7 +199,12 @@
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <p class="caption" role="heading"><span class="caption-text">API Reference:</span></p>
 <ul>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../modules/">API Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="simple">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../lean_server/">lean_server package</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of lean_server package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../lean_server.app/">lean_server.app package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../lean_server.config/">lean_server.config package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../lean_server.database/">lean_server.database package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../lean_server.manager/">lean_server.manager package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../lean_server.proof/">lean_server.proof package</a></li>
 </ul>
 </li>
 </ul>
@@ -245,19 +250,25 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
 
 
+<div class="viewcode-block" id="LeanConfig">
+<a class="viewcode-back" href="../../../../lean_server.config/#lean_server.config.config.LeanConfig">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">LeanConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="n">executable</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">workspace</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">concurrency</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">concurrency</span><span class="p">:</span> <span class="nb">int</span></div>
 
 
+
+<div class="viewcode-block" id="SQLiteConfig">
+<a class="viewcode-back" href="../../../../lean_server.config/#lean_server.config.config.SQLiteConfig">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SQLiteConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="n">database_path</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span></div>
+
 
 
 <div class="viewcode-block" id="Config">
-<a class="viewcode-back" href="../../../../modules/#lean_server.config.Config">[docs]</a>
+<a class="viewcode-back" href="../../../../lean_server.config/#lean_server.config.config.Config">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
     <span class="n">host</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">port</span><span class="p">:</span> <span class="nb">int</span>
@@ -279,7 +290,7 @@
 
 
 <div class="viewcode-block" id="get_config">
-<a class="viewcode-back" href="../../../../modules/#lean_server.config.get_config">[docs]</a>
+<a class="viewcode-back" href="../../../../lean_server.config/#lean_server.config.config.get_config">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_config</span><span class="p">(</span>
     <span class="n">args</span><span class="p">:</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Config</span><span class="p">:</span>

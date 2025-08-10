@@ -12,7 +12,7 @@ The lean-runner client package provides a Python client for interacting with the
    :maxdepth: 2
    :caption: API Reference:
 
-   modules
+   lean_runner
 
 Indices and tables
 ==================
