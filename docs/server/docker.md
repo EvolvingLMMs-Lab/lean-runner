@@ -1,6 +1,6 @@
 # Install Lean Server via :simple-docker: Docker
 
-For a hassle-free setup of the Lean Server, we strongly recommend using Docker. This approach avoids complex local configuration of Lean and its dependencies.
+For a hassle-free setup of the Lean Server, we strongly recommend using :simple-docker: [Docker](https://www.docker.com/). This approach avoids complex local configuration of Lean and its dependencies.
 
 The Docker image comes with `mathlib` version [v4.22.0-rc4](https://github.com/leanprover-community/mathlib4/releases/tag/v4.22.0-rc4). Custom `mathlib` versions are not currently supported with this method, but we plan to add this feature in the near future. Currenty, if you require a specific version, please refer to the [build from source guide](./source.md).
 
