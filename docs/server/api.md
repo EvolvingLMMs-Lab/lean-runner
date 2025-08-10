@@ -1,482 +1,329 @@
 # API Reference
 
-This document provides a comprehensive reference for all REST API endpoints available in the Lean Server.
+This document provides a comprehensive reference for all RESTful API endpoints available in the Lean Prover Server.
 
 !!! info "Base URL"
-    All API endpoints are relative to your server's base URL (e.g., `http://localhost:8000`)
+    All API endpoints are relative to your server's base URL (e.g., `http://localhost:8000`).
 
-## Overview
+## Endpoints
 
-### What is Lean Proof Configuration?
+### Health Check
 
-Many API endpoints accept a ==`config`== parameter for customizing proof verification behavior. This is a JSON string that controls how the Lean theorem prover processes your proof.
+#### `GET /health`
 
-!!! example "Basic Configuration Example"
-    ```json
-    {
-      "timeout": 300.0,        // Timeout in seconds (default: 300.0)
-      "all_tactics": false,    // Include all tactics in result
-      "tactics": false,        // Include tactics in result
-      "ast": false,            // Include abstract syntax tree
-      "premises": false        // Include premises in result
-    }
-    ```
+Verifies the server's operational status and retrieves basic information.
 
-!!! note "Configuration Usage"
-    - **Simple usage**: Pass `"{}"` for default settings
-    - **Custom settings**: Provide JSON string with specific options
-    - **All endpoints**: Configuration applies to `/prove/check` and `/prove/submit`
+**Responses**
+- `200 OK`: Server is running.
+- `500 Internal ServerError`: Server-side processing error.
 
-### Configuration Options
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `timeout` | float | `300.0` | Maximum processing time in seconds |
-| `all_tactics` | boolean | `false` | Include all tactics in the proof result |
-| `tactics` | boolean | `false` | Include tactics information in the result |
-| `ast` | boolean | `false` | Include abstract syntax tree in the result |
-| `premises` | boolean | `false` | Include premises information in the result |
-
-!!! warning "Advanced Configuration"
-    ```json
-    {
-      "timeout": 600.0,        // 10 minutes timeout
-      "all_tactics": true,     // Get detailed tactic information
-      "tactics": true,         // Include tactics
-      "ast": true,             // Include syntax tree
-      "premises": true         // Include premises
-    }
-    ```
-
-### Quick Start Workflow
-
-!!! success "Typical Usage Pattern"
-    1. **Choose your approach:**
-       - ==Synchronous== (`/prove/check`) - Get immediate results
-       - ==Asynchronous== (`/prove/submit` → `/prove/result/{id}`) - For longer proofs
-    
-    2. **Prepare your configuration:**
-       - Start with `"{}"` for simple proofs
-       - Use custom config for detailed analysis (tactics, AST, premises)
-    
-    3. **Submit your proof:**
-       - Include both `proof` and `config` parameters
-       - Monitor response status codes for errors
-    
-    4. **Handle results:**
-       - Check returned JSON for proof verification status
-       - Use proof ID for async result retrieval
-
-### Response Format
-
-Proof verification endpoints return results in the following format:
-
+**Success Response** `200 OK`
 ```json
 {
-  "success": true,              // Whether the proof was successful
-  "status": "finished",         // Status: pending, running, finished, error
-  "result": {                   // Detailed result based on config options
-    "tactics": [...],           // If tactics: true
-    "ast": {...},               // If ast: true
-    "premises": [...]           // If premises: true
-  },
-  "error_message": null         // Error message if status is "error"
+  "status": "ok",
+  "message": "Lean Server is running",
+  "version": "0.0.1"
 }
 ```
 
-## Health Check
+**cURL Example**
+```bash
+curl "http://localhost:8000/health"
+```
 
-### `GET /health`
+### Proof Verification
 
-Health check endpoint to verify server status and basic information.
+#### `POST /prove/check`
 
-=== "Response"
-    ```json
-    {
-      "status": "ok",
-      "message": "Lean Server is running",
-      "version": "0.0.1"
-    }
-    ```
+Synchronously verifies a Lean proof for correctness.
 
-=== "cURL Example"
-    ```bash
-    curl "http://localhost:8000/health"
-    ```
-
-**Status Codes:** `200` (Success), `500` (Server Error)
-
----
-
-## Proof Management
-
-### `POST /prove/check`
-
-Check a Lean proof for correctness synchronously.
-
-!!! note "Content Type"
-    This endpoint requires ==`application/x-www-form-urlencoded`== content type.
+!!! note "Content-Type"
+    This endpoint requires `application/x-www-form-urlencoded`.
 
 **Parameters**
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `proof` | string | :white_check_mark: | - | The Lean proof code to check |
-| `config` | string | :x: | `"{}"` | [Proof configuration](#what-is-lean-proof-configuration) JSON |
+| `proof` | `string` | Yes | - | The Lean proof code to check. |
+| `config` | `string` | No | `{}` | A JSON string to configure the proof checking process. See [Proof Configuration](#proof-configuration) for details. |
 
-=== "Basic cURL Example"
-    ```bash
-    # Using default configuration
-    curl -X POST "http://localhost:8000/prove/check" \
-      -H "Content-Type: application/x-www-form-urlencoded" \
-      -d "proof=theorem test : 1 + 1 = 2 := by norm_num" \
-      -d "config={}"
-    ```
+**Responses**
+- `200 OK`: Verification finished.
+- `500 Internal Server Error`: Server-side processing error.
 
-=== "Advanced cURL Example"
-    ```bash
-    # Using custom configuration (longer timeout, detailed output)
-    curl -X POST "http://localhost:8000/prove/check" \
-      -H "Content-Type: application/x-www-form-urlencoded" \
-      -d "proof=theorem complex : ∀ n : ℕ, n + 0 = n := by intro; rfl" \
-      -d 'config={"timeout": 600.0, "all_tactics": true, "ast": true}'
-    ```
+**Success Response** `200 OK`
+```json
+{
+  "success": true,
+  "status": "finished",
+  "result": { ... },
+  "error_message": null
+}
+```
 
-=== "Python Basic Example"
-    ```python
-    import requests
-    
-    # Using default configuration
-    response = requests.post(
-        "http://localhost:8000/prove/check",
-        data={
-            "proof": "theorem test : 1 + 1 = 2 := by norm_num",
-            "config": "{}"
-        }
-    )
-    result = response.json()
-    ```
+**cURL Example**
+```bash
+curl -X POST "http://localhost:8000/prove/check" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "proof=theorem test : 1 + 1 = 2 := by norm_num" \
+  -d "config={}"
+```
 
-=== "Python Advanced Example"
-    ```python
-    import requests
-    import json
-    
-    # Using custom configuration for detailed analysis
-    config = {
-        "timeout": 600.0,       # 10 minutes timeout
-        "all_tactics": True,    # Get all tactic details
-        "tactics": True,        # Include tactics info
-        "ast": True,            # Include syntax tree
-        "premises": True        # Include premises
+**Python Example**
+```python
+import requests
+import json
+
+response = requests.post(
+    "http://localhost:8000/prove/check",
+    data={
+        "proof": "theorem test : 1 + 1 = 2 := by norm_num",
+        "config": json.dumps({"timeout": 600.0})
     }
-    
-    response = requests.post(
-        "http://localhost:8000/prove/check",
-        data={
-            "proof": "theorem complex : ∀ n : ℕ, n + 0 = n := by intro; rfl",
-            "config": json.dumps(config)  # Convert dict to JSON string
-        }
-    )
-    result = response.json()
-    ```
+)
+print(response.json())
+```
 
-**Status Codes:** `200` (Success), `500` (Server Error)
+#### `POST /prove/submit`
 
----
-
-### `POST /prove/submit`
-
-Submit a Lean proof for asynchronous processing.
+Submits a Lean proof for asynchronous processing and returns a unique `proof_id`.
 
 !!! tip "Asynchronous Processing"
-    This endpoint returns immediately with a proof ID. Use `/prove/result/{proof_id}` to retrieve the result.
+    Use `GET /prove/result/{proof_id}` to retrieve the verification result later.
 
 **Parameters**
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `proof` | string | :white_check_mark: | - | The Lean proof code to submit |
-| `config` | string | :x: | `"{}"` | [Proof configuration](#what-is-lean-proof-configuration) JSON |
+| `proof` | `string` | Yes | - | The Lean proof code to submit. |
+| `config` | `string` | No | `{}` | A JSON string to configure the proof checking process. See [Proof Configuration](#proof-configuration) for details. |
 
-=== "Basic cURL Example"
-    ```bash
-    # Submit with default configuration
-    curl -X POST "http://localhost:8000/prove/submit" \
-      -H "Content-Type: application/x-www-form-urlencoded" \
-      -d "proof=theorem test : 1 + 1 = 2 := by norm_num" \
-      -d "config={}"
-    ```
+**Responses**
+- `200 OK`: Proof submitted successfully.
+- `502 Bad Gateway`: Error during proof submission.
 
-=== "Advanced cURL Example"
-    ```bash
-    # Submit with custom timeout and detailed output for complex proofs
-    curl -X POST "http://localhost:8000/prove/submit" \
-      -H "Content-Type: application/x-www-form-urlencoded" \
-      -d "proof=theorem hard_proof : some_complex_statement := by sorry" \
-      -d 'config={"timeout": 900.0, "all_tactics": true, "ast": true, "premises": true}'
-    ```
+**Success Response** `200 OK`
+```json
+{
+  "proof_id": "your-unique-proof-id"
+}
+```
 
-=== "Python Basic Example"
-    ```python
-    import requests
-    
-    # Submit with default configuration
-    response = requests.post(
-        "http://localhost:8000/prove/submit",
-        data={
-            "proof": "theorem test : 1 + 1 = 2 := by norm_num",
-            "config": "{}"
-        }
-    )
-    submission_result = response.json()
-    proof_id = submission_result.get("proof_id")
-    ```
+**cURL Example**
+```bash
+curl -X POST "http://localhost:8000/prove/submit" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "proof=theorem hard_proof : some_complex_statement := by sorry" \
+  -d 'config={"timeout": 900.0}'
+```
 
-=== "Python Advanced Example"
-    ```python
-    import requests
-    import json
-    
-    # Submit complex proof with detailed analysis configuration
-    config = {
-        "timeout": 900.0,        # 15 minutes timeout for complex proofs
-        "all_tactics": True,     # Get all tactic details
-        "tactics": True,         # Include tactics information
-        "ast": True,             # Include abstract syntax tree
-        "premises": True         # Include premises information
+**Python Example**
+```python
+import requests
+import json
+
+response = requests.post(
+    "http://localhost:8000/prove/submit",
+    data={
+        "proof": "theorem complex_proof : some_statement := by tactic_sequence",
+        "config": json.dumps({"timeout": 900.0})
     }
-    
-    response = requests.post(
-        "http://localhost:8000/prove/submit",
-        data={
-            "proof": "theorem complex_proof : some_statement := by tactic_sequence",
-            "config": json.dumps(config)
-        }
-    )
-    
-    submission_result = response.json()
-    proof_id = submission_result.get("proof_id")
-    print(f"Submitted proof with ID: {proof_id}")
-    ```
+)
+proof_id = response.json().get("proof_id")
+print(f"Submitted proof with ID: {proof_id}")
+```
 
-**Status Codes:** `200` (Success), `502` (Bad Gateway)
+#### `GET /prove/result/{proof_id}`
 
----
-
-### `GET /prove/result/{proof_id}`
-
-Retrieve the result of a previously submitted proof.
+Retrieves the result of a previously submitted asynchronous proof.
 
 **Path Parameters**
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `proof_id` | string | :white_check_mark: | The ID of the submitted proof |
+| `proof_id`| `string` | Yes | The unique ID of the submitted proof. |
 
-=== "cURL Example"
-    ```bash
-    curl "http://localhost:8000/prove/result/your-proof-id-here"
-    ```
+**Responses**
+- `200 OK`: Result retrieved successfully.
+- `404 Not Found`: The specified `proof_id` does not exist.
+- `500 Internal Server Error`: Server-side processing error.
 
-=== "Python Example"
-    ```python
-    import requests
-    
-    proof_id = "your-proof-id-here"
-    response = requests.get(f"http://localhost:8000/prove/result/{proof_id}")
-    result = response.json()
-    ```
+**Success Response** `200 OK`
+```json
+{
+  "success": true,
+  "status": "finished",
+  "result": { ... },
+  "error_message": null
+}
+```
 
-**Status Codes:** `200` (Success), `404` (Not Found), `500` (Server Error)
+**cURL Example**
+```bash
+curl "http://localhost:8000/prove/result/your-proof-id-here"
+```
 
----
+**Python Example**
+```python
+import requests
 
-## Database Operations
+proof_id = "your-proof-id-here"
+response = requests.get(f"http://localhost:8000/prove/result/{proof_id}")
+print(response.json())
+```
 
-### `GET /db/fetch`
+### Database Management
 
-Fetch data from the database using SQL queries with efficient batch processing.
+#### `GET /db/fetch`
+
+Fetches records from the database using an SQL query and streams the results.
 
 !!! warning "Streaming Response"
-    This endpoint returns a ==streaming JSON response== with `Content-Disposition: attachment` header.
+    This endpoint returns a streaming JSON response with a `Content-Disposition: attachment` header, making it suitable for large datasets.
 
 **Query Parameters**
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `query` | string | :x: | `"SELECT * FROM proof"` | SQL query to execute |
-| `batch_size` | integer | :x: | `100` | Number of records per batch |
+| `query` | `string` | No | `SELECT * FROM proof` | The SQL query to execute. |
+| `batch_size`| `integer`| No | `100` | The number of records to fetch per batch. |
 
-=== "cURL Example"
-    ```bash
-    curl "http://localhost:8000/db/fetch?query=SELECT * FROM proof LIMIT 10&batch_size=50"
-    ```
+**Responses**
+- `200 OK`: Query executed successfully.
+- `500 Internal Server Error`: Database error.
 
-=== "Python Example"
-    ```python
-    import requests
-    
-    response = requests.get(
-        "http://localhost:8000/db/fetch",
-        params={
-            "query": "SELECT * FROM proof WHERE created_at > '2025-01-01'",
-            "batch_size": 50
-        },
-        stream=True
-    )
-    
-    # Handle streaming response
-    for chunk in response.iter_content(chunk_size=1024):
-        if chunk:
-            print(chunk.decode('utf-8'))
-    ```
+**cURL Example**
+```bash
+curl "http://localhost:8000/db/fetch?query=SELECT * FROM proof LIMIT 10&batch_size=5"
+```
 
-=== "Response Headers"
-    ```
-    Content-Type: application/json
-    Content-Disposition: attachment; filename=query_results.json
-    ```
+**Python Example**
+```python
+import requests
 
-**Status Codes:** `200` (Success), `500` (Database Error)
+response = requests.get(
+    "http://localhost:8000/db/fetch",
+    params={
+        "query": "SELECT * FROM proof WHERE created_at > '2025-01-01'",
+        "batch_size": 50
+    },
+    stream=True
+)
 
----
+for chunk in response.iter_content(chunk_size=1024):
+    if chunk:
+        print(chunk.decode('utf-8'))
+```
 
-### `DELETE /db/clean`
+#### `DELETE /db/clean`
 
-Clean the database by removing old proof records and orphaned status entries.
+Cleans the database by removing proof records older than a specified time.
 
 **Query Parameters**
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `seconds` | integer | :x: | `0` | Remove records older than specified seconds |
+| `seconds` | `integer`| No | `0` | Removes records older than this many seconds. |
 
-=== "Response"
-    ```json
-    {
-      "message": "Database cleaned successfully"
-    }
-    ```
+**Responses**
+- `200 OK`: Database cleaned successfully.
+- `500 Internal Server Error`: Database error.
 
-=== "cURL Example"
-    ```bash
-    # Clean records older than 1 hour (3600 seconds)
-    curl -X DELETE "http://localhost:8000/db/clean?seconds=3600"
-    ```
+**Success Response** `200 OK`
+```json
+{
+  "message": "Database cleaned successfully"
+}
+```
 
-=== "Python Example"
-    ```python
-    import requests
-    
-    # Clean records older than 24 hours
-    response = requests.delete(
-        "http://localhost:8000/db/clean",
-        params={"seconds": 86400}
-    )
-    result = response.json()
-    print(result["message"])
-    ```
+**cURL Example**
+```bash
+# Clean records older than 1 hour (3600 seconds)
+curl -X DELETE "http://localhost:8000/db/clean?seconds=3600"
+```
 
-**Status Codes:** `200` (Success), `500` (Database Error)
+**Python Example**
+```python
+import requests
 
----
+# Clean records older than 24 hours (86400 seconds)
+response = requests.delete(
+    "http://localhost:8000/db/clean",
+    params={"seconds": 86400}
+)
+print(response.json())
+```
 
-## Status Codes Reference
+## Data Structures
 
-All API endpoints use standard HTTP status codes to indicate the success or failure of requests.
+### Proof Configuration
 
-### Success Codes
+The `config` parameter is a JSON string used to customize proof verification.
 
-| Code | Description | Usage |
-|------|-------------|--------|
-| `200` | OK | Request completed successfully |
+**Default Configuration**
+```json
+{
+  "timeout": 300.0,
+  "all_tactics": false,
+  "tactics": false,
+  "ast": false,
+  "premises": false
+}
+```
 
-### Client Error Codes
+**Options**
 
-| Code | Description | When it occurs |
-|------|-------------|----------------|
-| `400` | Bad Request | Invalid parameters or malformed request |
-| `404` | Not Found | Resource doesn't exist (e.g., proof ID not found) |
+| Option | Type | Default | Description |
+|-------------|---------|---------|-------------------------------------------|
+| `timeout` | `float` | `300.0` | Maximum processing time in seconds. |
+| `all_tactics`| `boolean`| `false` | Include all tactics in the proof result. |
+| `tactics` | `boolean`| `false` | Include tactics information in the result. |
+| `ast` | `boolean`| `false` | Include the abstract syntax tree in the result. |
+| `premises` | `boolean`| `false` | Include premises information in the result. |
 
-### Server Error Codes
+### Proof Result
 
-| Code | Description | When it occurs |
-|------|-------------|----------------|
-| `500` | Internal Server Error | Server-side processing error |
-| `502` | Bad Gateway | External service error (proof submission failures) |
+The proof verification endpoints (`/prove/check` and `/prove/result/{proof_id}`) return a JSON object with the following structure.
 
-### Endpoint-Specific Status Codes
+**Result Object**
+```json
+{
+  "success": true,
+  "status": "finished",
+  "result": {
+    "tactics": [],
+    "ast": {},
+    "premises": []
+  },
+  "error_message": null
+}
+```
 
-| Endpoint | Possible Status Codes |
-|----------|----------------------|
-| `GET /health` | `200`, `500` |
-| `POST /prove/check` | `200`, `500` |
-| `POST /prove/submit` | `200`, `502` |
-| `GET /prove/result/{proof_id}` | `200`, `404`, `500` |
-| `GET /db/fetch` | `200`, `500` |
-| `DELETE /db/clean` | `200`, `500` |
+**Fields**
 
----
+| Field | Type | Description |
+|---------------|---------|----------------------------------------------------------|
+| `success` | `boolean` | `true` if the proof was successful, otherwise `false`. |
+| `status` | `string` | The current status: `pending`, `running`, `finished`, or `error`. |
+| `result` | `object` | Contains detailed results based on the `config` options. |
+| `error_message`| `string` | An error message if the `status` is `error`. |
 
 ## Error Handling
 
-!!! failure "Error Response Format"
-    All endpoints return errors in a consistent JSON format:
+API errors are returned in a consistent JSON format.
 
-    ```json
-    {
-      "detail": "Error message description"
-    }
-    ```
+**Error Response**
+```json
+{
+  "detail": "A descriptive error message."
+}
+```
 
-### Error Examples
+**Common Status Codes**
 
-!!! failure "Common Error Scenarios"
-    - ==**400 Bad Request**== - Invalid proof syntax or malformed JSON
-    - ==**404 Not Found**== - Proof ID doesn't exist in database
-    - ==**500 Server Error**== - Internal processing failure
-    - ==**502 Bad Gateway**== - External Lean service unavailable
-
-=== "400 Bad Request"
-    ```json
-    {
-      "detail": "Invalid proof syntax"
-    }
-    ```
-
-=== "404 Not Found"
-    ```json
-    {
-      "detail": "Proof ID 'invalid-id' not found"
-    }
-    ```
-
-=== "500 Internal Server Error"
-    ```json
-    {
-      "detail": "Database connection failed"
-    }
-    ```
-
-!!! tip "Debug Tips"
-    - Press ++f12++ to open browser DevTools
-    - Use ++ctrl+r++ / ++cmd+r++ to refresh and retry failed requests
-    - Check Network tab for detailed HTTP status codes
-
----
-
-## Additional Resources
-
-!!! note "Further Documentation"
-    For more detailed configuration options and server setup, refer to:
-    
-    - [Configuration Documentation](config.md) - Detailed server configuration
-    - [Docker Setup](docker.md) - Container deployment guide  
-    - [Source Installation](source.md) - Build from source instructions
-    
-    **Useful keyboard shortcuts:**
-    
-    - ++ctrl+shift+p++ - Open command palette  
-    - ++ctrl+space++ - Trigger autocomplete
-    - ++ctrl+/++ - Toggle line comment
+| Code | Description | Reason |
+|------|---------------------------|--------------------------------------------------|
+| `400` | Bad Request | Invalid parameters or malformed request body. |
+| `404` | Not Found | The requested resource (e.g., a `proof_id`) does not exist. |
+| `500` | Internal Server Error | An unexpected error occurred on the server. |
+| `502` | Bad Gateway | The server encountered an error with an external service. |
