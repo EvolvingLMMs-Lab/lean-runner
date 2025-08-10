@@ -109,4 +109,3 @@ After successful installation:
 
 1. **Read the [Client Documentation](../client/index.md)** to learn how to interact with the server
 2. **Explore the [API Documentation](../api.md)** for detailed endpoint reference
-
