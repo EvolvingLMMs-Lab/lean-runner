@@ -62,7 +62,7 @@ lean:
   workspace: /app/lean-runner/playground
   lean_timeout: 300
 sqlite:
-  database_path: /app/lean_server.db
+  database_path: /app/database/lean_server.db
   timeout: 10
 logging:
   version: 1

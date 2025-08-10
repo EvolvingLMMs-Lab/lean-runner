@@ -25,7 +25,7 @@ You can configure the server using the following environment variables:
 
 -   `PORT`: The port on your host machine that will forward to the server's port `8000` inside the container.
 -   `CONCURRENCY`: The number of concurrent requests the server can handle. The optimal value depends on your machine's resources.
--   `DB_PATH` (host): The path to the database file on your host, which is mounted into the container at `/app/lean_server.db`.
+-   `DB_PATH` (host): The path to the database file on your host, which is mounted into the container at `/app/database/lean_server.db`.
 
 ### Option A: Interactive Mode (Simple Run)
 
@@ -40,7 +40,7 @@ DB_PATH=./lean_server.db
 # Run the container
 docker run --rm -it \
     -p $PORT:8000 \
-    -v $DB_PATH:/app/lean_server.db \
+    -v $DB_PATH:/app/database/lean_server.db \
     pufanyi/lean-server:latest \
     /app/lean-runner/.venv/bin/lean-server --concurrency=$CONCURRENCY
 ```
@@ -59,7 +59,7 @@ DB_PATH=./lean_server.db
 docker run -d \
     --name lean-server \
     -p $PORT:8000 \
-    -v $DB_PATH:/app/lean_server.db \
+    -v $DB_PATH:/app/database/lean_server.db \
     pufanyi/lean-server:latest \
     /app/lean-runner/.venv/bin/lean-server --concurrency=$CONCURRENCY
 ```
