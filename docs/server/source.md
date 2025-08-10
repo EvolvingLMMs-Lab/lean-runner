@@ -6,7 +6,7 @@ This guide walks you through setting up the Lean Server from source code, provid
 
 Before starting, ensure you have the following installed on your system:
 
-- **:simple-uv: uv or :simple-anaconda: Conda**: We strongly recommend using :simple-uv: uv. You can follow [this link](https://docs.astral.sh/uv/getting-started/installation/) for installation.
+- **:simple-uv: uv or :simple-anaconda: Conda**: We strongly recommend using :simple-uv: [uv](https://docs.astral.sh/uv/). You can follow [this link](https://docs.astral.sh/uv/getting-started/installation/) for installation.
 - **elan**: You can follow [this tutorial](https://lean-lang.org/install/manual/) to install elan.
 
 ## Installation Steps
@@ -127,6 +127,7 @@ The `lean-server` command supports the following options:
         - Auto-reload on code changes
         - Detailed debug logging
         - Good for development and testing
+
     === "Production Deployment"
         ```bash
         lean-server --host=0.0.0.0 --port=8000 --concurrency=32--log-level=INFO
