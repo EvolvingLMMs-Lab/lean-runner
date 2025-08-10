@@ -252,6 +252,7 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Manages the lifecycle of Lean proofs, from submission to execution and result retrieval.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
@@ -273,9 +274,12 @@
 <span class="sd">    background tasks for running proofs asynchronously.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        proof_database (ProofDatabase): An instance for interacting with the proof database.</span>
-<span class="sd">        lean_semaphore (asyncio.Semaphore): A semaphore to limit concurrent Lean processes.</span>
-<span class="sd">        background_tasks (set[asyncio.Task]): A set of currently running background proof tasks.</span>
+<span class="sd">        proof_database (ProofDatabase): An instance for interacting with the</span>
+<span class="sd">            proof database.</span>
+<span class="sd">        lean_semaphore (asyncio.Semaphore): A semaphore to limit concurrent</span>
+<span class="sd">            Lean processes.</span>
+<span class="sd">        background_tasks (set[asyncio.Task]): A set of currently running</span>
+<span class="sd">            background proof tasks.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -332,7 +336,9 @@
 
 <div class="viewcode-block" id="ProofManager.run_proof">
 <a class="viewcode-back" href="../../../../lean_server.manager/#lean_server.manager.proof_manager.ProofManager.run_proof">[docs]</a>
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run_proof</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">proof</span><span class="p">:</span> <span class="n">LeanProof</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">LeanProofConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LeanProofResult</span><span class="p">:</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run_proof</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">proof</span><span class="p">:</span> <span class="n">LeanProof</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">LeanProofConfig</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LeanProofResult</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Executes a single Lean proof.</span>
 
