@@ -35,4 +35,3 @@ If you want to try out the latest features or contribute to development, you can
     cd LeanRunner
     pip install -e packages/client
     ```
-
