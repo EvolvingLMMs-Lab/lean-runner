@@ -36,7 +36,7 @@ exclude_patterns = []
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "furo"
-html_static_path = ["_static", "../../../docs/assets"]
+html_static_path = ["../../../docs/assets"]
 html_logo = "../../../docs/assets/logo/logo-wt.webp"
 html_favicon = "../../../docs/assets/logo/logo-wt.webp"
 
