@@ -6,7 +6,7 @@ This guide walks you through setting up the Lean Server from source code, provid
 
 Before starting, ensure you have the following installed on your system:
 
-- **Python 3.12+ (or UV)**: 我们强烈建议你使用 uv，可以 follow [这个 link](https://docs.astral.sh/uv/getting-started/installation/) 进行安装。
+- **Conda or uv**: 我们强烈建议你使用 uv，可以 follow [这个 link](https://docs.astral.sh/uv/getting-started/installation/) 进行安装。
 - **elan**: 你可以 follow [这个教程](https://lean-lang.org/install/manual/) 来安装 elan。
 
 ## 🛠️ Installation Steps
@@ -25,7 +25,14 @@ cd lean-runner
 
 Create and activate a Python virtual environment with the required Python version:
 
-=== "Linux/macOS"
+=== "Conda"
+    ```bash
+    # Create a new conda environment with Python 3.12
+    conda create -n lean-server python=3.12
+    conda activate lean-server
+    ```
+
+=== "uv (Linux/macOS)"
     ```bash
     # Create virtual environment with Python 3.12
     uv venv --python=3.12
@@ -34,7 +41,7 @@ Create and activate a Python virtual environment with the required Python versio
     source .venv/bin/activate
     ```
 
-=== "Windows"
+=== "uv (Windows)"
     ```powershell
     # Create virtual environment with Python 3.12
     uv venv --python=3.12
