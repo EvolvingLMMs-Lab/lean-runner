@@ -97,5 +97,5 @@ nav:
       - Submit and Get Result: client/submit-get-result.md
       - Proof Config: client/config.md
   - For Developers:
-      - Todos: dev/todos.md
       - Code Documentation: dev/docs.md
+      - Todos: dev/todos.md

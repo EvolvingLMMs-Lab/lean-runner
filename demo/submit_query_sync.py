@@ -66,7 +66,7 @@ def main():
         demo_dir / "test4.lean",
     ]
 
-    with LeanClient(base_url="http://0.0.0.0:8080", timeout=60.0) as client:
+    with LeanClient(base_url="http://0.0.0.0:8888") as client:
         submitted_proofs: list[Proof] = [
             client.submit(proof=file) for file in lean_files
         ]

@@ -7,54 +7,38 @@ from pathlib import Path
 from typing import Any
 
 import yaml
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class LeanConfig(BaseModel):
-    """
-    Configuration specific to the Lean environment.
+    """Configuration specific to the Lean environment."""
 
-    Attributes:
-        executable: The path to the Lean executable.
-        workspace: The path to the Lean workspace.
-        concurrency: The maximum number of concurrent Lean processes.
-    """
-
-    executable: str
-    workspace: str
-    concurrency: int
+    executable: str = Field(..., description="The path to the Lean executable.")
+    workspace: str = Field(..., description="The path to the Lean workspace.")
+    concurrency: int = Field(
+        ..., description="The maximum number of concurrent Lean processes."
+    )
 
 
 class SQLiteConfig(BaseModel):
-    """
-    Configuration for the SQLite database.
+    """Configuration for the SQLite database."""
 
-    Attributes:
-        database_path: The file path for the SQLite database.
-        timeout: The connection timeout in seconds.
-    """
-
-    database_path: str
-    timeout: int
+    database_path: str = Field(
+        ..., description="The file path for the SQLite database."
+    )
+    timeout: int = Field(..., description="The connection timeout in seconds.")
 
 
 class Config(BaseModel):
-    """
-    The main configuration model for the application.
+    """The main configuration model for the application."""
 
-    Attributes:
-        host: The host to bind the server to.
-        port: The port to run the server on.
-        lean: The Lean-specific configuration.
-        sqlite: The SQLite-specific configuration.
-        logging: The logging configuration dictionary.
-    """
-
-    host: str
-    port: int
-    lean: LeanConfig
-    sqlite: SQLiteConfig
-    logging: dict[str, Any]
+    host: str = Field(..., description="The host to bind the server to.")
+    port: int = Field(..., description="The port to run the server on.")
+    lean: LeanConfig = Field(..., description="The Lean-specific configuration.")
+    sqlite: SQLiteConfig = Field(..., description="The SQLite-specific configuration.")
+    logging: dict[str, Any] = Field(
+        ..., description="The logging configuration dictionary."
+    )
 
 
 def _deep_merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
