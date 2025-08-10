@@ -26,6 +26,8 @@ jobs:
         with:
           enable-cache: true
       - run: uv sync --dev
+      - name: Generate Sphinx RST files
+        run: bash ./scripts/update_docs.sh
       - name: Build MkDocs and Sphinx
         run: |
           uv run mkdocs build
