@@ -6,8 +6,8 @@ This guide walks you through setting up the Lean Server from source code, provid
 
 Before starting, ensure you have the following installed on your system:
 
-- **Conda or uv**: 我们强烈建议你使用 uv，可以 follow [这个 link](https://docs.astral.sh/uv/getting-started/installation/) 进行安装。
-- **elan**: 你可以 follow [这个教程](https://lean-lang.org/install/manual/) 来安装 elan。
+- **:simple-uv: uv or :simple-anaconda: Conda**: We strongly recommend using :simple-uv: uv. You can follow [this link](https://docs.astral.sh/uv/getting-started/installation/) for installation.
+- **elan**: You can follow [this tutorial](https://lean-lang.org/install/manual/) to install elan.
 
 ## Installation Steps
 
@@ -25,7 +25,7 @@ cd lean-runner
 
 Create and activate a Python virtual environment with the required Python version:
 
-=== "uv (Linux/macOS)"
+=== ":simple-uv: uv (Linux/macOS)"
     ```bash
     # Create virtual environment with Python 3.12
     uv venv --python=3.12
@@ -34,7 +34,7 @@ Create and activate a Python virtual environment with the required Python versio
     source .venv/bin/activate
     ```
 
-=== "uv (Windows)"
+=== ":simple-uv: uv (Windows)"
     ```powershell
     # Create virtual environment with Python 3.12
     uv venv --python=3.12
@@ -43,7 +43,7 @@ Create and activate a Python virtual environment with the required Python versio
     .venv\Scripts\activate
     ```
 
-=== "Conda"
+=== ":simple-anaconda: Conda"
     ```bash
     # Create a new conda environment with Python 3.12
     conda create -n lean-server python=3.12
@@ -55,13 +55,13 @@ Create and activate a Python virtual environment with the required Python versio
 
 Install the server package in editable mode to enable development:
 
-=== "uv"
+=== ":simple-uv: uv"
     ```bash
     # Install the server package with all dependencies
     uv pip install -e packages/server
     ```
 
-=== "Conda"
+=== ":simple-anaconda: Conda"
     ```bash
     # Install the server package with all dependencies
     python -m pip install -e packages/server
@@ -84,6 +84,9 @@ cd ..
 
 !!! tip "Build Time"
     The initial build process downloads and compiles Mathlib4 and other dependencies, which can take 10-30 minutes depending on your system.
+
+!!! tip "Customize Lean Dependencies"
+    You can customize the Lean dependencies by modifying the `lean-runner/playground/lakefile.toml` file, or completely replace the `lean-runner/playground` directory with your own Lean workspace.
 
 ## Running the Server
 

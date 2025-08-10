@@ -83,6 +83,7 @@ nav:
       - Install via Docker: server/docker.md
       - Build from Source: server/source.md
       - Configuration File: server/config.md
+      - API: server/api.md
   - Client:
       - Overview: client/index.md
       - Installation: client/install.md

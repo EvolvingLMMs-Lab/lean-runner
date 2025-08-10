@@ -7,7 +7,7 @@ The Docker image comes with `mathlib` version [:material-tag: v4.22.0-rc4](https
 !!! tip "Prerequisites"
     Before you begin, ensure you have [Docker installed](https://docs.docker.com/engine/install/) on your system.
 
-## 1. Pull the Docker Image
+## Pull the Docker Image
 
 First, pull the latest server image from Docker Hub. This ensures you have the most recent version.
 
@@ -15,7 +15,7 @@ First, pull the latest server image from Docker Hub. This ensures you have the m
 docker pull pufanyi/lean-server:latest
 ```
 
-## 2. Running the Server
+## Running the Server
 
 You can run the server in two modes: either as an interactive process in your terminal or as a detached process running in the background.
 
@@ -89,7 +89,7 @@ docker logs -f lean-server
 
     Check [Docker Documentation](https://docs.docker.com/engine/containers/run/) for more details.
 
-## 3. Verifying the Server
+## Verifying the Server
 
 After starting the container, you can verify that the server is running by sending a health check request. Open a new terminal and run:
 
@@ -102,3 +102,11 @@ If the server is running correctly, you should receive a response like:
 ```json
 {"status":"ok", "message":"Lean Server is running", "version":"0.0.1"}
 ```
+
+## Next Steps
+
+After successful installation:
+
+1. **Read the [Client Documentation](../client/index.md)** to learn how to interact with the server
+2. **Explore the [API Documentation](../api.md)** for detailed endpoint reference
+
