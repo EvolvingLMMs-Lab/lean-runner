@@ -84,3 +84,5 @@ nav:
   - Client:
       - Overview: client/index.md
       - Installation: client/install.md
+  - For Developers:
+      - Todos: dev/todos.md

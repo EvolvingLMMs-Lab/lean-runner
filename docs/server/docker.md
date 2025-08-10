@@ -35,10 +35,12 @@ This mode is useful for temporary use or for watching the server logs in real-ti
 # Configuration
 PORT=8888
 CONCURRENCY=32
+DB_PATH=./lean_server.db
 
 # Run the container
 docker run --rm -it \
     -p $PORT:8000 \
+    -v $DB_PATH:/app/lean_server.db \
     pufanyi/lean-server:latest \
     /app/lean-runner/.venv/bin/lean-server --concurrency=$CONCURRENCY
 ```
