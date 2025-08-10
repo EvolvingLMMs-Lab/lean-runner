@@ -6,14 +6,17 @@ This page documents the development roadmap and planned features for Lean Server
 -   [ ] **Custom Mathlib Support in Docker**
     -   Support for using custom `mathlib` versions within Docker containers
     -   This would allow users to specify different Mathlib versions for their proofs without rebuilding the entire Docker image
-    -   Currently, the server uses a fixed Mathlib version bundled in the Docker image (`pufanyi/lean-server:latest`)
+    -   Currently, the server uses a fixed Mathlib version ([:material-tag: v4.22.0-rc4](https://github.com/leanprover-community/mathlib4/releases/tag/v4.22.0-rc4)) bundled in the Docker image
+-   [ ] **Lean Output Result Processing**
+    -   [ ] Parse related results
+    -   [ ] Support proof simplification
 -   [ ] **Data Export Capabilities**
-    -   [ ] :simple-huggingface: [Hugging Face Datasets](https://huggingface.co/docs/datasets/en/index) - Export proof verification results to HF Datasets format for ML research
-    -   [ ] :simple-json: [JSON](https://www.json.org/json-en.html) / [JSONL](https://jsonlines.org/) - Standard JSON formats for easy integration with other tools
-    -   [ ] :fontawesome-solid-file-csv: CSV - Tabular data export for analysis and reporting
-    -   [ ] :material-file-excel: Excel - Business-friendly format for sharing results
-    -   [ ] :simple-apacheparquet: [Parquet](https://parquet.apache.org/) - Columnar storage format for big data processing
-    -   [ ] [Arrow](https://arrow.apache.org/) - In-memory columnar format for high-performance analytics
+    -   [ ] :simple-huggingface: [Hugging Face Datasets](https://huggingface.co/docs/datasets/en/index)
+    -   [ ] :simple-json: [JSON](https://www.json.org/json-en.html) / [JSONL](https://jsonlines.org/)
+    -   [ ] :fontawesome-solid-file-csv: CSV
+    -   [ ] :material-file-excel: Excel
+    -   [ ] :simple-apacheparquet: [Parquet](https://parquet.apache.org/)
+    -   [ ] [Arrow](https://arrow.apache.org/)
 -   [ ] **Data Visualization**
 -   [ ] **Docker Layer Optimization**
     -   Optimize Docker image layering to make `docker pull` operations faster
