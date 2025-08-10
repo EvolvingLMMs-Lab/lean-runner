@@ -28,8 +28,9 @@ class ProofManager:
     ):
         tmp = await self.proof_database.proof_exists(proof=proof)
         if tmp:
-            logger.info(f"Proof already exists: {tmp}, returning cached proof ID")
+            logger.info(f"Proof already submitted: {tmp}, returning existing proof ID")
             return {"id": tmp}
+        await self.proof_database.insert_hash(proof=proof)
         task = asyncio.create_task(self.run_proof(proof=proof, config=config))
         logger.info(f"Submitted proof: {proof.proof_id}")
         self.background_tasks.add(task)
@@ -38,10 +39,12 @@ class ProofManager:
 
     async def run_proof(self, *, proof: LeanProof, config: LeanProofConfig):
         tmp = await self.proof_database.proof_exists(proof=proof)
-        if tmp:
-            result = await self.get_result(tmp)
-            logger.info(f"Proof already exists: {tmp}, returning cached result")
-            return result
+        if tmp is None:
+            tmp = proof.proof_id
+            await self.proof_database.insert_hash(proof=proof)
+        if await self.proof_database.result_exists(proof_id=tmp):
+            logger.info(f"Proof already exists in database: {tmp}, skipping execution")
+            return await self.get_result(proof_id=tmp)
         await self.proof_database.update_status(
             proof_id=proof.proof_id, status=LeanProofStatus.PENDING
         )
@@ -60,7 +63,6 @@ class ProofManager:
                 await self.proof_database.update_status(
                     proof_id=proof.proof_id, status=result.status
                 )
-                await self.proof_database.insert_hash(proof=proof)
                 logger.info("Proof result inserted into database")
                 return result
             except Exception as e:
