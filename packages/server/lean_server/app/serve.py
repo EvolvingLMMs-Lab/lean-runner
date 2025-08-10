@@ -9,6 +9,7 @@ from .args import parse_args
 from .db import launch_db_router
 from .lifespan import get_lifespan
 from .prove import launch_prove_router
+from .utils import launch_health_router
 
 
 def launch(*, config: Config) -> FastAPI:
@@ -25,6 +26,7 @@ def launch(*, config: Config) -> FastAPI:
         The configured FastAPI application instance.
     """
     app = FastAPI(lifespan=get_lifespan(config=config))
+    launch_health_router(app)
     launch_prove_router(app)
     launch_db_router(app)
     return app

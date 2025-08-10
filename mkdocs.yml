@@ -72,15 +72,30 @@ markdown_extensions:
   - def_list
   - pymdownx.tasklist:
       custom_checkbox: true
+      clickable_checkbox: true
   - md_in_html
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
 extra_javascript:
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 nav:
   - Quick Start: quick-start.md
   - Server:
-      - Installation via Docker: server/docker.md
-      - Installation from Source: server/source.md
+      - Install via Docker: server/docker.md
+      - Build from Source: server/source.md
+      - Configuration: server/config.md
+      - API Reference: server/api.md
   - Client:
       - Overview: client/index.md
       - Installation: client/install.md
+      - Simple Query: client/simple-query.md
+      - Bulk Verification: client/verify-all.md
+      - Submit and Get Result: client/submit-get-result.md
+      - Proof Config: client/config.md
+  - For Developers:
+      - Todos: dev/todos.md
+      - Code Documentation: dev/docs.md

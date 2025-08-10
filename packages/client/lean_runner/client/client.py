@@ -28,7 +28,6 @@ class LeanClient:
 
         Args:
             base_url: The base URL of the Lean Server, e.g., "http://localhost:8000".
-            timeout: The timeout for the HTTP requests in seconds.
         """
         if not base_url.endswith("/"):
             base_url += "/"
@@ -43,6 +42,21 @@ class LeanClient:
         return self._session
 
     def _get_proof_content(self, file_or_content: str | Path | os.PathLike) -> str:
+        """
+        Gets the content of a proof.
+
+        If `file_or_content` is a path to an existing file, it reads the file's content.
+        Otherwise, it returns the string content directly.
+
+        Args:
+            file_or_content: The proof content or a path to the proof file.
+
+        Returns:
+            The string content of the proof.
+
+        Raises:
+            OSError: If there is an error reading the file.
+        """
         path = Path(file_or_content)
 
         if not path.exists():
@@ -62,9 +76,9 @@ class LeanClient:
 
         Args:
             proof: The proof content. Can be:
-                - A string containing the proof
-                - A Path object pointing to a file containing the proof
-                - A string path to a file containing the proof
+                - A string containing the proof.
+                - A Path object pointing to a file containing the proof.
+                - A string path to a file containing the proof.
             config: An optional dictionary for proof configuration.
 
         Returns:
@@ -92,9 +106,9 @@ class LeanClient:
 
         Args:
             proof: The proof content. Can be:
-                - A string containing the proof
-                - A Path object pointing to a file containing the proof
-                - A string path to a file containing the proof
+                - A string containing the proof.
+                - A Path object pointing to a file containing the proof.
+                - A string path to a file containing the proof.
             config: An optional dictionary for proof configuration.
 
         Returns:
@@ -144,7 +158,7 @@ class LeanClient:
 
         pbar = tqdm.tqdm(total=total, disable=not progress_bar, desc="Verifying proofs")
 
-        # To handle exceptions gracefully with executor.map, we wrap the call
+        # To handle exceptions gracefully with executor.map, we wrap the call.
         def _verify_wrapper(proof_item, proof_config):
             try:
                 return self.verify(proof_item, proof_config)
@@ -154,7 +168,7 @@ class LeanClient:
                 pbar.update(1)
 
         with futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-            # Use partial to fix the `config` argument for the wrapper
+            # Use partial to fix the `config` argument for the wrapper.
             verify_func = partial(_verify_wrapper, proof_config=config)
 
             results_iterator = executor.map(verify_func, proofs)
@@ -188,7 +202,9 @@ class LeanClient:
             self._session.close()
 
     def __enter__(self):
+        """Enter the context manager."""
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        """Exit the context manager, ensuring the session is closed."""
         self.close()

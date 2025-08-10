@@ -15,10 +15,12 @@ Start the server with a single `docker run` command:
 
 ```sh
 PORT=8080
-CONCURRENCY=4
+CONCURRENCY=32
+DB_PATH=./lean_server.db
 
 docker run --rm -it \
     -p $PORT:8000 \
+    -v $DB_PATH:/app/lean_server.db \
     pufanyi/lean-server:latest \
     /app/lean-runner/.venv/bin/lean-server --concurrency=$CONCURRENCY
 ```
@@ -39,7 +41,7 @@ Install the Lean-Runner client from PyPI:
     uv pip install lean-runner
     ```
 
-Use LeanClient to verify a proof. The client supports both synchronous and asynchronous operations:
+Use `LeanClient` to verify a proof. The client supports both synchronous and asynchronous operations:
 
 !!! example "Lean proof verification"
 

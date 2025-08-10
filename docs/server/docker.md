@@ -1,14 +1,13 @@
-# Installation via Docker
+# Install Lean Server via :simple-docker: Docker
 
-For a hassle-free setup of the Lean Server, we strongly recommend using Docker. This approach avoids complex local configuration of Lean and its dependencies.
+For a hassle-free setup of the Lean Server, we strongly recommend using :simple-docker: [Docker](https://www.docker.com/). This approach avoids complex local configuration of Lean and its dependencies.
 
-The Docker image comes with `mathlib` version [v4.22.0-rc4](https://github.com/leanprover-community/mathlib4/releases/tag/v4.22.0-rc4). Custom `mathlib` versions are not supported with this method. If you require a specific version, please refer to the [build from source guide](./source.md).
+The Docker image comes with `mathlib` version [:material-tag: v4.22.0-rc4](https://github.com/leanprover-community/mathlib4/releases/tag/v4.22.0-rc4). Custom `mathlib` versions are not currently supported with this method, but we [plan](../dev/todos.md) to add this feature in the near future. Currenty, if you require a specific version, please refer to the [build from source guide](./source.md).
 
-## Prerequisites
+!!! tip "Prerequisites"
+    Before you begin, ensure you have [Docker installed](https://docs.docker.com/engine/install/) on your system.
 
-Before you begin, ensure you have [Docker installed](https://docs.docker.com/engine/install/) on your system.
-
-## 1. Pull the Docker Image
+## Pull the Docker Image
 
 First, pull the latest server image from Docker Hub. This ensures you have the most recent version.
 
@@ -16,7 +15,7 @@ First, pull the latest server image from Docker Hub. This ensures you have the m
 docker pull pufanyi/lean-server:latest
 ```
 
-## 2. Running the Server
+## Running the Server
 
 You can run the server in two modes: either as an interactive process in your terminal or as a detached process running in the background.
 
@@ -26,6 +25,7 @@ You can configure the server using the following environment variables:
 
 -   `PORT`: The port on your host machine that will forward to the server's port `8000` inside the container.
 -   `CONCURRENCY`: The number of concurrent requests the server can handle. The optimal value depends on your machine's resources.
+-   `DB_PATH` (host): The path to the database file on your host, which is mounted into the container at `/app/lean_server.db`.
 
 ### Option A: Interactive Mode (Simple Run)
 
@@ -35,10 +35,12 @@ This mode is useful for temporary use or for watching the server logs in real-ti
 # Configuration
 PORT=8888
 CONCURRENCY=32
+DB_PATH=./lean_server.db
 
 # Run the container
 docker run --rm -it \
     -p $PORT:8000 \
+    -v $DB_PATH:/app/lean_server.db \
     pufanyi/lean-server:latest \
     /app/lean-runner/.venv/bin/lean-server --concurrency=$CONCURRENCY
 ```
@@ -51,27 +53,43 @@ This is the recommended mode for long-running services. The container will conti
 # Configuration
 PORT=8888
 CONCURRENCY=32
+DB_PATH=./lean_server.db
 
 # Run the container
 docker run -d \
     --name lean-server \
     -p $PORT:8000 \
+    -v $DB_PATH:/app/lean_server.db \
     pufanyi/lean-server:latest \
     /app/lean-runner/.venv/bin/lean-server --concurrency=$CONCURRENCY
 ```
 
-### Understanding the Docker Command
+To stop the container, you can use the following command:
 
-| Flag          | Description                                                                                                |
-|---------------|------------------------------------------------------------------------------------------------------------|
-| `docker run`  | The command to create and start a new container from an image.                                             |
-| `--rm`        | (Interactive Mode) Automatically removes the container when it exits.                                      |
-| `-it`         | (Interactive Mode) Creates an interactive terminal session.                                                |
-| `-d`          | (Detached Mode) Runs the container in the background.                                                      |
-| `--name`      | (Detached Mode) Assigns a memorable name to the container (e.g., `lean-server`).                           |
-| `-p X:Y`      | Maps port `X` on the host to port `Y` inside the container. Our server runs on port `8000` in the container. |
+```bash
+docker stop lean-server
+```
 
-## 3. Verifying the Server
+To view the logs of the container, you can use the following command:
+
+```bash
+docker logs -f lean-server
+```
+
+??? tip "Understanding the Docker Command"
+
+    | Flag          | Description                                                                                                |
+    |---------------|------------------------------------------------------------------------------------------------------------|
+    | `--rm`        | (Interactive Mode) Automatically removes the container when it exits.                                      |
+    | `-it`         | (Interactive Mode) Creates an interactive terminal session.                                                |
+    | `-d`          | (Detached Mode) Runs the container in the background.                                                      |
+    | `--name`      | (Detached Mode) Assigns a memorable name to the container (e.g., `lean-server`).                           |
+    | `-v`          | Mounts a volume from the host to the container.                                            |
+    | `-p X:Y`      | Maps port `X` on the host to port `Y` inside the container. Our server runs on port `8000` in the container. |
+
+    Check [Docker Documentation](https://docs.docker.com/engine/containers/run/) for more details.
+
+## Verifying the Server
 
 After starting the container, you can verify that the server is running by sending a health check request. Open a new terminal and run:
 
@@ -82,33 +100,12 @@ curl http://localhost:8888/health
 If the server is running correctly, you should receive a response like:
 
 ```json
-{"status":"ok"}
+{"status":"ok", "message":"Lean Server is running", "version":"0.0.1"}
 ```
 
-## 4. Managing the Container
+## Next Steps
 
-If you are running the server in detached mode, you can use the following commands to manage it.
+After successful installation:
 
-### Viewing Logs
-
-To see the real-time output from the server:
-
-```bash
-docker logs -f lean-server
-```
-
-### Stopping the Server
-
-To gracefully stop the running container:
-
-```bash
-docker stop lean-server
-```
-
-### Restarting the Server
-
-If you have stopped the container, you can restart it without having to run the full `docker run` command again:
-
-```bash
-docker start lean-server
-```
+1. **Read the [Client Documentation](../client/index.md)** to learn how to interact with the server
+2. **Explore the [API Documentation](../api.md)** for detailed endpoint reference

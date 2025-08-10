@@ -26,4 +26,18 @@ jobs:
         with:
           enable-cache: true
       - run: uv sync --dev
-      - run: uv run mkdocs gh-deploy --force
+      - name: Generate Sphinx RST files
+        run: |
+          uv run sphinx-apidoc -o sphinx_docs/client/source -f packages/client/lean_runner
+          uv run sphinx-apidoc -o sphinx_docs/server/source -f packages/server/lean_server
+      - name: Build MkDocs and Sphinx
+        run: |
+          uv run mkdocs build
+          (cd sphinx_docs/client/source && uv run sphinx-build -b dirhtml . ../../../site/dev/docs/client)
+          (cd sphinx_docs/server/source && uv run sphinx-build -b dirhtml . ../../../site/dev/docs/server)
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          publish_branch: gh-pages
