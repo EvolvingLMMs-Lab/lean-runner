@@ -39,12 +39,6 @@ html_theme = "furo"
 html_static_path = ["../../../docs/assets"]
 html_favicon = "../../../docs/assets/logo/logo.webp"
 
-# Furo theme options for better logo handling
-html_theme_options = {
-    "light_logo": "logo/logo-wt.webp",
-    "dark_logo": "logo/logo-wt-dark.webp",
-}
-
 # This is the critical setting for deploying to a subdirectory
 html_baseurl = "/dev/docs/server/"
 
