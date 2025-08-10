@@ -149,7 +149,7 @@ The `lean-server` command supports the following options:
         - Requires sufficient system resources
 
 
-## 🧪 Verify Installation
+## Verify Installation
 
 Test that the server is working correctly:
 
@@ -195,11 +195,7 @@ Test that the server is working correctly:
     ```
     <div class="result" markdown>
     ```json
-    {
-        "status": "success",
-        "messages": ["Proof verification completed successfully"],
-        "proof_id": "abc123..."
-    }
+    {"success":true,"status":"finished","result":{"env":0,"messages":[]},"error_message":null}
     ```
     </div>
 
@@ -209,135 +205,31 @@ Test that the server is working correctly:
     from lean_runner import LeanClient
 
     proof = """\
-    import Mathlib.Data.Real.Basic
+    import Mathlib.Tactic.NormNum
 
     theorem test : 1 + 1 = 2 := by norm_num
     """
 
     with LeanClient(base_url="http://localhost:8000") as client:
         result = client.verify(proof=proof)
-        print(result)
+        print(result.model_dump_json(indent=4))
     ```
     <div class="result" markdown>
     ```json
     {
-        "status": "success",
-        "messages": ["Proof verification completed successfully"],
-        "proof_id": "abc123..."
+        "success": true,
+        "status": "finished",
+        "result": {
+            "env": 0,
+            "messages": []
+        },
+        "error_message": null
     }
     ```
     </div>
 
 
-## 🔧 Troubleshooting
-
-### Common Issues and Solutions
-
-#### 1. Lean Executable Not Found
-**Error**: `lean: command not found` or `lake: command not found`
-
-**Solution**:
-```bash
-# Ensure elan is in your PATH
-source ~/.elan/env
-
-# Or add to your shell profile
-echo 'source ~/.elan/env' >> ~/.bashrc
-```
-
-#### 2. Python Version Incompatibility
-**Error**: `Python 3.12+ required`
-
-**Solution**:
-
-=== "Linux/macOS"
-    ```bash
-    # Check Python version
-    python --version
-
-    # Install Python 3.12+ or use UV to manage versions
-    uv python install 3.12
-    uv venv --python=3.12
-    ```
-
-=== "Windows"
-    ```powershell
-    # Check Python version
-    python --version
-
-    # Download and install Python 3.12+ from python.org
-    # Or use UV to manage versions
-    uv python install 3.12
-    uv venv --python=3.12
-    ```
-
-#### 3. Build Failures in Playground
-**Error**: Lake build fails with dependency errors
-
-**Solution**:
-```bash
-cd playground
-lake clean
-lake update
-lake build
-```
-
-#### 4. Port Already in Use
-**Error**: `Address already in use: port 8000`
-
-**Solution**:
-```bash
-# Find process using the port
-lsof -i :8000
-
-# Kill the process or use a different port
-lean-server --port=8001
-```
-
-#### 5. Permission Denied for Database
-**Error**: Cannot write to database file
-
-**Solution**:
-```bash
-# Ensure write permissions for the database directory
-chmod 755 .
-touch lean_server.db
-chmod 644 lean_server.db
-```
-
-### Debug Mode
-
-Enable detailed logging for troubleshooting:
-
-```bash
-# Set debug log level
-export LOG_LEVEL=DEBUG
-lean-server --log-level=DEBUG
-```
-
-### Performance Tuning
-
-For optimal performance:
-
-1. **Increase concurrency** based on your CPU cores:
-   ```bash
-   lean-server --concurrency=$(nproc)
-   ```
-
-2. **Use SSD storage** for the database and Lean cache
-
-3. **Allocate sufficient memory** (minimum 4GB, recommended 8GB+)
-
-4. **Monitor resource usage**:
-   ```bash
-   # Monitor CPU and memory usage
-   htop
-
-   # Monitor server logs
-   tail -f /var/log/lean-server.log
-   ```
-
-## 🔄 Updating
+## Updating
 
 To update to the latest version:
 
@@ -358,20 +250,9 @@ cd ..
 lean-server
 ```
 
-## 📚 Next Steps
+## Next Steps
 
 After successful installation:
 
-1. **Read the [Client Documentation](../client/README.md)** to learn how to interact with the server
-2. **Explore the [API Documentation](../api/README.md)** for detailed endpoint reference
-3. **Check out the [Examples](../../demo/)** for sample usage patterns
-4. **Review the [Development Guide](../dev/README.md)** if you plan to contribute
-
-## 🤝 Need Help?
-
-If you encounter issues not covered in this guide:
-
-1. Check the [GitHub Issues](https://github.com/EvolvingLMMs-Lab/lean-runner/issues)
-2. Review the [FAQ](../faq.md)
-3. Join our [Discord community](https://discord.gg/lean-runner)
-4. Create a new issue with detailed error information
+1. **Read the [Client Documentation](../client/index.md)** to learn how to interact with the server
+2. **Explore the [API Documentation](../api.md)** for detailed endpoint reference
