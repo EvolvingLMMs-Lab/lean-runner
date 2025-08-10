@@ -1,0 +1,7 @@
+lean_server
+===========
+
+.. toctree::
+   :maxdepth: 4
+
+   lean_server

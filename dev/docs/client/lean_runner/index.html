@@ -322,10 +322,200 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../lean_runner.proof/#module-lean_runner.proof">Module contents</a></li>
 </ul>
 </li>
 </ul>
 </div>
+</section>
+<section id="module-lean_runner">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-lean_runner" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="lean_runner.AsyncLeanClient">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lean_runner.</span></span><span class="sig-name descname"><span class="pre">AsyncLeanClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lean_runner/client/aio/client/#AsyncLeanClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_runner.AsyncLeanClient" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An asynchronous client for interacting with the Lean Server API.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lean_runner.AsyncLeanClient.close">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lean_runner/client/aio/client/#AsyncLeanClient.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_runner.AsyncLeanClient.close" title="Link to this definition">¶</a></dt>
+<dd><p>Closes the httpx client session.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lean_runner.AsyncLeanClient.get_result">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lean_runner.proof/#lean_runner.proof.proto.Proof" title="lean_runner.proof.proto.Proof"><span class="pre">Proof</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../lean_runner.proof/#lean_runner.proof.proto.ProofResult" title="lean_runner.proof.proto.ProofResult"><span class="pre">ProofResult</span></a></span></span><a class="reference internal" href="../_modules/lean_runner/client/aio/client/#AsyncLeanClient.get_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_runner.AsyncLeanClient.get_result" title="Link to this definition">¶</a></dt>
+<dd><p>Gets the result of a proof by its task ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>proof</strong> – A <cite>Proof</cite> object containing the task ID.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <cite>ProofResult</cite> object containing the proof result.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lean_runner.AsyncLeanClient.submit">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">submit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lean_runner.proof/#lean_runner.proof.proto.ProofConfig" title="lean_runner.proof.proto.ProofConfig"><span class="pre">ProofConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../lean_runner.proof/#lean_runner.proof.proto.Proof" title="lean_runner.proof.proto.Proof"><span class="pre">Proof</span></a></span></span><a class="reference internal" href="../_modules/lean_runner/client/aio/client/#AsyncLeanClient.submit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_runner.AsyncLeanClient.submit" title="Link to this definition">¶</a></dt>
+<dd><p>Submits a proof asynchronously.</p>
+<p>This method sends the proof to the server’s <cite>/prove/submit</cite> endpoint and
+immediately returns a <cite>Proof</cite> object containing the task ID. The result
+can be retrieved later using the <cite>get_result</cite> method with this ID.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proof</strong> – The proof content, which can be a string, Path, or os.PathLike</p></li>
+<li><p><strong>object.</strong></p></li>
+<li><p><strong>config</strong> – The proof configuration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <cite>Proof</cite> object representing the submitted task.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lean_runner.AsyncLeanClient.verify">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">verify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lean_runner.proof/#lean_runner.proof.proto.ProofConfig" title="lean_runner.proof.proto.ProofConfig"><span class="pre">ProofConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../lean_runner.proof/#lean_runner.proof.proto.ProofResult" title="lean_runner.proof.proto.ProofResult"><span class="pre">ProofResult</span></a></span></span><a class="reference internal" href="../_modules/lean_runner/client/aio/client/#AsyncLeanClient.verify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_runner.AsyncLeanClient.verify" title="Link to this definition">¶</a></dt>
+<dd><p>Verifies a proof asynchronously.</p>
+<p>This method sends the proof to the server’s <cite>/prove/check</cite> endpoint and
+waits for the server to return the verification result. This is a
+blocking call that waits for the verification to complete.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proof</strong> – The proof content, which can be a string, Path, or os.PathLike</p></li>
+<li><p><strong>object.</strong></p></li>
+<li><p><strong>config</strong> – The proof configuration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <cite>ProofResult</cite> object containing the verification result.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lean_runner.AsyncLeanClient.verify_all">
+<em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">verify_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proofs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">AsyncIterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lean_runner.proof/#lean_runner.proof.proto.ProofConfig" title="lean_runner.proof.proto.ProofConfig"><span class="pre">ProofConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">AsyncIterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../lean_runner.proof/#lean_runner.proof.proto.ProofResult" title="lean_runner.proof.proto.ProofResult"><span class="pre">ProofResult</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/lean_runner/client/aio/client/#AsyncLeanClient.verify_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_runner.AsyncLeanClient.verify_all" title="Link to this definition">¶</a></dt>
+<dd><p>Verifies a collection of proofs concurrently using a producer-consumer model.</p>
+<p>This function is designed to be memory-efficient. It uses a bounded queue
+to prevent the producer from reading the entire iterator into memory, making
+it suitable for very large collections of proofs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proofs</strong> – An iterable or async iterable of proofs to verify.</p></li>
+<li><p><strong>config</strong> – The proof configuration.</p></li>
+<li><p><strong>total</strong> – The total number of proofs (for the progress bar). If not provided,
+it’s inferred from <cite>len(proofs)</cite> if available.</p></li>
+<li><p><strong>max_workers</strong> – The maximum number of concurrent verification tasks
+(consumers).</p></li>
+<li><p><strong>progress_bar</strong> – Whether to display a progress bar.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>ProofResult</em> – The result of each verification as it completes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lean_runner.LeanClient">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lean_runner.</span></span><span class="sig-name descname"><span class="pre">LeanClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lean_runner/client/client/#LeanClient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_runner.LeanClient" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A client for interacting with the Lean Server API.</p>
+<p>This client provides both synchronous and asynchronous methods for making API calls.
+The asynchronous client is available via the <cite>aio</cite> attribute.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lean_runner.LeanClient.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lean_runner/client/client/#LeanClient.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_runner.LeanClient.close" title="Link to this definition">¶</a></dt>
+<dd><p>Closes the client session.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lean_runner.LeanClient.get_result">
+<span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lean_runner.proof/#lean_runner.proof.proto.Proof" title="lean_runner.proof.proto.Proof"><span class="pre">Proof</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../lean_runner.proof/#lean_runner.proof.proto.ProofResult" title="lean_runner.proof.proto.ProofResult"><span class="pre">ProofResult</span></a></span></span><a class="reference internal" href="../_modules/lean_runner/client/client/#LeanClient.get_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_runner.LeanClient.get_result" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the result of a proof submission.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>proof</strong> – A Proof object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A ProofResult object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lean_runner.LeanClient.submit">
+<span class="sig-name descname"><span class="pre">submit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lean_runner.proof/#lean_runner.proof.proto.ProofConfig" title="lean_runner.proof.proto.ProofConfig"><span class="pre">ProofConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../lean_runner.proof/#lean_runner.proof.proto.Proof" title="lean_runner.proof.proto.Proof"><span class="pre">Proof</span></a></span></span><a class="reference internal" href="../_modules/lean_runner/client/client/#LeanClient.submit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_runner.LeanClient.submit" title="Link to this definition">¶</a></dt>
+<dd><p>Submits a proof to the /prove/submit endpoint synchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proof</strong> – The proof content. Can be:
+- A string containing the proof.
+- A Path object pointing to a file containing the proof.
+- A string path to a file containing the proof.</p></li>
+<li><p><strong>config</strong> – An optional dictionary for proof configuration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Proof object representing the submitted job.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lean_runner.LeanClient.verify">
+<span class="sig-name descname"><span class="pre">verify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lean_runner.proof/#lean_runner.proof.proto.ProofConfig" title="lean_runner.proof.proto.ProofConfig"><span class="pre">ProofConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../lean_runner.proof/#lean_runner.proof.proto.ProofResult" title="lean_runner.proof.proto.ProofResult"><span class="pre">ProofResult</span></a></span></span><a class="reference internal" href="../_modules/lean_runner/client/client/#LeanClient.verify"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_runner.LeanClient.verify" title="Link to this definition">¶</a></dt>
+<dd><p>Sends a proof to the /prove/check endpoint synchronously.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proof</strong> – The proof content. Can be:
+- A string containing the proof.
+- A Path object pointing to a file containing the proof.
+- A string path to a file containing the proof.</p></li>
+<li><p><strong>config</strong> – An optional dictionary for proof configuration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the server’s response.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lean_runner.LeanClient.verify_all">
+<span class="sig-name descname"><span class="pre">verify_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proofs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lean_runner.proof/#lean_runner.proof.proto.ProofConfig" title="lean_runner.proof.proto.ProofConfig"><span class="pre">ProofConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress_bar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../lean_runner.proof/#lean_runner.proof.proto.ProofResult" title="lean_runner.proof.proto.ProofResult"><span class="pre">ProofResult</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/lean_runner/client/client/#LeanClient.verify_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_runner.LeanClient.verify_all" title="Link to this definition">¶</a></dt>
+<dd><p>Verifies a collection of proofs concurrently using a thread pool.</p>
+<p>This function is designed to be memory-efficient. It yields results as
+they are completed, making it suitable for very large collections of proofs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proofs</strong> – An iterable of proofs to verify.</p></li>
+<li><p><strong>config</strong> – The proof configuration.</p></li>
+<li><p><strong>total</strong> – The total number of proofs (for the progress bar). If not provided,
+it’s inferred from <cite>len(proofs)</cite> if available.</p></li>
+<li><p><strong>max_workers</strong> – The maximum number of concurrent verification tasks.</p></li>
+<li><p><strong>progress_bar</strong> – Whether to display a progress bar.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>ProofResult</em> – The result of each verification as it completes.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 
@@ -386,6 +576,25 @@
             <ul>
 <li><a class="reference internal" href="#">lean_runner package</a><ul>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#module-lean_runner">Module contents</a><ul>
+<li><a class="reference internal" href="#lean_runner.AsyncLeanClient"><code class="docutils literal notranslate"><span class="pre">AsyncLeanClient</span></code></a><ul>
+<li><a class="reference internal" href="#lean_runner.AsyncLeanClient.close"><code class="docutils literal notranslate"><span class="pre">AsyncLeanClient.close()</span></code></a></li>
+<li><a class="reference internal" href="#lean_runner.AsyncLeanClient.get_result"><code class="docutils literal notranslate"><span class="pre">AsyncLeanClient.get_result()</span></code></a></li>
+<li><a class="reference internal" href="#lean_runner.AsyncLeanClient.submit"><code class="docutils literal notranslate"><span class="pre">AsyncLeanClient.submit()</span></code></a></li>
+<li><a class="reference internal" href="#lean_runner.AsyncLeanClient.verify"><code class="docutils literal notranslate"><span class="pre">AsyncLeanClient.verify()</span></code></a></li>
+<li><a class="reference internal" href="#lean_runner.AsyncLeanClient.verify_all"><code class="docutils literal notranslate"><span class="pre">AsyncLeanClient.verify_all()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lean_runner.LeanClient"><code class="docutils literal notranslate"><span class="pre">LeanClient</span></code></a><ul>
+<li><a class="reference internal" href="#lean_runner.LeanClient.close"><code class="docutils literal notranslate"><span class="pre">LeanClient.close()</span></code></a></li>
+<li><a class="reference internal" href="#lean_runner.LeanClient.get_result"><code class="docutils literal notranslate"><span class="pre">LeanClient.get_result()</span></code></a></li>
+<li><a class="reference internal" href="#lean_runner.LeanClient.submit"><code class="docutils literal notranslate"><span class="pre">LeanClient.submit()</span></code></a></li>
+<li><a class="reference internal" href="#lean_runner.LeanClient.verify"><code class="docutils literal notranslate"><span class="pre">LeanClient.verify()</span></code></a></li>
+<li><a class="reference internal" href="#lean_runner.LeanClient.verify_all"><code class="docutils literal notranslate"><span class="pre">LeanClient.verify_all()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
