@@ -16,3 +16,6 @@ build/
 
 lean_server.db
 /dev/
+
+uv.lock
+site/
