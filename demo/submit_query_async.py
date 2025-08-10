@@ -66,7 +66,7 @@ async def main():
         demo_dir / "test4.lean",
     ]
 
-    async with AsyncLeanClient(base_url="http://0.0.0.0:8080", timeout=60.0) as client:
+    async with AsyncLeanClient(base_url="http://0.0.0.0:8888") as client:
         submitted_proofs: list[Proof] = await asyncio.gather(
             *[client.submit(proof=file) for file in lean_files]
         )
