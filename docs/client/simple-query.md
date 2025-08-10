@@ -44,10 +44,10 @@ The `client.verify()` method sends a proof to the server and synchronously waits
     client = LeanClient("http://localhost:8000")
 
     # Define the proof as a string
-    proof_content = """
-    import Mathlib.Tactic.NormNum
-    theorem test : 2 + 2 = 4 := by norm_num
-    """
+    proof_content = (
+        "import Mathlib.Tactic.NormNum\n" 
+        "theorem test : 2 + 2 = 4 := by norm_num"
+    )
 
     # Verify the proof
     result = client.verify(proof_content)
@@ -66,10 +66,10 @@ The `client.verify()` method sends a proof to the server and synchronously waits
     from lean_runner import LeanClient
 
     with LeanClient("http://localhost:8000") as client:
-        proof_content = """
-        import Mathlib.Tactic.NormNum
-        theorem test : 2 + 2 = 4 := by norm_num
-        """
+        proof_content = (
+            "import Mathlib.Tactic.NormNum\n"
+            "theorem test : 2 + 2 = 4 := by norm_num"
+        )
         result = client.verify(proof_content)
         print(result.model_dump_json(indent=2))
     ```
@@ -116,10 +116,10 @@ The `client.verify()` method sends a proof to the server and asynchronously awai
     async def main():
         # Initialize the async client
         async with AsyncLeanClient("http://localhost:8000") as client:
-            proof_content = """
-            import Mathlib.Tactic.NormNum
-            theorem test : 2 + 2 = 4 := by norm_num
-            """
+            proof_content = (
+                "import Mathlib.Tactic.NormNum\n"
+                "theorem test : 2 + 2 = 4 := by norm_num"
+            )
             result = await client.verify(proof_content)
             print(result.model_dump_json(indent=2))
 

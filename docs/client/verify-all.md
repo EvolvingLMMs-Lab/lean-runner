@@ -47,9 +47,18 @@ The `client.verify_all()` method sends a collection of proofs to the server and 
 
     with LeanClient("http://localhost:8000") as client:
         proofs = [
-            "theorem test1 : 1 + 1 = 2 := by norm_num",
-            "theorem test2 : 2 * 2 = 4 := by norm_num",
-            "theorem test3 : 3 - 1 = 2 := by norm_num",
+            (
+                "import Mathlib.Tactic.NormNum\n" \
+                "theorem test1 : 2 + 2 = 4 := by norm_num"
+            ),
+            (
+                "import Mathlib.Tactic.NormNum\n" \
+                "theorem test2 : 2 + 2 = 4 := by norm_num"
+            ),
+            (
+                "import Mathlib.Tactic.NormNum\n" \
+                "theorem test3 : 2 + 2 = 4 := by norm_num"
+            ),
         ]
 
         results = client.verify_all(proofs)
@@ -106,9 +115,18 @@ The `client.verify_all()` coroutine processes an iterable (or async iterable) of
     async def main():
         async with AsyncLeanClient("http://localhost:8000") as client:
             proofs = [
-                "theorem test1 : 1 + 1 = 2 := by norm_num",
-                "theorem test2 : 2 * 2 = 4 := by norm_num",
-                "theorem test3 : 3 - 1 = 2 := by norm_num",
+                (
+                    "import Mathlib.Tactic.NormNum\n" 
+                    "theorem test1 : 2 + 2 = 4 := by norm_num"
+                ),
+                (
+                    "import Mathlib.Tactic.NormNum\n" 
+                    "theorem test2 : 2 + 2 = 4 := by norm_num"
+                ),
+                (
+                    "import Mathlib.Tactic.NormNum\n" 
+                    "theorem test3 : 2 + 2 = 4 := by norm_num"
+                ),
             ]
 
             results = client.verify_all(proofs)

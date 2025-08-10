@@ -41,7 +41,10 @@ First, `client.submit()` sends a proof to the server and returns a `Proof` objec
     from lean_runner import LeanClient
 
     with LeanClient("http://localhost:8000") as client:
-        proof_content = "theorem test : 1 + 1 = 2 := by norm_num"
+        proof_content = (
+            "import Mathlib.Tactic.NormNum\n"
+            "theorem test : 2 + 2 = 4 := by norm_num"
+        )
 
         # Submit the proof
         submitted_proof = client.submit(proof_content)
@@ -94,7 +97,10 @@ The `client.submit()` coroutine sends the proof, and `client.get_result()` fetch
 
     async def main():
         async with AsyncLeanClient("http://localhost:8000") as client:
-            proof_content = "theorem test : 1 + 1 = 2 := by norm_num"
+            proof_content = (
+                "import Mathlib.Tactic.NormNum\n"
+                "theorem test : 2 + 2 = 4 := by norm_num"
+            )
 
             # Submit the proof without blocking
             submitted_proof = await client.submit(proof_content)
