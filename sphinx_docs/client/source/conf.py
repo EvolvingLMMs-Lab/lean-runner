@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath("../../../packages/client"))
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "lmms-runner"
-author = "lmms-lean-runner"
+author = "LMMs-Lab"
 
 # Hide project title in header
 html_title = ""
