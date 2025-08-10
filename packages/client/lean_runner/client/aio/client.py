@@ -80,7 +80,8 @@ class AsyncLeanClient:
         can be retrieved later using the `get_result` method with this ID.
 
         Args:
-            proof: The proof content, which can be a string, Path, or os.PathLike object.
+            proof: The proof content, which can be a string, Path, or os.PathLike
+            object.
             config: The proof configuration.
 
         Returns:
@@ -114,7 +115,8 @@ class AsyncLeanClient:
         blocking call that waits for the verification to complete.
 
         Args:
-            proof: The proof content, which can be a string, Path, or os.PathLike object.
+            proof: The proof content, which can be a string, Path, or os.PathLike
+            object.
             config: The proof configuration.
 
         Returns:
