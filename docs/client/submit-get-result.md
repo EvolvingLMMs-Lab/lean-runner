@@ -61,7 +61,6 @@ First, `client.submit()` sends a proof to the server and returns a `Proof` objec
         result = client.get_result(submitted_proof)
         print(result.model_dump_json(indent=4))
     ```
-
     <div class="result" markdown>
     ```text
     Proof submitted with ID: 019894b0-554f-76e0-93db-0df8e92271ab
@@ -154,7 +153,6 @@ The `client.submit()` coroutine sends the proof, and `client.get_result()` fetch
     if __name__ == "__main__":
         asyncio.run(main())
     ```
-
     <div class="result" markdown>
     ```text
     Proof submitted with ID: 019894b2-bf2b-77b1-9f82-774234ce1ea8
