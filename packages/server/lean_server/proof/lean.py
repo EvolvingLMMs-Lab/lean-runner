@@ -1,3 +1,6 @@
+"""
+This module defines the LeanProof class for executing Lean proofs.
+"""
 import asyncio
 import json
 import logging
@@ -10,7 +13,29 @@ logger = logging.getLogger(__name__)
 
 
 class LeanProof:
+    """
+    Represents a Lean proof that can be executed.
+
+    This class encapsulates the Lean code for a proof and provides a method
+    to execute it as a subprocess. It handles communication with the Lean
+    process, including timeouts and error handling.
+
+    Attributes:
+        lean_code (str): The Lean code of the proof.
+        proof_id (str): A unique identifier for the proof.
+        config (Config): The application configuration.
+    """
+
     def __init__(self, *, proof_id: str | None = None, proof: str, config: Config):
+        """
+        Initializes a LeanProof instance.
+
+        Args:
+            proof_id: An optional unique identifier for the proof. If not
+                provided, a new UUID will be generated.
+            proof: The Lean code for the proof.
+            config: The application configuration.
+        """
         self.lean_code = proof
         if proof_id is None:
             self.proof_id = uuid()
@@ -19,6 +44,20 @@ class LeanProof:
         self.config = config
 
     async def execute(self, config: LeanProofConfig) -> LeanProofResult:
+        """
+        Executes the Lean proof as a subprocess.
+
+        This method runs the Lean executable, sends the proof code to it, and
+        waits for the result. It handles timeouts, process errors, and JSON
+        parsing of the output.
+
+        Args:
+            config: The configuration for this specific proof execution.
+
+        Returns:
+            A LeanProofResult object containing the status and result of the
+            proof execution.
+        """
         proc = None
         try:
             command = {
@@ -136,13 +175,17 @@ class LeanProof:
         """
         Process the result dictionary returned from Lean.
 
+        This method filters out warning messages if requested and determines
+        the overall success of the proof based on the presence of errors.
+
         Args:
-            result (dict): The original result dictionary.
-            hide_warnings (bool): If True,
-                removes all messages with severity == 'warning'.
+            result: The original result dictionary from Lean.
+            hide_warnings: If True, removes all messages with
+                severity 'warning'.
 
         Returns:
-            dict: The processed result dictionary.
+            A tuple containing the processed result dictionary and a boolean
+            indicating success.
         """
         success = True
         final_result_messages = []

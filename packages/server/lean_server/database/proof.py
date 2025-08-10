@@ -1,3 +1,6 @@
+"""
+This module provides a database interface for storing and managing Lean proofs.
+"""
 import asyncio
 import logging
 from collections.abc import AsyncIterator
@@ -12,11 +15,33 @@ logger = logging.getLogger(__name__)
 
 
 class ProofDatabase:
+    """
+    Handles all database operations related to Lean proofs.
+
+    This class manages an SQLite database to store proof information, including
+    the proof code, configuration, results, and status. It uses `aiosqlite`
+    for asynchronous database access.
+
+    Attributes:
+        sql_path (str): The file path to the SQLite database.
+        timeout (int): The timeout in seconds for database connections.
+    """
+
     def __init__(self, database_path: str, timeout: int):
+        """
+        Initializes the ProofDatabase.
+
+        Args:
+            database_path: The path to the SQLite database file.
+            timeout: The connection timeout in seconds.
+        """
         self.sql_path = database_path
         self.timeout = timeout
 
     async def create_table(self):
+        """
+        Creates the necessary tables in the database if they don't already exist.
+        """
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
             await db.execute(
                 """
@@ -55,9 +80,27 @@ class ProofDatabase:
 
     @staticmethod
     async def calc_proof_hash(lean_code: str) -> str:
+        """
+        Calculates the xxhash 64-bit hash of the Lean code.
+
+        Args:
+            lean_code: The Lean code to hash.
+
+        Returns:
+            The hex digest of the hash.
+        """
         return xxhash.xxh64(lean_code).hexdigest()
 
     async def proof_exists(self, *, proof: LeanProof) -> str | None:
+        """
+        Checks if a proof with the same code already exists in the database.
+
+        Args:
+            proof: The LeanProof object.
+
+        Returns:
+            The ID of the existing proof if found, otherwise None.
+        """
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
             tmp = await self.calc_proof_hash(proof.lean_code)
             cursor = await db.execute(
@@ -70,6 +113,12 @@ class ProofDatabase:
             return None
 
     async def insert_hash(self, *, proof: LeanProof) -> None:
+        """
+        Inserts the hash of a proof's code into the 'hash' table.
+
+        Args:
+            proof: The LeanProof object.
+        """
         tmp = await self.calc_proof_hash(proof.lean_code)
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
             await db.execute(
@@ -79,6 +128,15 @@ class ProofDatabase:
             await db.commit()
 
     async def result_exists(self, *, proof_id: str) -> bool:
+        """
+        Checks if a result for a given proof ID exists in the 'proof' table.
+
+        Args:
+            proof_id: The ID of the proof.
+
+        Returns:
+            True if the result exists, False otherwise.
+        """
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
             cursor = await db.execute(
                 "SELECT 1 FROM proof WHERE id = ?",
@@ -86,7 +144,15 @@ class ProofDatabase:
             )
             row = await cursor.fetchone()
             return row is not None
+
     async def update_status(self, *, proof_id: str, status: LeanProofStatus):
+        """
+        Updates the status of a proof in the 'status' table.
+
+        Args:
+            proof_id: The ID of the proof.
+            status: The new status of the proof.
+        """
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
             await db.execute(
                 "INSERT OR REPLACE INTO status (id, status) VALUES (?, ?)",
@@ -101,6 +167,17 @@ class ProofDatabase:
         config: LeanProofConfig,
         result: LeanProofResult,
     ) -> str:
+        """
+        Inserts a completed proof's data into the 'proof' table.
+
+        Args:
+            proof: The LeanProof object.
+            config: The configuration used for the proof.
+            result: The result of the proof execution.
+
+        Returns:
+            The ID of the inserted proof.
+        """
         config_string = config.model_dump_json()
         result_string = result.model_dump_json()
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
@@ -112,6 +189,18 @@ class ProofDatabase:
             return proof.proof_id
 
     async def get_result(self, proof_id: str) -> LeanProofResult:
+        """
+        Retrieves the result of a proof from the database.
+
+        It first checks the status and then retrieves the full result if
+        the proof is finished or has an error.
+
+        Args:
+            proof_id: The ID of the proof.
+
+        Returns:
+            A LeanProofResult object.
+        """
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
             cursor = await db.execute(
                 "SELECT status FROM status WHERE id = ?",

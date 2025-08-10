@@ -1,7 +1,16 @@
+"""
+This module defines the command-line argument parser for the Lean server.
+"""
 import argparse
 
 
 def parse_args() -> argparse.Namespace:
+    """
+    Parses command-line arguments for the Lean server.
+
+    Returns:
+        An argparse.Namespace object containing the parsed arguments.
+    """
     parser = argparse.ArgumentParser(description="Run the Lean Server.")
     parser.add_argument(
         "--host", type=str, default="0.0.0.0", help="The host to bind the server to."
