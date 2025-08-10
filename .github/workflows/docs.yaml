@@ -29,8 +29,8 @@ jobs:
       - name: Build MkDocs and Sphinx
         run: |
           uv run mkdocs build
-          (cd sphinx_docs/client/source && uv run sphinx-build -b dirhtml . ../../../site/docs/client)
-          (cd sphinx_docs/server/source && uv run sphinx-build -b dirhtml . ../../../site/docs/server)
+          (cd sphinx_docs/client/source && uv run sphinx-build -b dirhtml . ../../../site/dev/docs/client)
+          (cd sphinx_docs/server/source && uv run sphinx-build -b dirhtml . ../../../site/dev/docs/server)
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v3
         with:
