@@ -10,7 +10,6 @@ The lean-server package provides a FastAPI-based server for running Lean proof v
 
 .. toctree::
    :maxdepth: 2
-   :caption: API Reference:
 
    lean_server
 
