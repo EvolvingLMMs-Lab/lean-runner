@@ -58,7 +58,6 @@ The `client.verify()` method sends a proof to the server and synchronously waits
     # The client should be closed when no longer needed
     client.close()
     ```
-
     <div class="result" markdown>
     ```json
     {
@@ -87,7 +86,6 @@ The `client.verify()` method sends a proof to the server and synchronously waits
         result = client.verify(proof_content)
         print(result.model_dump_json(indent=4))
     ```
-
     <div class="result" markdown>
     ```json
     {
@@ -154,7 +152,6 @@ The `client.verify()` method sends a proof to the server and asynchronously awai
     if __name__ == "__main__":
         asyncio.run(main())
     ```
-
     <div class="result" markdown>
     ```json
     {
