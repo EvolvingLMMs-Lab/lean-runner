@@ -1,6 +1,7 @@
 """
 This module defines the lifespan manager for the FastAPI application.
 """
+
 import asyncio
 import logging
 from contextlib import asynccontextmanager

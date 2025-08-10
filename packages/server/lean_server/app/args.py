@@ -1,6 +1,7 @@
 """
 This module defines the command-line argument parser for the Lean server.
 """
+
 import argparse
 
 

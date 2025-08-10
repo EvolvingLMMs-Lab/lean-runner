@@ -1,6 +1,7 @@
 """
 This module defines the proof-related API endpoints for the FastAPI application.
 """
+
 from fastapi import FastAPI, Form, HTTPException
 
 from lean_server.manager.proof_manager import ProofManager

@@ -6,12 +6,8 @@ from pydantic import BaseModel, Field
 class ProofConfig(BaseModel):
     """Configuration for a proof verification request."""
 
-    all_tactics: bool = Field(
-        False, description="Whether to return all tactics."
-    )
-    ast: bool = Field(
-        False, description="Whether to return the abstract syntax tree."
-    )
+    all_tactics: bool = Field(False, description="Whether to return all tactics.")
+    ast: bool = Field(False, description="Whether to return the abstract syntax tree.")
     tactics: bool = Field(False, description="Whether to return tactics.")
     premises: bool = Field(False, description="Whether to return premises.")
     timeout: float = Field(

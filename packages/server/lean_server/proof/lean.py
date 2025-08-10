@@ -1,6 +1,7 @@
 """
 This module defines the LeanProof class for executing Lean proofs.
 """
+
 import asyncio
 import json
 import logging

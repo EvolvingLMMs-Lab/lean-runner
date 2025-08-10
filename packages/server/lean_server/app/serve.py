@@ -1,6 +1,7 @@
 """
 This module is the main entry point for launching the Lean server.
 """
+
 import uvicorn
 from fastapi import FastAPI
 

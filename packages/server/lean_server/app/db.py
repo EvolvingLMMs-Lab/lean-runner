@@ -1,6 +1,7 @@
 """
 This module defines the database API endpoints for the FastAPI application.
 """
+
 import json
 
 from fastapi import FastAPI, HTTPException, Query

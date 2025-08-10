@@ -1,6 +1,7 @@
 """
 This module defines the configuration models and loading mechanism for the server.
 """
+
 import argparse
 from pathlib import Path
 from typing import Any

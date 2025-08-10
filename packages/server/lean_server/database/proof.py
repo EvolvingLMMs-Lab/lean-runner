@@ -1,6 +1,7 @@
 """
 This module provides a database interface for storing and managing Lean proofs.
 """
+
 import asyncio
 import logging
 from collections.abc import AsyncIterator

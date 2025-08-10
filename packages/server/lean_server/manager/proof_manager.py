@@ -1,6 +1,7 @@
 """
 Manages the lifecycle of Lean proofs, from submission to execution and result retrieval.
 """
+
 import asyncio
 import logging
 
@@ -20,9 +21,12 @@ class ProofManager:
     background tasks for running proofs asynchronously.
 
     Attributes:
-        proof_database (ProofDatabase): An instance for interacting with the proof database.
-        lean_semaphore (asyncio.Semaphore): A semaphore to limit concurrent Lean processes.
-        background_tasks (set[asyncio.Task]): A set of currently running background proof tasks.
+        proof_database (ProofDatabase): An instance for interacting with the
+            proof database.
+        lean_semaphore (asyncio.Semaphore): A semaphore to limit concurrent
+            Lean processes.
+        background_tasks (set[asyncio.Task]): A set of currently running
+            background proof tasks.
     """
 
     def __init__(
@@ -74,7 +78,9 @@ class ProofManager:
         task.add_done_callback(self.background_tasks.discard)
         return {"id": proof.proof_id}
 
-    async def run_proof(self, *, proof: LeanProof, config: LeanProofConfig) -> LeanProofResult:
+    async def run_proof(
+        self, *, proof: LeanProof, config: LeanProofConfig
+    ) -> LeanProofResult:
         """
         Executes a single Lean proof.
 
