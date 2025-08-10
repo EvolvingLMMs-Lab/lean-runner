@@ -45,7 +45,7 @@ The `client.verify()` method sends a proof to the server and synchronously waits
 
     # Define the proof as a string
     proof_content = (
-        "import Mathlib.Tactic.NormNum\n" 
+        "import Mathlib.Tactic.NormNum\n"
         "theorem test : 2 + 2 = 4 := by norm_num"
     )
 

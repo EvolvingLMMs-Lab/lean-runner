@@ -116,15 +116,15 @@ The `client.verify_all()` coroutine processes an iterable (or async iterable) of
         async with AsyncLeanClient("http://localhost:8000") as client:
             proofs = [
                 (
-                    "import Mathlib.Tactic.NormNum\n" 
+                    "import Mathlib.Tactic.NormNum\n"
                     "theorem test1 : 2 + 2 = 4 := by norm_num"
                 ),
                 (
-                    "import Mathlib.Tactic.NormNum\n" 
+                    "import Mathlib.Tactic.NormNum\n"
                     "theorem test2 : 2 + 2 = 4 := by norm_num"
                 ),
                 (
-                    "import Mathlib.Tactic.NormNum\n" 
+                    "import Mathlib.Tactic.NormNum\n"
                     "theorem test3 : 2 + 2 = 4 := by norm_num"
                 ),
             ]
