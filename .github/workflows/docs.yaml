@@ -28,17 +28,8 @@ jobs:
       - run: uv sync --dev
       - name: Generate Sphinx RST files
         run: |
-          set -x
-          # Client
           uv run sphinx-apidoc -o sphinx_docs/client/source -f packages/client/lean_runner
-          sed -i '/Module contents/,$d' sphinx_docs/client/source/lean_runner.rst
-          sed -i '/Module contents/,$d' sphinx_docs/client/source/lean_runner.proof.rst
-          rm -f sphinx_docs/client/source/modules.rst
-
-          # Server
           uv run sphinx-apidoc -o sphinx_docs/server/source -f packages/server/lean_server
-          sed -i '/Module contents/,$d' sphinx_docs/server/source/lean_server.rst
-          rm -f sphinx_docs/server/source/modules.rst
       - name: Build MkDocs and Sphinx
         run: |
           uv run mkdocs build
