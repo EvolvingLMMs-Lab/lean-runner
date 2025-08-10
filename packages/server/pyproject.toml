@@ -52,6 +52,9 @@ dev-dependencies = [
     "pydantic>=2.11.7",
     "fastapi>=0.116.1",
     "uuid-utils>=0.11.0",
+    "sphinx>=7.0.0",
+    "furo>=2024.0.0",
+    "sphinx-pydantic>=0.1.0",
 ]
 
 [tool.pytest.ini_options]

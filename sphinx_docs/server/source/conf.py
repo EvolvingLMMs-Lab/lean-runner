@@ -40,3 +40,8 @@ html_static_path = ["_static"]
 
 # This is the critical setting for deploying to a subdirectory
 html_baseurl = "/docs/server/"
+
+
+# -- Options for sphinx-pydantic -----------------------------------------
+autodoc_pydantic_model_show_field_summary = False
+autodoc_pydantic_field_list_validators = False
