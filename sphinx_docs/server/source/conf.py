@@ -40,7 +40,7 @@ html_static_path = ["_static"]
 html_logo = "_static/logo.webp"
 
 # This is the critical setting for deploying to a subdirectory
-html_baseurl = "/docs/server/"
+html_baseurl = "/dev/docs/server/"
 
 
 # -- Options for sphinx-pydantic -----------------------------------------
