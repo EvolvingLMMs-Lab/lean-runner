@@ -159,7 +159,7 @@ Test that the server is working correctly:
 
 ### 1. Check Server Status
 
-=== "Using curl"
+=== "Using cURL"
     ```bash
     # In one terminal, start the server
     lean-server --host=0.0.0.0 --port=8000
@@ -191,7 +191,7 @@ Test that the server is working correctly:
 
 ### 2. Test Proof Verification
 
-=== "Using curl"
+=== "Using cURL"
     ```bash
     curl -X POST http://localhost:2333/prove/check \
       -F "proof=import Mathlib.Tactic.NormNum
