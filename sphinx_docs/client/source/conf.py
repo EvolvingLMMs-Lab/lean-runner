@@ -37,6 +37,7 @@ exclude_patterns = []
 
 html_theme = "furo"
 html_static_path = ["_static"]
+html_logo = "_static/logo.webp"
 
 # This is the critical setting for deploying to a subdirectory
 html_baseurl = "/docs/client/"
