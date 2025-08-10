@@ -12,10 +12,3 @@ lean\_runner.proof.proto module
    :show-inheritance:
    :undoc-members:
 
-Module contents
----------------
-
-.. automodule:: lean_runner.proof
-   :members:
-   :show-inheritance:
-   :undoc-members:
