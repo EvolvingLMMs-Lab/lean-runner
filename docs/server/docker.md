@@ -84,7 +84,7 @@ docker logs -f lean-server
     | `-it`         | (Interactive Mode) Creates an interactive terminal session.                                                |
     | `-d`          | (Detached Mode) Runs the container in the background.                                                      |
     | `--name`      | (Detached Mode) Assigns a memorable name to the container (e.g., `lean-server`).                           |
-    | `-v`          | (Detached Mode) Mounts a volume from the host to the container.                                            |
+    | `-v`          | Mounts a volume from the host to the container.                                            |
     | `-p X:Y`      | Maps port `X` on the host to port `Y` inside the container. Our server runs on port `8000` in the container. |
 
     Check [Docker Documentation](https://docs.docker.com/engine/containers/run/) for more details.
@@ -100,33 +100,5 @@ curl http://localhost:8888/health
 If the server is running correctly, you should receive a response like:
 
 ```json
-{"status":"ok"}
-```
-
-## 4. Managing the Container
-
-If you are running the server in detached mode, you can use the following commands to manage it.
-
-### Viewing Logs
-
-To see the real-time output from the server:
-
-```bash
-docker logs -f lean-server
-```
-
-### Stopping the Server
-
-To gracefully stop the running container:
-
-```bash
-docker stop lean-server
-```
-
-### Restarting the Server
-
-If you have stopped the container, you can restart it without having to run the full `docker run` command again:
-
-```bash
-docker start lean-server
+{"status":"ok", "message":"Lean Server is running", "version":"0.0.1"}
 ```
