@@ -1,14 +1,16 @@
-.. lmms-lean-runner documentation master file, created by
+.. lean-server documentation master file, created by
    sphinx-quickstart on Sun Aug 10 12:00:00 2025.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to lmms-lean-runner's documentation!
-============================================
+Welcome to lean-server's documentation!
+=======================================
+
+The lean-server package provides a FastAPI-based server for running Lean proof verification.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: API Reference:
 
    modules
 
