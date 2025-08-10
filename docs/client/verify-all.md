@@ -64,7 +64,37 @@ The `client.verify_all()` method sends a collection of proofs to the server and 
         results = client.verify_all(proofs)
 
         for result in results:
-            print(result.model_dump_json(indent=2))
+            print(result.model_dump_json(indent=4))
+    ```
+    <div class="result" markdown>
+    ```json
+    {
+        "success": true,
+        "status": "finished",
+        "result": {
+            "env": 0,
+            "messages": []
+        },
+        "error_message": null
+    }
+    {
+        "success": true,
+        "status": "finished",
+        "result": {
+            "env": 0,
+            "messages": []
+        },
+        "error_message": null
+    }
+    {
+        "success": true,
+        "status": "finished",
+        "result": {
+            "env": 0,
+            "messages": []
+        },
+        "error_message": null
+    }
     ```
 
 ## Asynchronous Client
@@ -137,3 +167,34 @@ The `client.verify_all()` coroutine processes an iterable (or async iterable) of
     if __name__ == "__main__":
         asyncio.run(main())
     ```
+    <div class="result" markdown>
+    ```json
+    {
+        "success": true,
+        "status": "finished",
+        "result": {
+            "env": 0,
+            "messages": []
+        },
+        "error_message": null
+    }
+    {
+        "success": true,
+        "status": "finished",
+        "result": {
+            "env": 0,
+            "messages": []
+        },
+        "error_message": null
+    }
+    {
+        "success": true,
+        "status": "finished",
+        "result": {
+            "env": 0,
+            "messages": []
+        },
+        "error_message": null
+    }
+    ```
+    </div>
