@@ -43,6 +43,21 @@ class AsyncLeanClient:
     async def _get_proof_content(
         self, file_or_content: str | Path | os.PathLike | AnyioPath
     ) -> str:
+        """
+        Gets the content of a proof.
+
+        If `file_or_content` is a path to an existing file, it reads the file's content.
+        Otherwise, it returns the string content directly.
+
+        Args:
+            file_or_content: The proof content or a path to the proof file.
+
+        Returns:
+            The string content of the proof.
+
+        Raises:
+            OSError: If there is an error reading the file.
+        """
         path = AnyioPath(file_or_content)
         if not await path.exists():
             return str(file_or_content)
@@ -57,6 +72,20 @@ class AsyncLeanClient:
         proof: str | Path | os.PathLike | AnyioPath,
         config: ProofConfig | None = None,
     ) -> Proof:
+        """
+        Submits a proof asynchronously.
+
+        This method sends the proof to the server's `/prove/submit` endpoint and
+        immediately returns a `Proof` object containing the task ID. The result
+        can be retrieved later using the `get_result` method with this ID.
+
+        Args:
+            proof: The proof content, which can be a string, Path, or os.PathLike object.
+            config: The proof configuration.
+
+        Returns:
+            A `Proof` object representing the submitted task.
+        """
         session = await self._get_session()
 
         proof_content = await self._get_proof_content(proof)
@@ -77,6 +106,20 @@ class AsyncLeanClient:
         proof: str | Path | os.PathLike | AnyioPath,
         config: ProofConfig | None = None,
     ) -> ProofResult:
+        """
+        Verifies a proof asynchronously.
+
+        This method sends the proof to the server's `/prove/check` endpoint and
+        waits for the server to return the verification result. This is a
+        blocking call that waits for the verification to complete.
+
+        Args:
+            proof: The proof content, which can be a string, Path, or os.PathLike object.
+            config: The proof configuration.
+
+        Returns:
+            A `ProofResult` object containing the verification result.
+        """
         session = await self._get_session()
 
         proof_content = await self._get_proof_content(proof)
@@ -208,17 +251,29 @@ class AsyncLeanClient:
             )
 
     async def get_result(self, proof: Proof) -> ProofResult:
+        """
+        Gets the result of a proof by its task ID.
+
+        Args:
+            proof: A `Proof` object containing the task ID.
+
+        Returns:
+            A `ProofResult` object containing the proof result.
+        """
         session = await self._get_session()
         response = await session.get(f"/prove/result/{proof.id}")
         response.raise_for_status()
         return ProofResult.model_validate(response.json())
 
     async def close(self):
+        """Closes the httpx client session."""
         if self._session and not self._session.is_closed:
             await self._session.aclose()
 
     async def __aenter__(self):
+        """Enter the async context manager."""
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
+        """Exit the async context manager, ensuring the session is closed."""
         await self.close()
