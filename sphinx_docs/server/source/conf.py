@@ -20,6 +20,10 @@ sys.path.insert(0, os.path.abspath("../../../packages/server"))
 project = "lmms-server"
 author = "lmms-lean-runner"
 
+# Hide project title in header
+html_title = ""
+html_short_title = ""
+
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
