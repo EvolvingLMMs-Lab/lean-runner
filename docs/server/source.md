@@ -82,7 +82,7 @@ lake build
 cd ..
 ```
 
-!!! tip "Build Time"
+!!! warning "Build Time"
     The initial build process downloads and compiles Mathlib4 and other dependencies, which can take 10-30 minutes depending on your system.
 
 !!! tip "Customize Lean Dependencies"
@@ -230,28 +230,6 @@ Test that the server is working correctly:
     }
     ```
     </div>
-
-
-## Updating
-
-To update to the latest version:
-
-```bash
-# Pull latest changes
-git pull origin main
-
-# Update Python dependencies
-uv pip install -e packages/server
-
-# Rebuild Lean dependencies if needed
-cd playground
-lake update
-lake build
-cd ..
-
-# Restart the server
-lean-server
-```
 
 ## Next Steps
 
