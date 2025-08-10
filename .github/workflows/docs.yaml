@@ -29,10 +29,10 @@ jobs:
       - name: Generate Sphinx RST files
         run: |
           uv run sphinx-apidoc -o sphinx_docs/client/source -f packages/client/lean_runner
-          sed -i 's/   modules/   lean_runner/' sphinx_docs/client/source/index.rst
+          sed -i '/Module contents/,$d' sphinx_docs/client/source/lean_runner.rst
           rm -f sphinx_docs/client/source/modules.rst
           uv run sphinx-apidoc -o sphinx_docs/server/source -f packages/server/lean_server
-          sed -i 's/   modules/   lean_server/' sphinx_docs/server/source/index.rst
+          sed -i '/Module contents/,$d' sphinx_docs/server/source/lean_server.rst
           rm -f sphinx_docs/server/source/modules.rst
       - name: Build MkDocs and Sphinx
         run: |
