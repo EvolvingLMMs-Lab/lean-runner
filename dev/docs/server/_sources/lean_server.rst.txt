@@ -13,10 +13,3 @@ Subpackages
    lean_server.manager
    lean_server.proof
 
-Module contents
----------------
-
-.. automodule:: lean_server
-   :members:
-   :show-inheritance:
-   :undoc-members:

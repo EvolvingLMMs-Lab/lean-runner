@@ -10,10 +10,3 @@ Subpackages
    lean_runner.client
    lean_runner.proof
 
-Module contents
----------------
-
-.. automodule:: lean_runner
-   :members:
-   :show-inheritance:
-   :undoc-members:
