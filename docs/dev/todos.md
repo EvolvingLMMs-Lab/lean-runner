@@ -2,7 +2,6 @@
 
 This page documents the development roadmap and planned features for Lean Server.
 
-
 -   [ ] **Custom Mathlib Support in Docker**
     -   Support for using custom `mathlib` versions within Docker containers
     -   This would allow users to specify different Mathlib versions for their proofs without rebuilding the entire Docker image
