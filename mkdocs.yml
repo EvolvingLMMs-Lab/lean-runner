@@ -84,6 +84,7 @@ extra_javascript:
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 nav:
   - Quick Start: quick-start.md
+  - API: api.md
   - Server:
       - Install via Docker: server/docker.md
       - Build from Source: server/source.md
