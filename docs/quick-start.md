@@ -41,7 +41,7 @@ Install the Lean-Runner client from PyPI:
     uv pip install lean-runner
     ```
 
-Use LeanClient to verify a proof. The client supports both synchronous and asynchronous operations:
+Use `LeanClient` to verify a proof. The client supports both synchronous and asynchronous operations:
 
 !!! example "Lean proof verification"
 
