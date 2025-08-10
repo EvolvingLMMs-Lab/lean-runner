@@ -10,7 +10,6 @@ The lean-runner client package provides a Python client for interacting with the
 
 .. toctree::
    :maxdepth: 2
-   :caption: API Reference:
 
    lean_runner
 
