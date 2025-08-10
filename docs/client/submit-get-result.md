@@ -38,6 +38,7 @@ First, `client.submit()` sends a proof to the server and returns a `Proof` objec
     The following example shows how to submit a proof and then retrieve its result. Note that in a real-world application, you might add a delay or a retry mechanism between submission and result retrieval.
 
     ```python
+    import time
     from lean_runner import LeanClient
 
     with LeanClient("http://localhost:8000") as client:
@@ -53,8 +54,40 @@ First, `client.submit()` sends a proof to the server and returns a `Proof` objec
         # Retrieve the result later
         # In a real scenario, you might wait here
         result = client.get_result(submitted_proof)
-        print(result.model_dump_json(indent=2))
+        print(result.model_dump_json(indent=4))
+
+        time.sleep(1)
+
+        result = client.get_result(submitted_proof)
+        print(result.model_dump_json(indent=4))
     ```
+
+    <div class="result" markdown>
+    ```json
+    Proof submitted with ID: 019894b0-554f-76e0-93db-0df8e92271ab
+    {
+        "success": null,
+        "status": "pending",
+        "result": null,
+        "error_message": null
+    }
+    {
+        "success": null,
+        "status": "running",
+        "result": null,
+        "error_message": null
+    }
+    {
+        "success": true,
+        "status": "finished",
+        "result": {
+            "env": 0,
+            "messages": []
+        },
+        "error_message": null
+    }
+    ```
+    </div>
 
 ## Asynchronous Client
 
