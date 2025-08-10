@@ -79,6 +79,7 @@ extra_javascript:
 nav:
   - Quick Start: quick-start.md
   - Server:
+    - Installation:
       - Installation via Docker: server/docker.md
       - Installation from Source: server/source.md
   - Client:
