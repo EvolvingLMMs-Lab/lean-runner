@@ -30,9 +30,9 @@ jobs:
         run: |
           uv run mkdocs build
           uv run sphinx-build -b html sphinx_docs/source site/docs
-      - name: Deploy to GitHub Pages
+      - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./site
-          force_orphan: true
+          publish_branch: gh-pages
