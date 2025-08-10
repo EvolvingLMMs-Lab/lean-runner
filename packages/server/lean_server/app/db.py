@@ -1,3 +1,6 @@
+"""
+This module defines the database API endpoints for the FastAPI application.
+"""
 import json
 
 from fastapi import FastAPI, HTTPException, Query
@@ -7,14 +10,28 @@ from ..database.proof import ProofDatabase
 
 
 def launch_db_router(app: FastAPI):
+    """
+    Mounts the database-related API endpoints to the FastAPI application.
+
+    Args:
+        app: The FastAPI application instance.
+    """
+
     @app.get("/db/fetch")
     async def fetch_dataset(
         query: str = Query(default="SELECT * FROM proof"),
         batch_size: int = Query(default=100),
     ):
         """
-        Fetch data from the database using SQL query with efficient batch processing.
+        Fetch data from the database using a SQL query with efficient batch processing.
         Returns results as a streaming JSON response.
+
+        Args:
+            query: The SQL query to execute.
+            batch_size: The number of rows to fetch per batch.
+
+        Returns:
+            A streaming response containing the query results in JSON format.
         """
         try:
             proof_database: ProofDatabase = app.state.proof_database
@@ -49,6 +66,13 @@ def launch_db_router(app: FastAPI):
     async def clean_db(seconds: int = Query(default=0)):
         """
         Clean the database by removing old proof records and orphaned status entries.
+
+        Args:
+            seconds: The minimum age in seconds for records to be deleted.
+                     (Currently unused, defaults to 24 hours in the implementation).
+
+        Returns:
+            A confirmation message.
         """
         try:
             proof_database: ProofDatabase = app.state.proof_database

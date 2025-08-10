@@ -1,3 +1,6 @@
+"""
+This module is the main entry point for launching the Lean server.
+"""
 import uvicorn
 from fastapi import FastAPI
 
@@ -10,6 +13,18 @@ from .utils import launch_health_router
 
 
 def launch(*, config: Config) -> FastAPI:
+    """
+    Creates and configures the FastAPI application.
+
+    This function initializes the FastAPI app, sets up the lifespan manager,
+    and mounts the API routers.
+
+    Args:
+        config: The application configuration.
+
+    Returns:
+        The configured FastAPI application instance.
+    """
     app = FastAPI(lifespan=get_lifespan(config=config))
     launch_health_router(app)
     launch_prove_router(app)
@@ -18,6 +33,12 @@ def launch(*, config: Config) -> FastAPI:
 
 
 def main():
+    """
+    The main entry point for the server.
+
+    This function parses command-line arguments, loads the configuration,
+    launches the FastAPI application, and starts the Uvicorn server.
+    """
     args = parse_args()
     config = get_config(args)
     app = launch(config=config)
