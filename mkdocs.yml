@@ -80,8 +80,8 @@ extra_javascript:
 nav:
   - Quick Start: quick-start.md
   - Server:
-    - Install via Docker: server/docker.md
-    - Build from Source: server/source.md
+      - Install via Docker: server/docker.md
+      - Build from Source: server/source.md
   - Client:
       - Overview: client/index.md
       - Installation: client/install.md
