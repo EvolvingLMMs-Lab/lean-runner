@@ -1,4 +1,4 @@
-# 🚀 Install Lean Server from Source
+# 🚀 Build Lean Server from Source
 
 This guide walks you through setting up the Lean Server from source code, providing a high-performance REST API for executing and verifying Lean 4 mathematical proofs.
 
