@@ -53,11 +53,25 @@ The `client.verify()` method sends a proof to the server and synchronously waits
     result = client.verify(proof_content)
 
     # Print the result
-    print(result.model_dump_json(indent=2))
+    print(result.model_dump_json(indent=4))
 
     # The client should be closed when no longer needed
     client.close()
     ```
+
+    <div class="result" markdown>
+    ```json
+    {
+        "success": true,
+        "status": "finished",
+        "result": {
+            "env": 0,
+            "messages": []
+        },
+        "error_message": null
+    }
+    ```
+    </div>
 
 !!! example "Using a `with` statement"
     You can use a `with` statement to manage the client's lifecycle automatically:
@@ -71,8 +85,22 @@ The `client.verify()` method sends a proof to the server and synchronously waits
             "theorem test : 2 + 2 = 4 := by norm_num"
         )
         result = client.verify(proof_content)
-        print(result.model_dump_json(indent=2))
+        print(result.model_dump_json(indent=4))
     ```
+
+    <div class="result" markdown>
+    ```json
+    {
+        "success": true,
+        "status": "finished",
+        "result": {
+            "env": 0,
+            "messages": []
+        },
+        "error_message": null
+    }
+    ```
+    </div>
 
 ## Asynchronous Client
 
@@ -121,9 +149,24 @@ The `client.verify()` method sends a proof to the server and asynchronously awai
                 "theorem test : 2 + 2 = 4 := by norm_num"
             )
             result = await client.verify(proof_content)
-            print(result.model_dump_json(indent=2))
+            print(result.model_dump_json(indent=4))
 
     if __name__ == "__main__":
         asyncio.run(main())
     ```
+
+    <div class="result" markdown>
+    ```json
+    {
+        "success": true,
+        "status": "finished",
+        "result": {
+            "env": 0,
+            "messages": []
+        },
+        "error_message": null
+    }
+    ```
+    </div>
+
     In this example, `async with` ensures the client session is properly closed. The `await client.verify()` call performs the verification without blocking the event loop.
