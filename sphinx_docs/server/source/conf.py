@@ -37,7 +37,7 @@ exclude_patterns = []
 
 html_theme = "furo"
 html_static_path = ["../../../docs/assets"]
-html_favicon = "../../../docs/assets/logo/logo-wt.webp"
+html_favicon = "../../../docs/assets/logo/logo.webp"
 
 # Furo theme options for better logo handling
 html_theme_options = {
