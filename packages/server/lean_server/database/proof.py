@@ -86,6 +86,7 @@ class ProofDatabase:
             )
             row = await cursor.fetchone()
             return row is not None
+
     async def update_status(self, *, proof_id: str, status: LeanProofStatus):
         async with aiosqlite.connect(self.sql_path, timeout=self.timeout) as db:
             await db.execute(
