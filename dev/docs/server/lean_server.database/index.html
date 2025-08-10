@@ -262,14 +262,50 @@
 </section>
 <section id="module-lean_server.database.proof">
 <span id="lean-server-database-proof-module"></span><h2>lean_server.database.proof module<a class="headerlink" href="#module-lean_server.database.proof" title="Link to this heading">¶</a></h2>
+<p>This module provides a database interface for storing and managing Lean proofs.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="lean_server.database.proof.ProofDatabase">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lean_server.database.proof.</span></span><span class="sig-name descname"><span class="pre">ProofDatabase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lean_server/database/proof/#ProofDatabase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.database.proof.ProofDatabase" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Handles all database operations related to Lean proofs.</p>
+<p>This class manages an SQLite database to store proof information, including
+the proof code, configuration, results, and status. It uses <cite>aiosqlite</cite>
+for asynchronous database access.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lean_server.database.proof.ProofDatabase.sql_path">
+<span class="sig-name descname"><span class="pre">sql_path</span></span><a class="headerlink" href="#lean_server.database.proof.ProofDatabase.sql_path" title="Link to this definition">¶</a></dt>
+<dd><p>The file path to the SQLite database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lean_server.database.proof.ProofDatabase.timeout">
+<span class="sig-name descname"><span class="pre">timeout</span></span><a class="headerlink" href="#lean_server.database.proof.ProofDatabase.timeout" title="Link to this definition">¶</a></dt>
+<dd><p>The timeout in seconds for database connections.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="lean_server.database.proof.ProofDatabase.calc_proof_hash">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">calc_proof_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lean_code</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/lean_server/database/proof/#ProofDatabase.calc_proof_hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.database.proof.ProofDatabase.calc_proof_hash" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Calculates the xxhash 64-bit hash of the Lean code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>lean_code</strong> – The Lean code to hash.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The hex digest of the hash.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lean_server.database.proof.ProofDatabase.clean_db">
@@ -280,7 +316,8 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="lean_server.database.proof.ProofDatabase.create_table">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lean_server/database/proof/#ProofDatabase.create_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.database.proof.ProofDatabase.create_table" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Creates the necessary tables in the database if they don’t already exist.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lean_server.database.proof.ProofDatabase.fetch">
@@ -303,32 +340,89 @@ batch processing.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lean_server.database.proof.ProofDatabase.get_result">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proof_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../lean_server.proof/#lean_server.proof.proto.LeanProofResult" title="lean_server.proof.proto.LeanProofResult"><span class="pre">LeanProofResult</span></a></span></span><a class="reference internal" href="../_modules/lean_server/database/proof/#ProofDatabase.get_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.database.proof.ProofDatabase.get_result" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Retrieves the result of a proof from the database.</p>
+<p>It first checks the status and then retrieves the full result if
+the proof is finished or has an error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>proof_id</strong> – The ID of the proof.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A LeanProofResult object.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lean_server.database.proof.ProofDatabase.insert_hash">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">insert_hash</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lean_server.proof/#lean_server.proof.lean.LeanProof" title="lean_server.proof.lean.LeanProof"><span class="pre">LeanProof</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/lean_server/database/proof/#ProofDatabase.insert_hash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.database.proof.ProofDatabase.insert_hash" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Inserts the hash of a proof’s code into the ‘hash’ table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>proof</strong> – The LeanProof object.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lean_server.database.proof.ProofDatabase.insert_proof">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">insert_proof</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lean_server.proof/#lean_server.proof.lean.LeanProof" title="lean_server.proof.lean.LeanProof"><span class="pre">LeanProof</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lean_server.proof/#lean_server.proof.proto.LeanProofConfig" title="lean_server.proof.proto.LeanProofConfig"><span class="pre">LeanProofConfig</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lean_server.proof/#lean_server.proof.proto.LeanProofResult" title="lean_server.proof.proto.LeanProofResult"><span class="pre">LeanProofResult</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/lean_server/database/proof/#ProofDatabase.insert_proof"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.database.proof.ProofDatabase.insert_proof" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Inserts a completed proof’s data into the ‘proof’ table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proof</strong> – The LeanProof object.</p></li>
+<li><p><strong>config</strong> – The configuration used for the proof.</p></li>
+<li><p><strong>result</strong> – The result of the proof execution.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The ID of the inserted proof.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lean_server.database.proof.ProofDatabase.proof_exists">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">proof_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lean_server.proof/#lean_server.proof.lean.LeanProof" title="lean_server.proof.lean.LeanProof"><span class="pre">LeanProof</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/lean_server/database/proof/#ProofDatabase.proof_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.database.proof.ProofDatabase.proof_exists" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Checks if a proof with the same code already exists in the database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>proof</strong> – The LeanProof object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The ID of the existing proof if found, otherwise None.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lean_server.database.proof.ProofDatabase.result_exists">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">result_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">proof_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/lean_server/database/proof/#ProofDatabase.result_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.database.proof.ProofDatabase.result_exists" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Checks if a result for a given proof ID exists in the ‘proof’ table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>proof_id</strong> – The ID of the proof.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the result exists, False otherwise.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lean_server.database.proof.ProofDatabase.update_status">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">proof_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lean_server.proof/#lean_server.proof.proto.LeanProofStatus" title="lean_server.proof.proto.LeanProofStatus"><span class="pre">LeanProofStatus</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lean_server/database/proof/#ProofDatabase.update_status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.database.proof.ProofDatabase.update_status" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Updates the status of a proof in the ‘status’ table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proof_id</strong> – The ID of the proof.</p></li>
+<li><p><strong>status</strong> – The new status of the proof.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -397,6 +491,8 @@ batch processing.</p>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-lean_server.database.proof">lean_server.database.proof module</a><ul>
 <li><a class="reference internal" href="#lean_server.database.proof.ProofDatabase"><code class="docutils literal notranslate"><span class="pre">ProofDatabase</span></code></a><ul>
+<li><a class="reference internal" href="#lean_server.database.proof.ProofDatabase.sql_path"><code class="docutils literal notranslate"><span class="pre">ProofDatabase.sql_path</span></code></a></li>
+<li><a class="reference internal" href="#lean_server.database.proof.ProofDatabase.timeout"><code class="docutils literal notranslate"><span class="pre">ProofDatabase.timeout</span></code></a></li>
 <li><a class="reference internal" href="#lean_server.database.proof.ProofDatabase.calc_proof_hash"><code class="docutils literal notranslate"><span class="pre">ProofDatabase.calc_proof_hash()</span></code></a></li>
 <li><a class="reference internal" href="#lean_server.database.proof.ProofDatabase.clean_db"><code class="docutils literal notranslate"><span class="pre">ProofDatabase.clean_db()</span></code></a></li>
 <li><a class="reference internal" href="#lean_server.database.proof.ProofDatabase.create_table"><code class="docutils literal notranslate"><span class="pre">ProofDatabase.create_table()</span></code></a></li>

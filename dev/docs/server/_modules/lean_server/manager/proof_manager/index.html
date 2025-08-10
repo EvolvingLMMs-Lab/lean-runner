@@ -249,7 +249,10 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for lean_server.manager.proof_manager</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Manages the lifecycle of Lean proofs, from submission to execution and result retrieval.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..database.proof</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProofDatabase</span>
@@ -262,6 +265,19 @@
 <div class="viewcode-block" id="ProofManager">
 <a class="viewcode-back" href="../../../../lean_server.manager/#lean_server.manager.proof_manager.ProofManager">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ProofManager</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handles the submission, execution, and tracking of Lean proofs.</span>
+
+<span class="sd">    This class coordinates with the database to store proof data and results.</span>
+<span class="sd">    It uses a semaphore to limit concurrent proof executions and manages</span>
+<span class="sd">    background tasks for running proofs asynchronously.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        proof_database (ProofDatabase): An instance for interacting with the proof database.</span>
+<span class="sd">        lean_semaphore (asyncio.Semaphore): A semaphore to limit concurrent Lean processes.</span>
+<span class="sd">        background_tasks (set[asyncio.Task]): A set of currently running background proof tasks.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -269,6 +285,14 @@
         <span class="n">lean_semaphore</span><span class="p">:</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Semaphore</span><span class="p">,</span>
         <span class="n">background_tasks</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="n">asyncio</span><span class="o">.</span><span class="n">Task</span><span class="p">],</span>
     <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the ProofManager.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            proof_database: The database handler for proofs.</span>
+<span class="sd">            lean_semaphore: The semaphore to control concurrency.</span>
+<span class="sd">            background_tasks: A set to manage background asyncio tasks.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">proof_database</span> <span class="o">=</span> <span class="n">proof_database</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lean_semaphore</span> <span class="o">=</span> <span class="n">lean_semaphore</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">background_tasks</span> <span class="o">=</span> <span class="n">background_tasks</span>
@@ -280,7 +304,20 @@
         <span class="o">*</span><span class="p">,</span>
         <span class="n">proof</span><span class="p">:</span> <span class="n">LeanProof</span><span class="p">,</span>
         <span class="n">config</span><span class="p">:</span> <span class="n">LeanProofConfig</span><span class="p">,</span>
-    <span class="p">):</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Submits a proof for execution.</span>
+
+<span class="sd">        If the proof already exists, its ID is returned immediately. Otherwise,</span>
+<span class="sd">        it&#39;s added to the database and a background task is created to run it.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            proof: The LeanProof object to be executed.</span>
+<span class="sd">            config: The configuration for the proof execution.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary containing the unique ID of the proof.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tmp</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">proof_database</span><span class="o">.</span><span class="n">proof_exists</span><span class="p">(</span><span class="n">proof</span><span class="o">=</span><span class="n">proof</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">tmp</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Proof already submitted: </span><span class="si">{</span><span class="n">tmp</span><span class="si">}</span><span class="s2">, returning existing proof ID&quot;</span><span class="p">)</span>
@@ -295,7 +332,22 @@
 
 <div class="viewcode-block" id="ProofManager.run_proof">
 <a class="viewcode-back" href="../../../../lean_server.manager/#lean_server.manager.proof_manager.ProofManager.run_proof">[docs]</a>
-    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run_proof</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">proof</span><span class="p">:</span> <span class="n">LeanProof</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">LeanProofConfig</span><span class="p">):</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">run_proof</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">proof</span><span class="p">:</span> <span class="n">LeanProof</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">LeanProofConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LeanProofResult</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Executes a single Lean proof.</span>
+
+<span class="sd">        This method acquires a semaphore lock before running the proof to control</span>
+<span class="sd">        concurrency. It updates the proof&#39;s status in the database before and</span>
+<span class="sd">        after execution. If the proof result already exists in the database,</span>
+<span class="sd">        it skips execution and returns the stored result.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            proof: The LeanProof object to execute.</span>
+<span class="sd">            config: The configuration for the proof execution.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The result of the proof execution.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tmp</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">proof_database</span><span class="o">.</span><span class="n">proof_exists</span><span class="p">(</span><span class="n">proof</span><span class="o">=</span><span class="n">proof</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">tmp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">tmp</span> <span class="o">=</span> <span class="n">proof</span><span class="o">.</span><span class="n">proof_id</span>
@@ -337,6 +389,15 @@
 <div class="viewcode-block" id="ProofManager.get_result">
 <a class="viewcode-back" href="../../../../lean_server.manager/#lean_server.manager.proof_manager.ProofManager.get_result">[docs]</a>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proof_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LeanProofResult</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the result of a proof from the database.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            proof_id: The unique identifier of the proof.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The result of the proof.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">proof_database</span><span class="o">.</span><span class="n">get_result</span><span class="p">(</span><span class="n">proof_id</span><span class="p">)</span></div>
 </div>
 

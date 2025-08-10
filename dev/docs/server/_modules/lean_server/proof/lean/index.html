@@ -249,7 +249,10 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for lean_server.proof.lean</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module defines the LeanProof class for executing Lean proofs.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
@@ -263,7 +266,29 @@
 <div class="viewcode-block" id="LeanProof">
 <a class="viewcode-back" href="../../../../lean_server.proof/#lean_server.proof.lean.LeanProof">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">LeanProof</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a Lean proof that can be executed.</span>
+
+<span class="sd">    This class encapsulates the Lean code for a proof and provides a method</span>
+<span class="sd">    to execute it as a subprocess. It handles communication with the Lean</span>
+<span class="sd">    process, including timeouts and error handling.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        lean_code (str): The Lean code of the proof.</span>
+<span class="sd">        proof_id (str): A unique identifier for the proof.</span>
+<span class="sd">        config (Config): The application configuration.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">proof_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">proof</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a LeanProof instance.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            proof_id: An optional unique identifier for the proof. If not</span>
+<span class="sd">                provided, a new UUID will be generated.</span>
+<span class="sd">            proof: The Lean code for the proof.</span>
+<span class="sd">            config: The application configuration.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lean_code</span> <span class="o">=</span> <span class="n">proof</span>
         <span class="k">if</span> <span class="n">proof_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">proof_id</span> <span class="o">=</span> <span class="n">uuid</span><span class="p">()</span>
@@ -274,6 +299,20 @@
 <div class="viewcode-block" id="LeanProof.execute">
 <a class="viewcode-back" href="../../../../lean_server.proof/#lean_server.proof.lean.LeanProof.execute">[docs]</a>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">LeanProofConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LeanProofResult</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Executes the Lean proof as a subprocess.</span>
+
+<span class="sd">        This method runs the Lean executable, sends the proof code to it, and</span>
+<span class="sd">        waits for the result. It handles timeouts, process errors, and JSON</span>
+<span class="sd">        parsing of the output.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            config: The configuration for this specific proof execution.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A LeanProofResult object containing the status and result of the</span>
+<span class="sd">            proof execution.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">proc</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">command</span> <span class="o">=</span> <span class="p">{</span>
@@ -392,13 +431,17 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Process the result dictionary returned from Lean.</span>
 
+<span class="sd">        This method filters out warning messages if requested and determines</span>
+<span class="sd">        the overall success of the proof based on the presence of errors.</span>
+
 <span class="sd">        Args:</span>
-<span class="sd">            result (dict): The original result dictionary.</span>
-<span class="sd">            hide_warnings (bool): If True,</span>
-<span class="sd">                removes all messages with severity == &#39;warning&#39;.</span>
+<span class="sd">            result: The original result dictionary from Lean.</span>
+<span class="sd">            hide_warnings: If True, removes all messages with</span>
+<span class="sd">                severity &#39;warning&#39;.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            dict: The processed result dictionary.</span>
+<span class="sd">            A tuple containing the processed result dictionary and a boolean</span>
+<span class="sd">            indicating success.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">success</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">final_result_messages</span> <span class="o">=</span> <span class="p">[]</span>

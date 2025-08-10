@@ -249,7 +249,10 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for lean_server.database.proof</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides a database interface for storing and managing Lean proofs.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">AsyncIterator</span>
 
@@ -265,13 +268,35 @@
 <div class="viewcode-block" id="ProofDatabase">
 <a class="viewcode-back" href="../../../../lean_server.database/#lean_server.database.proof.ProofDatabase">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ProofDatabase</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handles all database operations related to Lean proofs.</span>
+
+<span class="sd">    This class manages an SQLite database to store proof information, including</span>
+<span class="sd">    the proof code, configuration, results, and status. It uses `aiosqlite`</span>
+<span class="sd">    for asynchronous database access.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        sql_path (str): The file path to the SQLite database.</span>
+<span class="sd">        timeout (int): The timeout in seconds for database connections.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the ProofDatabase.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            database_path: The path to the SQLite database file.</span>
+<span class="sd">            timeout: The connection timeout in seconds.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sql_path</span> <span class="o">=</span> <span class="n">database_path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">timeout</span>
 
 <div class="viewcode-block" id="ProofDatabase.create_table">
 <a class="viewcode-back" href="../../../../lean_server.database/#lean_server.database.proof.ProofDatabase.create_table">[docs]</a>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">create_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates the necessary tables in the database if they don&#39;t already exist.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">async</span> <span class="k">with</span> <span class="n">aiosqlite</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sql_path</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
             <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
 <span class="w">                </span><span class="sd">&quot;&quot;&quot;</span>
@@ -313,12 +338,30 @@
 <a class="viewcode-back" href="../../../../lean_server.database/#lean_server.database.proof.ProofDatabase.calc_proof_hash">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">calc_proof_hash</span><span class="p">(</span><span class="n">lean_code</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculates the xxhash 64-bit hash of the Lean code.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            lean_code: The Lean code to hash.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The hex digest of the hash.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">xxhash</span><span class="o">.</span><span class="n">xxh64</span><span class="p">(</span><span class="n">lean_code</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="ProofDatabase.proof_exists">
 <a class="viewcode-back" href="../../../../lean_server.database/#lean_server.database.proof.ProofDatabase.proof_exists">[docs]</a>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">proof_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">proof</span><span class="p">:</span> <span class="n">LeanProof</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if a proof with the same code already exists in the database.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            proof: The LeanProof object.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The ID of the existing proof if found, otherwise None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">async</span> <span class="k">with</span> <span class="n">aiosqlite</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sql_path</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
             <span class="n">tmp</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_proof_hash</span><span class="p">(</span><span class="n">proof</span><span class="o">.</span><span class="n">lean_code</span><span class="p">)</span>
             <span class="n">cursor</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
@@ -334,6 +377,12 @@
 <div class="viewcode-block" id="ProofDatabase.insert_hash">
 <a class="viewcode-back" href="../../../../lean_server.database/#lean_server.database.proof.ProofDatabase.insert_hash">[docs]</a>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">insert_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">proof</span><span class="p">:</span> <span class="n">LeanProof</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inserts the hash of a proof&#39;s code into the &#39;hash&#39; table.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            proof: The LeanProof object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">tmp</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_proof_hash</span><span class="p">(</span><span class="n">proof</span><span class="o">.</span><span class="n">lean_code</span><span class="p">)</span>
         <span class="k">async</span> <span class="k">with</span> <span class="n">aiosqlite</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sql_path</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
             <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
@@ -346,6 +395,15 @@
 <div class="viewcode-block" id="ProofDatabase.result_exists">
 <a class="viewcode-back" href="../../../../lean_server.database/#lean_server.database.proof.ProofDatabase.result_exists">[docs]</a>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">result_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">proof_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if a result for a given proof ID exists in the &#39;proof&#39; table.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            proof_id: The ID of the proof.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            True if the result exists, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">async</span> <span class="k">with</span> <span class="n">aiosqlite</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sql_path</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
             <span class="n">cursor</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
                 <span class="s2">&quot;SELECT 1 FROM proof WHERE id = ?&quot;</span><span class="p">,</span>
@@ -358,6 +416,13 @@
 <div class="viewcode-block" id="ProofDatabase.update_status">
 <a class="viewcode-back" href="../../../../lean_server.database/#lean_server.database.proof.ProofDatabase.update_status">[docs]</a>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">update_status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">proof_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">status</span><span class="p">:</span> <span class="n">LeanProofStatus</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the status of a proof in the &#39;status&#39; table.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            proof_id: The ID of the proof.</span>
+<span class="sd">            status: The new status of the proof.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">async</span> <span class="k">with</span> <span class="n">aiosqlite</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sql_path</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
             <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
                 <span class="s2">&quot;INSERT OR REPLACE INTO status (id, status) VALUES (?, ?)&quot;</span><span class="p">,</span>
@@ -375,6 +440,17 @@
         <span class="n">config</span><span class="p">:</span> <span class="n">LeanProofConfig</span><span class="p">,</span>
         <span class="n">result</span><span class="p">:</span> <span class="n">LeanProofResult</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Inserts a completed proof&#39;s data into the &#39;proof&#39; table.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            proof: The LeanProof object.</span>
+<span class="sd">            config: The configuration used for the proof.</span>
+<span class="sd">            result: The result of the proof execution.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The ID of the inserted proof.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">config_string</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">()</span>
         <span class="n">result_string</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">()</span>
         <span class="k">async</span> <span class="k">with</span> <span class="n">aiosqlite</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sql_path</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
@@ -389,6 +465,18 @@
 <div class="viewcode-block" id="ProofDatabase.get_result">
 <a class="viewcode-back" href="../../../../lean_server.database/#lean_server.database.proof.ProofDatabase.get_result">[docs]</a>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proof_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LeanProofResult</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves the result of a proof from the database.</span>
+
+<span class="sd">        It first checks the status and then retrieves the full result if</span>
+<span class="sd">        the proof is finished or has an error.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            proof_id: The ID of the proof.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A LeanProofResult object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">async</span> <span class="k">with</span> <span class="n">aiosqlite</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sql_path</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span> <span class="k">as</span> <span class="n">db</span><span class="p">:</span>
             <span class="n">cursor</span> <span class="o">=</span> <span class="k">await</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
                 <span class="s2">&quot;SELECT status FROM status WHERE id = ?&quot;</span><span class="p">,</span>

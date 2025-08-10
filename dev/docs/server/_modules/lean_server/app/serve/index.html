@@ -249,7 +249,10 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for lean_server.app.serve</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">uvicorn</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module is the main entry point for launching the Lean server.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">uvicorn</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">..config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span><span class="p">,</span> <span class="n">get_config</span>
@@ -263,6 +266,18 @@
 <div class="viewcode-block" id="launch">
 <a class="viewcode-back" href="../../../../lean_server.app/#lean_server.app.serve.launch">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">launch</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FastAPI</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates and configures the FastAPI application.</span>
+
+<span class="sd">    This function initializes the FastAPI app, sets up the lifespan manager,</span>
+<span class="sd">    and mounts the API routers.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config: The application configuration.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The configured FastAPI application instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">(</span><span class="n">lifespan</span><span class="o">=</span><span class="n">get_lifespan</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">))</span>
     <span class="n">launch_health_router</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
     <span class="n">launch_prove_router</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
@@ -274,6 +289,12 @@
 <div class="viewcode-block" id="main">
 <a class="viewcode-back" href="../../../../lean_server.app/#lean_server.app.serve.main">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The main entry point for the server.</span>
+
+<span class="sd">    This function parses command-line arguments, loads the configuration,</span>
+<span class="sd">    launches the FastAPI application, and starts the Uvicorn server.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">()</span>
     <span class="n">config</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
     <span class="n">app</span> <span class="o">=</span> <span class="n">launch</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>

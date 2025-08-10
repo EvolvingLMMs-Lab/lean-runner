@@ -249,7 +249,10 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for lean_server.app.prove</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Form</span><span class="p">,</span> <span class="n">HTTPException</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module defines the proof-related API endpoints for the FastAPI application.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Form</span><span class="p">,</span> <span class="n">HTTPException</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">lean_server.manager.proof_manager</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProofManager</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">lean_server.proof.lean</span><span class="w"> </span><span class="kn">import</span> <span class="n">LeanProof</span>
@@ -259,12 +262,31 @@
 <div class="viewcode-block" id="launch_prove_router">
 <a class="viewcode-back" href="../../../../lean_server.app/#lean_server.app.prove.launch_prove_router">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">launch_prove_router</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Mounts the proof-related API endpoints to the FastAPI application.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        app: The FastAPI application instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/prove/check&quot;</span><span class="p">)</span>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">check_proof</span><span class="p">(</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">proof</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
         <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">),</span>
     <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Synchronously check a Lean proof and return the result.</span>
+
+<span class="sd">        This endpoint executes the proof immediately and waits for the result.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            proof: The Lean code of the proof.</span>
+<span class="sd">            config: A JSON string representing the LeanProofConfig.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The result of the proof execution.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">lean_proof</span> <span class="o">=</span> <span class="n">LeanProof</span><span class="p">(</span><span class="n">proof</span><span class="o">=</span><span class="n">proof</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
             <span class="n">lean_proof_config</span> <span class="o">=</span> <span class="n">LeanProofConfig</span><span class="o">.</span><span class="n">model_validate_json</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
@@ -284,6 +306,19 @@
         <span class="n">proof</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="o">...</span><span class="p">),</span>
         <span class="n">config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">),</span>
     <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Asynchronously submit a Lean proof for execution.</span>
+
+<span class="sd">        This endpoint submits the proof to a background task and returns</span>
+<span class="sd">        a proof ID immediately.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            proof: The Lean code of the proof.</span>
+<span class="sd">            config: A JSON string representing the LeanProofConfig.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary containing the proof ID.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">lean_proof</span> <span class="o">=</span> <span class="n">LeanProof</span><span class="p">(</span><span class="n">proof</span><span class="o">=</span><span class="n">proof</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
             <span class="n">lean_proof_config</span> <span class="o">=</span> <span class="n">LeanProofConfig</span><span class="o">.</span><span class="n">model_validate_json</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
@@ -302,6 +337,15 @@
         <span class="o">*</span><span class="p">,</span>
         <span class="n">proof_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve the result of a previously submitted proof.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            proof_id: The ID of the proof.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The result of the proof execution.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">proof_manager</span><span class="p">:</span> <span class="n">ProofManager</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">proof_manager</span>
         <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">proof_manager</span><span class="o">.</span><span class="n">get_result</span><span class="p">(</span><span class="n">proof_id</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span></div>

@@ -249,7 +249,10 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for lean_server.app.lifespan</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module defines the lifespan manager for the FastAPI application.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">asynccontextmanager</span>
 
@@ -265,21 +268,41 @@
 <div class="viewcode-block" id="get_lifespan">
 <a class="viewcode-back" href="../../../../lean_server.app/#lean_server.app.lifespan.get_lifespan">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_lifespan</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Config</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns an asynchronous context manager for the application&#39;s lifespan.</span>
+
+<span class="sd">    This function sets up resources on startup and cleans them up on shutdown.</span>
+<span class="sd">    It initializes the database, proof manager, and other application state.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        config: The application configuration.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        An async context manager function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="nd">@asynccontextmanager</span>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">lifespan</span><span class="p">(</span><span class="n">app</span><span class="p">:</span> <span class="n">FastAPI</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The actual lifespan context manager.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            app: The FastAPI application instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Startup</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting Lean Server&quot;</span><span class="p">)</span>
         <span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">lean_semaphore</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Semaphore</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">lean</span><span class="o">.</span><span class="n">concurrency</span><span class="p">)</span>
-
         <span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">background_tasks</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-
         <span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
 
+        <span class="c1"># Initialize database</span>
         <span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">proof_database</span> <span class="o">=</span> <span class="n">ProofDatabase</span><span class="p">(</span>
             <span class="n">database_path</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">sqlite</span><span class="o">.</span><span class="n">database_path</span><span class="p">,</span>
             <span class="n">timeout</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">sqlite</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">await</span> <span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">proof_database</span><span class="o">.</span><span class="n">create_table</span><span class="p">()</span>
 
+        <span class="c1"># Initialize proof manager</span>
         <span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">proof_manager</span> <span class="o">=</span> <span class="n">ProofManager</span><span class="p">(</span>
             <span class="n">proof_database</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">proof_database</span><span class="p">,</span>
             <span class="n">lean_semaphore</span><span class="o">=</span><span class="n">app</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">lean_semaphore</span><span class="p">,</span>
@@ -288,6 +311,7 @@
 
         <span class="k">yield</span>
 
+        <span class="c1"># Shutdown</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Lean Server is shutting down&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">lifespan</span></div>

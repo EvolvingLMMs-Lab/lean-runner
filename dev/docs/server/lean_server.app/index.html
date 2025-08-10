@@ -262,47 +262,95 @@
 </section>
 <section id="module-lean_server.app.args">
 <span id="lean-server-app-args-module"></span><h2>lean_server.app.args module<a class="headerlink" href="#module-lean_server.app.args" title="Link to this heading">¶</a></h2>
+<p>This module defines the command-line argument parser for the Lean server.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="lean_server.app.args.parse_args">
 <span class="sig-prename descclassname"><span class="pre">lean_server.app.args.</span></span><span class="sig-name descname"><span class="pre">parse_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Namespace</span></span></span><a class="reference internal" href="../_modules/lean_server/app/args/#parse_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.app.args.parse_args" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Parses command-line arguments for the Lean server.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>An argparse.Namespace object containing the parsed arguments.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="module-lean_server.app.db">
 <span id="lean-server-app-db-module"></span><h2>lean_server.app.db module<a class="headerlink" href="#module-lean_server.app.db" title="Link to this heading">¶</a></h2>
+<p>This module defines the database API endpoints for the FastAPI application.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="lean_server.app.db.launch_db_router">
 <span class="sig-prename descclassname"><span class="pre">lean_server.app.db.</span></span><span class="sig-name descname"><span class="pre">launch_db_router</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">FastAPI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lean_server/app/db/#launch_db_router"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.app.db.launch_db_router" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Mounts the database-related API endpoints to the FastAPI application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>app</strong> – The FastAPI application instance.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="module-lean_server.app.lifespan">
 <span id="lean-server-app-lifespan-module"></span><h2>lean_server.app.lifespan module<a class="headerlink" href="#module-lean_server.app.lifespan" title="Link to this heading">¶</a></h2>
+<p>This module defines the lifespan manager for the FastAPI application.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="lean_server.app.lifespan.get_lifespan">
 <span class="sig-prename descclassname"><span class="pre">lean_server.app.lifespan.</span></span><span class="sig-name descname"><span class="pre">get_lifespan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lean_server.config/#lean_server.config.config.Config" title="lean_server.config.config.Config"><span class="pre">Config</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lean_server/app/lifespan/#get_lifespan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.app.lifespan.get_lifespan" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Returns an asynchronous context manager for the application’s lifespan.</p>
+<p>This function sets up resources on startup and cleans them up on shutdown.
+It initializes the database, proof manager, and other application state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – The application configuration.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An async context manager function.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="module-lean_server.app.prove">
 <span id="lean-server-app-prove-module"></span><h2>lean_server.app.prove module<a class="headerlink" href="#module-lean_server.app.prove" title="Link to this heading">¶</a></h2>
+<p>This module defines the proof-related API endpoints for the FastAPI application.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="lean_server.app.prove.launch_prove_router">
 <span class="sig-prename descclassname"><span class="pre">lean_server.app.prove.</span></span><span class="sig-name descname"><span class="pre">launch_prove_router</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">FastAPI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lean_server/app/prove/#launch_prove_router"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.app.prove.launch_prove_router" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Mounts the proof-related API endpoints to the FastAPI application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>app</strong> – The FastAPI application instance.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="module-lean_server.app.serve">
 <span id="lean-server-app-serve-module"></span><h2>lean_server.app.serve module<a class="headerlink" href="#module-lean_server.app.serve" title="Link to this heading">¶</a></h2>
+<p>This module is the main entry point for launching the Lean server.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="lean_server.app.serve.launch">
 <span class="sig-prename descclassname"><span class="pre">lean_server.app.serve.</span></span><span class="sig-name descname"><span class="pre">launch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../lean_server.config/#lean_server.config.config.Config" title="lean_server.config.config.Config"><span class="pre">Config</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">FastAPI</span></span></span><a class="reference internal" href="../_modules/lean_server/app/serve/#launch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.app.serve.launch" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Creates and configures the FastAPI application.</p>
+<p>This function initializes the FastAPI app, sets up the lifespan manager,
+and mounts the API routers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>config</strong> – The application configuration.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The configured FastAPI application instance.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="lean_server.app.serve.main">
 <span class="sig-prename descclassname"><span class="pre">lean_server.app.serve.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lean_server/app/serve/#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lean_server.app.serve.main" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>The main entry point for the server.</p>
+<p>This function parses command-line arguments, loads the configuration,
+launches the FastAPI application, and starts the Uvicorn server.</p>
+</dd></dl>
 
 </section>
 <section id="module-lean_server.app.utils">
