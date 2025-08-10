@@ -25,7 +25,7 @@ You can configure the server using the following environment variables:
 
 -   `PORT`: The port on your host machine that will forward to the server's port `8000` inside the container.
 -   `CONCURRENCY`: The number of concurrent requests the server can handle. The optimal value depends on your machine's resources.
--   `DB_PATH`: The path to the database file.
+-   `DB_PATH` (host): The path to the database file on your host, which is mounted into the container at `/app/lean_server.db`.
 
 ### Option A: Interactive Mode (Simple Run)
 

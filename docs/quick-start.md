@@ -15,10 +15,12 @@ Start the server with a single `docker run` command:
 
 ```sh
 PORT=8080
-CONCURRENCY=4
+CONCURRENCY=32
+DB_PATH=./lean_server.db
 
 docker run --rm -it \
     -p $PORT:8000 \
+    -v $DB_PATH:/app/lean_server.db \
     pufanyi/lean-server:latest \
     /app/lean-runner/.venv/bin/lean-server --concurrency=$CONCURRENCY
 ```
