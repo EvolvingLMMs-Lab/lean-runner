@@ -8,7 +8,7 @@ def launch_health_router(app: FastAPI):
             return {
                 "status": "ok",
                 "message": "Lean Server is running",
-                "version": "0.0.1",
+                "version": "0.1.0",
             }
         except HTTPException:
             raise

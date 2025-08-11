@@ -100,7 +100,7 @@ curl http://localhost:8888/health
 If the server is running correctly, you should receive a response like:
 
 ```json
-{"status":"ok", "message":"Lean Server is running", "version":"0.0.1"}
+{"status":"ok", "message":"Lean Server is running", "version":"0.1.0"}
 ```
 
 ## Next Steps

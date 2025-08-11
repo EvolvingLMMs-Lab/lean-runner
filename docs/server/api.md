@@ -22,7 +22,7 @@ Verifies the server's operational status and retrieves basic information.
 {
   "status": "ok",
   "message": "Lean Server is running",
-  "version": "0.0.1"
+  "version": "0.1.0"
 }
 ```
 
