@@ -347,7 +347,12 @@
                     <span class="k">except</span> <span class="ne">TimeoutError</span><span class="p">:</span>
                         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Force killing Lean process&quot;</span><span class="p">)</span>
                         <span class="n">proc</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
-                        <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="k">await</span> <span class="n">proc</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+                        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">kill_error</span><span class="p">:</span>
+                            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                                <span class="sa">f</span><span class="s2">&quot;Failed to wait for killed process: </span><span class="si">{</span><span class="n">kill_error</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="p">)</span>
 
                 <span class="k">return</span> <span class="n">LeanProofResult</span><span class="p">(</span>
                     <span class="n">status</span><span class="o">=</span><span class="n">LeanProofStatus</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span>
