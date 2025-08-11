@@ -35,12 +35,12 @@ This mode is useful for temporary use or for watching the server logs in real-ti
 # Configuration
 PORT=8888
 CONCURRENCY=32
-DB_PATH=./lean_server.db
+DB_PATH=./database
 
 # Run the container
 docker run --rm -it \
     -p $PORT:8000 \
-    -v $DB_PATH:/app/database/lean_server.db \
+    -v $DB_PATH:/app/database \
     pufanyi/lean-server:latest \
     /app/lean-runner/.venv/bin/lean-server --concurrency=$CONCURRENCY
 ```
@@ -53,13 +53,13 @@ This is the recommended mode for long-running services. The container will conti
 # Configuration
 PORT=8888
 CONCURRENCY=32
-DB_PATH=./lean_server.db
+DB_PATH=./database
 
 # Run the container
 docker run -d \
     --name lean-server \
     -p $PORT:8000 \
-    -v $DB_PATH:/app/database/lean_server.db \
+    -v $DB_PATH:/app/database \
     pufanyi/lean-server:latest \
     /app/lean-runner/.venv/bin/lean-server --concurrency=$CONCURRENCY
 ```
