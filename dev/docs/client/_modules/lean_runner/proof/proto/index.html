@@ -261,6 +261,9 @@
     <span class="n">premises</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Whether to return premises.&quot;</span><span class="p">)</span>
     <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="mf">300.0</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;The timeout for the verification in seconds.&quot;</span>
+    <span class="p">)</span>
+    <span class="n">memory_limit_mb</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="mi">8192</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Memory limit in MB for the Lean process.&quot;</span>
     <span class="p">)</span></div>
 
 
