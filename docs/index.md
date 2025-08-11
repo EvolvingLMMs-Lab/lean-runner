@@ -74,6 +74,12 @@ Lean-Runner leverages a powerful Server-Client architecture that smartly places 
 
 ![](assets/imgs/overview.webp)
 
+## Why Async?
+
+Lean-Runner's asynchronous architecture uses a **single centralized controller** to manage multiple REPL processes, unlike traditional systems that distribute requests across multiple controllers. This design delivers superior performance through concurrent execution, better resource utilization, and direct communication channels. The centralized approach reduces overhead, enables intelligent load balancing, and provides fault tolerance—if one REPL process fails, others continue operating independently. This scalable architecture allows you to dynamically add more REPL processes as needed, making it perfect for both interactive development and large-scale batch processing of Lean proofs.
+
+![](assets/imgs/async.webp)
+
 ## Citation
 
 ```bibtex
