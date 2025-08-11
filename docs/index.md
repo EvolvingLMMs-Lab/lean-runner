@@ -68,7 +68,7 @@ title: Home
 
 </div>
 
-## Architecture
+## Why Server-Client?
 
 Lean-Runner leverages a powerful Server-Client architecture that smartly places all the complex configuration on the server side, while keeping the client implementation elegantly minimal. We've packaged the entire server using :simple-docker: [Docker](https://www.docker.com/), making deployment incredibly straightforward and hassle-free.
 

@@ -40,7 +40,7 @@
 
 Check the [quick start](https://lean-runner.vercel.app/quick-start/) guide for detailed instructions on how to get started with Lean-Runner.
 
-## Architecture
+## Why Server-Client?
 
 Lean-Runner leverages a powerful Server-Client architecture that smartly places all the complex configuration on the server side, while keeping the client implementation elegantly minimal. We've packaged the entire server using [Docker](https://www.docker.com/), making deployment incredibly straightforward and hassle-free.
 
