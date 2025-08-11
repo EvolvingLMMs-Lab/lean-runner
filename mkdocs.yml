@@ -99,3 +99,7 @@ nav:
   - For Developers:
       - Code Documentation: dev/docs.md
       - Todos: dev/todos.md
+extra:
+  analytics:
+    provider: google
+    property: G-68T1QBJ2DS
