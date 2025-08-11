@@ -96,7 +96,12 @@ class LeanProof:
                     except TimeoutError:
                         logger.warning("Force killing Lean process")
                         proc.kill()
-                        await proc.wait()
+                        try:
+                            await proc.wait()
+                        except Exception as kill_error:
+                            logger.warning(
+                                f"Failed to wait for killed process: {kill_error}"
+                            )
 
                 return LeanProofResult(
                     status=LeanProofStatus.ERROR,
