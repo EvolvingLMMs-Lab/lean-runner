@@ -13,3 +13,5 @@ The `ProofConfig` object allows you to customize the behavior of the proof verif
     - If `True`, the server will return the premises (dependencies) of the proof.
 - **`timeout: float`** (default: `300.0`)
     - The maximum time in seconds to wait for the proof verification to complete.
+- **`memory_limit_mb: int`** (default: `8192`)
+    - The memory limit in MB for the Lean process. If exceeded, the process will be terminated.

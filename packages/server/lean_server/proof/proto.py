@@ -11,6 +11,9 @@ class LeanProofConfig(BaseModel):
     tactics: bool = Field(False, description="Whether to return tactics.")
     premises: bool = Field(False, description="Whether to return premises.")
     timeout: float = Field(300.0, description="Timeout for the proof in seconds.")
+    memory_limit_mb: int = Field(
+        8192, description="Memory limit in MB for the Lean process."
+    )
 
 
 class LeanProofStatus(Enum):

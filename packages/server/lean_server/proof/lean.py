@@ -5,12 +5,30 @@ This module defines the LeanProof class for executing Lean proofs.
 import asyncio
 import json
 import logging
+import resource
 
 from ..config import Config
 from ..utils.uuid.uuid import uuid
 from .proto import LeanProofConfig, LeanProofResult, LeanProofStatus
 
 logger = logging.getLogger(__name__)
+
+
+def _set_memory_limit(memory_limit_mb: int) -> None:
+    """
+    Set memory limit for the current process.
+
+    Args:
+        memory_limit_mb: Memory limit in MB
+    """
+    try:
+        # Convert MB to bytes
+        memory_limit_bytes = memory_limit_mb * 1024 * 1024
+        # Set soft and hard limits for memory
+        resource.setrlimit(resource.RLIMIT_AS, (memory_limit_bytes, memory_limit_bytes))
+        logger.debug(f"Set memory limit to {memory_limit_mb} MB")
+    except Exception as e:
+        logger.warning(f"Failed to set memory limit: {e}")
 
 
 class LeanProof:
@@ -71,6 +89,10 @@ class LeanProof:
             logger.info(f"Executing command: {command}")
 
             # Create subprocess with proper resource management
+            def preexec_fn():
+                """Set memory limit in child process."""
+                _set_memory_limit(config.memory_limit_mb)
+
             proc = await asyncio.create_subprocess_exec(
                 self.config.lean.executable,
                 "exe",
@@ -79,6 +101,7 @@ class LeanProof:
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 cwd=self.config.lean.workspace,
+                preexec_fn=preexec_fn,
             )
 
             try:
@@ -112,15 +135,26 @@ class LeanProof:
             # Check process return code
             if proc.returncode != 0:
                 logger.warning(f"Lean process exited with code {proc.returncode}")
-                error_msg = (
-                    stderr.decode("utf-8")
-                    if stderr
-                    else f"Process exited with code {proc.returncode}"
-                )
+
+                # Check if process was killed due to memory limit
+                if proc.returncode == -9:  # SIGKILL
+                    error_msg = (
+                        f"Process was killed due to memory limit "
+                        f"({config.memory_limit_mb} MB)"
+                    )
+                    result_status = "memory_limit_exceeded"
+                else:
+                    error_msg = (
+                        stderr.decode("utf-8")
+                        if stderr
+                        else f"Process exited with code {proc.returncode}"
+                    )
+                    result_status = "process_error"
+
                 return LeanProofResult(
                     status=LeanProofStatus.ERROR,
                     error_message=error_msg,
-                    result={"status": "process_error", "return_code": proc.returncode},
+                    result={"status": result_status, "return_code": proc.returncode},
                 )
 
             error_message = stderr.decode("utf-8") if stderr else None

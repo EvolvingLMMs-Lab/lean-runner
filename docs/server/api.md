@@ -78,7 +78,10 @@ response = requests.post(
     "http://localhost:8000/prove/check",
     data={
         "proof": "theorem test : 1 + 1 = 2 := by norm_num",
-        "config": json.dumps({"timeout": 600.0})
+        "config": json.dumps({
+            "timeout": 600.0,
+            "memory_limit_mb": 512
+        })
     }
 )
 print(response.json())
@@ -126,7 +129,10 @@ response = requests.post(
     "http://localhost:8000/prove/submit",
     data={
         "proof": "theorem complex_proof : some_statement := by tactic_sequence",
-        "config": json.dumps({"timeout": 900.0})
+        "config": json.dumps({
+            "timeout": 900.0,
+            "memory_limit_mb": 2048
+        })
     }
 )
 proof_id = response.json().get("proof_id")
@@ -267,7 +273,8 @@ The `config` parameter is a JSON string used to customize proof verification.
   "all_tactics": false,
   "tactics": false,
   "ast": false,
-  "premises": false
+  "premises": false,
+  "memory_limit_mb": 8192
 }
 ```
 
@@ -280,6 +287,7 @@ The `config` parameter is a JSON string used to customize proof verification.
 | `tactics` | `boolean`| `false` | Include tactics information in the result. |
 | `ast` | `boolean`| `false` | Include the abstract syntax tree in the result. |
 | `premises` | `boolean`| `false` | Include premises information in the result. |
+| `memory_limit_mb` | `integer` | `8192` | Memory limit in MB for the Lean process. |
 
 ### Proof Result
 
@@ -308,6 +316,14 @@ The proof verification endpoints (`/prove/check` and `/prove/result/{proof_id}`)
 | `result` | `object` | Contains detailed results based on the `config` options. |
 | `error_message`| `string` | An error message if the `status` is `error`. |
 
+## Memory Limits
+
+The server supports memory limits for Lean processes to prevent excessive resource consumption. When a process exceeds the memory limit:
+
+1. The process is automatically terminated by the operating system
+2. The server returns a specific error response with `status: "memory_limit_exceeded"`
+3. The `return_code` will be `-9` (SIGKILL signal)
+
 ## Error Handling
 
 API errors are returned in a consistent JSON format.
@@ -316,6 +332,19 @@ API errors are returned in a consistent JSON format.
 ```json
 {
   "detail": "A descriptive error message."
+}
+```
+
+**Memory Limit Error Response**
+```json
+{
+  "success": false,
+  "status": "error",
+  "result": {
+    "status": "memory_limit_exceeded",
+    "return_code": -9
+  },
+  "error_message": "Process was killed due to memory limit (512 MB)"
 }
 ```
 
