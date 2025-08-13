@@ -40,16 +40,6 @@ class ProveServiceStub(object):
                 request_serializer=prove__pb2.CheckProofRequest.SerializeToString,
                 response_deserializer=prove__pb2.ProofResult.FromString,
                 _registered_method=True)
-        self.SubmitProof = channel.unary_unary(
-                '/lean_runner.ProveService/SubmitProof',
-                request_serializer=prove__pb2.SubmitProofRequest.SerializeToString,
-                response_deserializer=prove__pb2.SubmitProofResponse.FromString,
-                _registered_method=True)
-        self.GetResult = channel.unary_unary(
-                '/lean_runner.ProveService/GetResult',
-                request_serializer=prove__pb2.GetResultRequest.SerializeToString,
-                response_deserializer=prove__pb2.ProofResult.FromString,
-                _registered_method=True)
 
 
 class ProveServiceServicer(object):
@@ -57,22 +47,7 @@ class ProveServiceServicer(object):
     """
 
     def CheckProof(self, request, context):
-        """Synchronously check a Lean proof and return the result.
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def SubmitProof(self, request, context):
-        """Asynchronously submit a Lean proof for execution.
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def GetResult(self, request, context):
-        """Retrieve the result of a previously submitted proof.
-        """
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -83,16 +58,6 @@ def add_ProveServiceServicer_to_server(servicer, server):
             'CheckProof': grpc.unary_unary_rpc_method_handler(
                     servicer.CheckProof,
                     request_deserializer=prove__pb2.CheckProofRequest.FromString,
-                    response_serializer=prove__pb2.ProofResult.SerializeToString,
-            ),
-            'SubmitProof': grpc.unary_unary_rpc_method_handler(
-                    servicer.SubmitProof,
-                    request_deserializer=prove__pb2.SubmitProofRequest.FromString,
-                    response_serializer=prove__pb2.SubmitProofResponse.SerializeToString,
-            ),
-            'GetResult': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetResult,
-                    request_deserializer=prove__pb2.GetResultRequest.FromString,
                     response_serializer=prove__pb2.ProofResult.SerializeToString,
             ),
     }
@@ -123,60 +88,6 @@ class ProveService(object):
             target,
             '/lean_runner.ProveService/CheckProof',
             prove__pb2.CheckProofRequest.SerializeToString,
-            prove__pb2.ProofResult.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def SubmitProof(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/lean_runner.ProveService/SubmitProof',
-            prove__pb2.SubmitProofRequest.SerializeToString,
-            prove__pb2.SubmitProofResponse.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
-
-    @staticmethod
-    def GetResult(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/lean_runner.ProveService/GetResult',
-            prove__pb2.GetResultRequest.SerializeToString,
             prove__pb2.ProofResult.FromString,
             options,
             channel_credentials,

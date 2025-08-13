@@ -9,14 +9,7 @@ import "google/protobuf/duration.proto";
 
 // Service for handling Lean proofs.
 service ProveService {
-  // Synchronously check a Lean proof and return the result.
   rpc CheckProof(CheckProofRequest) returns (ProofResult);
-
-  // Asynchronously submit a Lean proof for execution.
-  rpc SubmitProof(SubmitProofRequest) returns (SubmitProofResponse);
-
-  // Retrieve the result of a previously submitted proof.
-  rpc GetResult(GetResultRequest) returns (ProofResult);
 }
 
 // Configuration for the prover application.

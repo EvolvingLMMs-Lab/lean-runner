@@ -494,12 +494,10 @@ const file_prove_proto_rawDesc = "" +
 	"\bproof_id\x18\x01 \x01(\tR\aproofId\x12\x18\n" +
 	"\asuccess\x18\x02 \x01(\bR\asuccess\x12/\n" +
 	"\x06result\x18\x03 \x01(\v2\x17.google.protobuf.StructR\x06result\x12#\n" +
-	"\rerror_message\x18\x04 \x01(\tR\ferrorMessage2\xee\x01\n" +
+	"\rerror_message\x18\x04 \x01(\tR\ferrorMessage2V\n" +
 	"\fProveService\x12F\n" +
 	"\n" +
-	"CheckProof\x12\x1e.lean_runner.CheckProofRequest\x1a\x18.lean_runner.ProofResult\x12P\n" +
-	"\vSubmitProof\x12\x1f.lean_runner.SubmitProofRequest\x1a .lean_runner.SubmitProofResponse\x12D\n" +
-	"\tGetResult\x12\x1d.lean_runner.GetResultRequest\x1a\x18.lean_runner.ProofResultB=Z;github.com/EvolvingLMMs-Lab/lean-runner/server/gen/go/protob\x06proto3"
+	"CheckProof\x12\x1e.lean_runner.CheckProofRequest\x1a\x18.lean_runner.ProofResultB=Z;github.com/EvolvingLMMs-Lab/lean-runner/server/gen/go/protob\x06proto3"
 
 var (
 	file_prove_proto_rawDescOnce sync.Once
@@ -532,13 +530,9 @@ var file_prove_proto_depIdxs = []int32{
 	1, // 3: lean_runner.SubmitProofRequest.config:type_name -> lean_runner.ProofConfig
 	8, // 4: lean_runner.ProofResult.result:type_name -> google.protobuf.Struct
 	2, // 5: lean_runner.ProveService.CheckProof:input_type -> lean_runner.CheckProofRequest
-	3, // 6: lean_runner.ProveService.SubmitProof:input_type -> lean_runner.SubmitProofRequest
-	5, // 7: lean_runner.ProveService.GetResult:input_type -> lean_runner.GetResultRequest
-	6, // 8: lean_runner.ProveService.CheckProof:output_type -> lean_runner.ProofResult
-	4, // 9: lean_runner.ProveService.SubmitProof:output_type -> lean_runner.SubmitProofResponse
-	6, // 10: lean_runner.ProveService.GetResult:output_type -> lean_runner.ProofResult
-	8, // [8:11] is the sub-list for method output_type
-	5, // [5:8] is the sub-list for method input_type
+	6, // 6: lean_runner.ProveService.CheckProof:output_type -> lean_runner.ProofResult
+	6, // [6:7] is the sub-list for method output_type
+	5, // [5:6] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name
 	5, // [5:5] is the sub-list for extension extendee
 	0, // [0:5] is the sub-list for field type_name

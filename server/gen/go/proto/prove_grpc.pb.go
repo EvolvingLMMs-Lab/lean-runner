@@ -19,9 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ProveService_CheckProof_FullMethodName  = "/lean_runner.ProveService/CheckProof"
-	ProveService_SubmitProof_FullMethodName = "/lean_runner.ProveService/SubmitProof"
-	ProveService_GetResult_FullMethodName   = "/lean_runner.ProveService/GetResult"
+	ProveService_CheckProof_FullMethodName = "/lean_runner.ProveService/CheckProof"
 )
 
 // ProveServiceClient is the client API for ProveService service.
@@ -30,12 +28,7 @@ const (
 //
 // Service for handling Lean proofs.
 type ProveServiceClient interface {
-	// Synchronously check a Lean proof and return the result.
 	CheckProof(ctx context.Context, in *CheckProofRequest, opts ...grpc.CallOption) (*ProofResult, error)
-	// Asynchronously submit a Lean proof for execution.
-	SubmitProof(ctx context.Context, in *SubmitProofRequest, opts ...grpc.CallOption) (*SubmitProofResponse, error)
-	// Retrieve the result of a previously submitted proof.
-	GetResult(ctx context.Context, in *GetResultRequest, opts ...grpc.CallOption) (*ProofResult, error)
 }
 
 type proveServiceClient struct {
@@ -56,38 +49,13 @@ func (c *proveServiceClient) CheckProof(ctx context.Context, in *CheckProofReque
 	return out, nil
 }
 
-func (c *proveServiceClient) SubmitProof(ctx context.Context, in *SubmitProofRequest, opts ...grpc.CallOption) (*SubmitProofResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(SubmitProofResponse)
-	err := c.cc.Invoke(ctx, ProveService_SubmitProof_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *proveServiceClient) GetResult(ctx context.Context, in *GetResultRequest, opts ...grpc.CallOption) (*ProofResult, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ProofResult)
-	err := c.cc.Invoke(ctx, ProveService_GetResult_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // ProveServiceServer is the server API for ProveService service.
 // All implementations must embed UnimplementedProveServiceServer
 // for forward compatibility.
 //
 // Service for handling Lean proofs.
 type ProveServiceServer interface {
-	// Synchronously check a Lean proof and return the result.
 	CheckProof(context.Context, *CheckProofRequest) (*ProofResult, error)
-	// Asynchronously submit a Lean proof for execution.
-	SubmitProof(context.Context, *SubmitProofRequest) (*SubmitProofResponse, error)
-	// Retrieve the result of a previously submitted proof.
-	GetResult(context.Context, *GetResultRequest) (*ProofResult, error)
 	mustEmbedUnimplementedProveServiceServer()
 }
 
@@ -100,12 +68,6 @@ type UnimplementedProveServiceServer struct{}
 
 func (UnimplementedProveServiceServer) CheckProof(context.Context, *CheckProofRequest) (*ProofResult, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckProof not implemented")
-}
-func (UnimplementedProveServiceServer) SubmitProof(context.Context, *SubmitProofRequest) (*SubmitProofResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SubmitProof not implemented")
-}
-func (UnimplementedProveServiceServer) GetResult(context.Context, *GetResultRequest) (*ProofResult, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetResult not implemented")
 }
 func (UnimplementedProveServiceServer) mustEmbedUnimplementedProveServiceServer() {}
 func (UnimplementedProveServiceServer) testEmbeddedByValue()                      {}
@@ -146,42 +108,6 @@ func _ProveService_CheckProof_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ProveService_SubmitProof_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SubmitProofRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProveServiceServer).SubmitProof(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ProveService_SubmitProof_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProveServiceServer).SubmitProof(ctx, req.(*SubmitProofRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _ProveService_GetResult_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetResultRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ProveServiceServer).GetResult(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ProveService_GetResult_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ProveServiceServer).GetResult(ctx, req.(*GetResultRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // ProveService_ServiceDesc is the grpc.ServiceDesc for ProveService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -192,14 +118,6 @@ var ProveService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckProof",
 			Handler:    _ProveService_CheckProof_Handler,
-		},
-		{
-			MethodName: "SubmitProof",
-			Handler:    _ProveService_SubmitProof_Handler,
-		},
-		{
-			MethodName: "GetResult",
-			Handler:    _ProveService_GetResult_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
