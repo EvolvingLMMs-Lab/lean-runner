@@ -1,0 +1,14 @@
+# Default configuration for Lean Runner Server
+# This file contains all default settings and should not be modified
+# To customize settings, create a custom config file and use the --config flag
+server:
+  host: "localhost"
+  port: 50051
+lean:
+  executable: "lean"
+  workspace: "./workspace"
+  concurrency: 4
+logger:
+  level: "info" # debug, info, warn, error
+  production: false # Use structured JSON logs in production
+  output_path: "stdout" # stdout, stderr, or file path

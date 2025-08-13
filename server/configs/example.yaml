@@ -1,0 +1,14 @@
+# Example custom configuration for Lean Runner Server
+# Copy this file and modify it according to your needs
+# Use with: --config=path/to/your/config.yaml
+server:
+  host: "0.0.0.0" # Listen on all interfaces
+  port: 8080 # Custom port
+lean:
+  executable: "/usr/local/bin/lean"
+  workspace: "/opt/lean/workspace"
+  concurrency: 8 # Increase for better performance
+logger:
+  level: "debug" # More verbose logging
+  production: true # Structured JSON logs
+  output_path: "/var/log/lean-runner/app.log"
