@@ -2,6 +2,7 @@
 package logger
 
 import (
+	"fmt"
 	"os"
 
 	"go.uber.org/zap"
@@ -69,6 +70,9 @@ func Initialize(config *Config) error {
 	case ErrorLevel:
 		zapConfig.Level = zap.NewAtomicLevelAt(zap.ErrorLevel)
 	default:
+		// Log a warning for invalid log level and use InfoLevel as fallback
+		fmt.Printf("Warning: Invalid log level '%s'. Using 'info' level instead.\n", config.Level)
+		fmt.Printf("Valid log levels are: debug, info, warn, error\n")
 		zapConfig.Level = zap.NewAtomicLevelAt(zap.InfoLevel)
 	}
 

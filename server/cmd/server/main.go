@@ -14,17 +14,30 @@ import (
 )
 
 var (
-	port = flag.Int("port", 50051, "The server port")
+	port     = flag.Int("port", 50051, "The server port")
+	logLevel = flag.String("log-level", "info", "The log level")
 )
 
 func main() {
 	flag.Parse()
 
-	// Initialize the logger
-	if err := logger.InitializeFromEnv(); err != nil {
+	// Initialize the logger with command line log level
+	config := logger.DefaultConfig()
+	if *logLevel != "" {
+		config.Level = logger.LogLevel(*logLevel)
+	}
+	if err := logger.Initialize(config); err != nil {
 		// Fallback to basic logging if logger initialization fails
 		fmt.Printf("Failed to initialize logger: %v\n", err)
-		return
+		fmt.Printf("Using fallback logging configuration...\n")
+
+		// Try to initialize with default config as fallback
+		if fallbackErr := logger.Initialize(logger.DefaultConfig()); fallbackErr != nil {
+			fmt.Printf("Failed to initialize fallback logger: %v\n", fallbackErr)
+			fmt.Printf("Exiting due to logger initialization failure\n")
+			return
+		}
+		fmt.Printf("Fallback logger initialized successfully\n")
 	}
 	defer logger.Sync() // Flush any buffered log entries
 
@@ -44,9 +57,6 @@ func main() {
 	utilsService := service.NewUtilsService()
 	pb.RegisterUtilsServiceServer(s, utilsService)
 
-	// NOTE: When you create other services (like a ProveService),
-	// you will register them here as well. For example:
-	//
 	// proveService := service.NewProveService(...)
 	// pb.RegisterProveServiceServer(s, proveService)
 
