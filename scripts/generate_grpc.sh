@@ -40,8 +40,10 @@ mkdir -p "$GO_SERVER_DIR"
 # Generate the gRPC code
 protoc \
     --proto_path="$PROTO_DIR" \
-    --go_out="$GO_SERVER_DIR" \
-    --go-grpc_out="$GO_SERVER_DIR" \
+    --go_out="server" \
+    --go_opt=module=github.com/EvolvingLMMs-Lab/lean-runner/server \
+    --go-grpc_out="server" \
+    --go-grpc_opt=module=github.com/EvolvingLMMs-Lab/lean-runner/server \
     "$PROTO_DIR"/*.proto
 
 echo "Go gRPC code generated successfully."
