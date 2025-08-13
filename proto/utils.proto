@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package lean_runner;
+
+option go_package = "github.com/EvolvingLMMs-Lab/lean-runner/server/gen/go/lean_runner";
+
+import "google/protobuf/empty.proto";
+
+// Utility services.
+service UtilsService {
+  // Check the health of the server.
+  rpc Health(google.protobuf.Empty) returns (HealthResponse);
+}
+
+message HealthResponse {
+  string status = 1;
+  string message = 2;
+  string version = 3;
+}

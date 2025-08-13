@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package lean_runner;
+
+option go_package = "github.com/EvolvingLMMs-Lab/lean-runner/server/gen/go/lean_runner";
+
+import "google/protobuf/struct.proto";
+
+// Service for handling Lean proofs.
+service ProveService {
+  // Synchronously check a Lean proof and return the result.
+  rpc CheckProof(CheckProofRequest) returns (ProofResult);
+
+  // Asynchronously submit a Lean proof for execution.
+  rpc SubmitProof(SubmitProofRequest) returns (SubmitProofResponse);
+
+  // Retrieve the result of a previously submitted proof.
+  rpc GetResult(GetResultRequest) returns (ProofResult);
+}
+
+message CheckProofRequest {
+  string proof = 1;
+  // A JSON-like structure for Lean proof configuration.
+  google.protobuf.Struct config = 2;
+}
+
+message SubmitProofRequest {
+  string proof = 1;
+  // A JSON-like structure for Lean proof configuration.
+  google.protobuf.Struct config = 2;
+}
+
+message SubmitProofResponse {
+  string proof_id = 1;
+}
+
+message GetResultRequest {
+  string proof_id = 1;
+}
+
+// Represents the result of a proof execution.
+message ProofResult {
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    PENDING = 1;
+    SUCCESS = 2;
+    FAILURE = 3;
+    TIMEOUT = 4;
+    NOT_FOUND = 5;
+  }
+
+  string id = 1;
+  Status status = 2;
+  string result = 3; // Can be stdout or structured output
+  string error = 4;  // Can be stderr or a specific error message
+}
