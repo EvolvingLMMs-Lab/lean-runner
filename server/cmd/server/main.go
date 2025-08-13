@@ -15,7 +15,7 @@ import (
 
 var (
 	port     = flag.Int("port", 50051, "The server port")
-	logLevel = flag.String("log-level", "info", "The log level")
+	logLevel = flag.String("log-level", "info", "The log level") // debug, info, warn, error
 )
 
 func main() {
