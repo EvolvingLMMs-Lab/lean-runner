@@ -157,7 +157,9 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 	// Apply resource limits to the child process.
 	if err := setResourceLimits(cmd.Process.Pid, config); err != nil {
 		// If setting limits fails, kill the process and return error.
-		cmd.Process.Kill()
+		if killErr := cmd.Process.Kill(); killErr != nil {
+			logger.Warn("Failed to kill process after failing to set resource limits", zap.Error(killErr))
+		}
 		return nil, fmt.Errorf("failed to set resource limits: %w", err)
 	}
 

@@ -121,7 +121,11 @@ func InitializeFromEnv() error {
 // Sync flushes any buffered log entries
 func Sync() {
 	if Logger != nil {
-		Logger.Sync()
+		if err := Logger.Sync(); err != nil {
+			// We can't use the logger to log its own sync error,
+			// so we print to stderr.
+			fmt.Fprintf(os.Stderr, "failed to sync logger: %v\n", err)
+		}
 	}
 }
 
@@ -129,7 +133,11 @@ func Sync() {
 func GetLogger() *zap.Logger {
 	if Logger == nil {
 		// Fallback to a default logger if not initialized
-		InitializeFromEnv()
+		if err := InitializeFromEnv(); err != nil {
+			// If initialization fails, we can't proceed.
+			// Panic is appropriate here as logging is fundamental.
+			panic(fmt.Sprintf("failed to initialize logger from environment: %v", err))
+		}
 	}
 	return Logger
 }
@@ -138,7 +146,9 @@ func GetLogger() *zap.Logger {
 func GetSugar() *zap.SugaredLogger {
 	if Sugar == nil {
 		// Fallback to a default logger if not initialized
-		InitializeFromEnv()
+		if err := InitializeFromEnv(); err != nil {
+			panic(fmt.Sprintf("failed to initialize logger from environment: %v", err))
+		}
 	}
 	return Sugar
 }
