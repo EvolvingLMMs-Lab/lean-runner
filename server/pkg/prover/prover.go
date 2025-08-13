@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"log"
 	"os/exec"
 	"syscall"
@@ -14,21 +15,19 @@ import (
 )
 
 // Prover is an interface that defines the behavior for executing proofs.
-// This is a core concept in Go for creating decoupled components. Any struct
-// that implements the Execute method satisfies this interface.
 type Prover interface {
-	Execute(ctx context.Context, proofCode string, config ProofConfig) (*ProofResult, error)
+	Execute(
+		ctx context.Context, // context for handling timeouts and cancellations
+		proofCode string, // the proof code to execute
+		config ProofConfig, // the configuration for the proof
+	) (*ProofResult, error)
 }
 
-// leanProver is the concrete implementation of the Prover interface for Lean.
-// It holds the state and dependencies, similar to the attributes of the
-// Python `LeanProof` class.
 type leanProver struct {
 	config Config
 }
 
-// NewLeanProver is a constructor function, analogous to `__init__` in Python.
-// It creates and returns a new instance of a Prover.
+// NewLeanProver creates a new Lean prover with the given configuration.
 func NewLeanProver(config Config) Prover {
 	return &leanProver{
 		config: config,
@@ -41,11 +40,9 @@ func NewLeanProver(config Config) Prover {
 func (p *leanProver) Execute(ctx context.Context, proofCode string, config ProofConfig) (*ProofResult, error) {
 	proofID := uuid.New().String()
 
-	// Create a context with a timeout.
 	ctx, cancel := context.WithTimeout(ctx, config.Timeout)
-	defer cancel() // Ensure the context is always cancelled to release resources.
+	defer cancel()
 
-	// This struct will be marshalled to JSON, like the `command` dict in Python.
 	commandPayload := struct {
 		Cmd        string   `json:"cmd"`
 		AllTactics bool     `json:"allTactics"`
@@ -108,8 +105,14 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 	}()
 
 	// Read stdout and stderr.
-	stdoutBytes, _ := json.Marshal(stdout)
-	stderrBytes, _ := json.Marshal(stderr)
+	stdoutBytes, err := io.ReadAll(stdout)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read stdout: %w", err)
+	}
+	stderrBytes, err := io.ReadAll(stderr)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read stderr: %w", err)
+	}
 
 	// Wait for the command to finish.
 	err = cmd.Wait()
