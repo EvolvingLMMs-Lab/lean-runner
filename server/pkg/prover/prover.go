@@ -73,10 +73,10 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 	// This is done by setting system process attributes.
 	cmd.SysProcAttr = &syscall.SysProcAttr{
 		Setpgid: true, // Run in a new process group
-		Rlimit: &syscall.Rlimit{
-			Cur: uint64(config.MemoryLimitMB * 1024 * 1024), // Soft limit
-			Max: uint64(config.MemoryLimitMB * 1024 * 1024), // Hard limit
-		},
+		// Rlimit: &syscall.Rlimit{
+		// 	Cur: uint64(config.MemoryLimitMB * 1024 * 1024), // Soft limit
+		// 	Max: uint64(config.MemoryLimitMB * 1024 * 1024), // Hard limit
+		// },
 	}
 
 	// Set up stdin, stdout, and stderr pipes.
@@ -164,7 +164,7 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 				"raw_output":          string(stdoutBytes),
 				"parse_error_message": err.Error(),
 			},
-			ProofID:      proofID,
+			ProofID: proofID,
 		}, nil
 	}
 
