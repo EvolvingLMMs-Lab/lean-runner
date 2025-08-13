@@ -40,17 +40,8 @@ message GetResultRequest {
 
 // Represents the result of a proof execution.
 message ProofResult {
-  enum Status {
-    STATUS_UNSPECIFIED = 0;
-    PENDING = 1;
-    SUCCESS = 2;
-    FAILURE = 3;
-    TIMEOUT = 4;
-    NOT_FOUND = 5;
-  }
-
-  string id = 1;
-  Status status = 2;
-  string result = 3; // Can be stdout or structured output
-  string error = 4;  // Can be stderr or a specific error message
+  string proof_id = 1;
+  bool success = 2;
+  string result = 3;
+  string error_message = 4;
 }

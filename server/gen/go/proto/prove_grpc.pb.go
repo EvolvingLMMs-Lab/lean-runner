@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v6.30.2
-// source: proto/lean_runner/prove.proto
+// source: proto/prove.proto
 
 package lean_runner
 
@@ -203,5 +203,5 @@ var ProveService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/lean_runner/prove.proto",
+	Metadata: "proto/prove.proto",
 }
