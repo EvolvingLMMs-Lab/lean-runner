@@ -5,6 +5,7 @@ package lean_runner;
 option go_package = "github.com/EvolvingLMMs-Lab/lean-runner/server/gen/go/proto";
 
 import "google/protobuf/struct.proto";
+import "google/protobuf/duration.proto";
 
 // Service for handling Lean proofs.
 service ProveService {
@@ -18,16 +19,37 @@ service ProveService {
   rpc GetResult(GetResultRequest) returns (ProofResult);
 }
 
+// Configuration for the prover application.
+message Config {
+  string lean_executable = 1;
+  string lean_workspace = 2;
+}
+
+// Configuration for a single proof execution.
+message ProofConfig {
+  google.protobuf.Duration timeout = 1;
+  google.protobuf.Duration cpu_time_limit = 2;
+  bool all_tactics = 3;
+  bool ast = 4;
+  repeated string tactics = 5;
+  repeated string premises = 6;
+  // Resource limits
+  uint64 memory_limit = 7;      // Virtual memory limit in bytes
+  uint64 stack_limit = 8;       // Stack size limit in bytes
+  uint64 file_size_limit = 9;   // Maximum file size limit in bytes
+  uint64 num_file_limit = 10;   // Maximum number of open files
+}
+
 message CheckProofRequest {
   string proof = 1;
-  // A JSON-like structure for Lean proof configuration.
-  google.protobuf.Struct config = 2;
+  // Configuration for Lean proof execution.
+  ProofConfig config = 2;
 }
 
 message SubmitProofRequest {
   string proof = 1;
-  // A JSON-like structure for Lean proof configuration.
-  google.protobuf.Struct config = 2;
+  // Configuration for Lean proof execution.
+  ProofConfig config = 2;
 }
 
 message SubmitProofResponse {
@@ -42,6 +64,7 @@ message GetResultRequest {
 message ProofResult {
   string proof_id = 1;
   bool success = 2;
-  string result = 3;
+  // Result can be any JSON-like structure.
+  google.protobuf.Struct result = 3;
   string error_message = 4;
 }

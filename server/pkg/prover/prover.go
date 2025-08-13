@@ -12,6 +12,7 @@ import (
 	"github.com/EvolvingLMMs-Lab/lean-runner/server/internal/logger"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
+	"golang.org/x/sys/unix"
 )
 
 // Prover is an interface that defines the behavior for executing proofs.
@@ -32,6 +33,68 @@ func NewLeanProver(config Config) Prover {
 	return &leanProver{
 		config: config,
 	}
+}
+
+// setResourceLimits applies resource limits to the specified process using unix.Prlimit.
+// pid is the process ID to apply limits to (0 for current process).
+func setResourceLimits(pid int, config ProofConfig) error {
+	// Set CPU time limit
+	if config.CPUTimeLimit > 0 {
+		cpuLimit := uint64(config.CPUTimeLimit.Seconds())
+		cpuRlimit := unix.Rlimit{
+			Cur: cpuLimit,
+			Max: cpuLimit,
+		}
+		if err := unix.Prlimit(pid, unix.RLIMIT_CPU, &cpuRlimit, nil); err != nil {
+			return fmt.Errorf("failed to set CPU time limit: %w", err)
+		}
+	}
+
+	// Set virtual memory limit
+	if config.MemoryLimit > 0 {
+		memRlimit := unix.Rlimit{
+			Cur: config.MemoryLimit,
+			Max: config.MemoryLimit,
+		}
+		if err := unix.Prlimit(pid, unix.RLIMIT_AS, &memRlimit, nil); err != nil {
+			return fmt.Errorf("failed to set memory limit: %w", err)
+		}
+	}
+
+	// Set stack size limit
+	if config.StackLimit > 0 {
+		stackRlimit := unix.Rlimit{
+			Cur: config.StackLimit,
+			Max: config.StackLimit,
+		}
+		if err := unix.Prlimit(pid, unix.RLIMIT_STACK, &stackRlimit, nil); err != nil {
+			return fmt.Errorf("failed to set stack limit: %w", err)
+		}
+	}
+
+	// Set file size limit
+	if config.FileSizeLimit > 0 {
+		fileSizeRlimit := unix.Rlimit{
+			Cur: config.FileSizeLimit,
+			Max: config.FileSizeLimit,
+		}
+		if err := unix.Prlimit(pid, unix.RLIMIT_FSIZE, &fileSizeRlimit, nil); err != nil {
+			return fmt.Errorf("failed to set file size limit: %w", err)
+		}
+	}
+
+	// Set number of open files limit
+	if config.NumFileLimit > 0 {
+		noFileRlimit := unix.Rlimit{
+			Cur: config.NumFileLimit,
+			Max: config.NumFileLimit,
+		}
+		if err := unix.Prlimit(pid, unix.RLIMIT_NOFILE, &noFileRlimit, nil); err != nil {
+			return fmt.Errorf("failed to set number of files limit: %w", err)
+		}
+	}
+
+	return nil
 }
 
 // Execute runs the Lean proof, corresponding to the `execute` method in Python.
@@ -70,10 +133,6 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 	// This is done by setting system process attributes.
 	cmd.SysProcAttr = &syscall.SysProcAttr{
 		Setpgid: true, // Run in a new process group
-		// Rlimit: &syscall.Rlimit{
-		// 	Cur: uint64(config.MemoryLimitMB * 1024 * 1024), // Soft limit
-		// 	Max: uint64(config.MemoryLimitMB * 1024 * 1024), // Hard limit
-		// },
 	}
 
 	// Set up stdin, stdout, and stderr pipes.
@@ -93,6 +152,13 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 	// Start the command.
 	if err := cmd.Start(); err != nil {
 		return nil, fmt.Errorf("failed to start lean process: %w", err)
+	}
+
+	// Apply resource limits to the child process.
+	if err := setResourceLimits(cmd.Process.Pid, config); err != nil {
+		// If setting limits fails, kill the process and return error.
+		cmd.Process.Kill()
+		return nil, fmt.Errorf("failed to set resource limits: %w", err)
 	}
 
 	// Write the JSON input to the process's stdin in a separate goroutine.
@@ -128,14 +194,51 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 		var exitErr *exec.ExitError
 		if errors.As(err, &exitErr) {
 			// Process exited with a non-zero status.
-			// Check if it was killed (e.g., by OOM killer).
-			if exitErr.Sys().(syscall.WaitStatus).Signaled() && exitErr.Sys().(syscall.WaitStatus).Signal() == syscall.SIGKILL {
-				return &ProofResult{
-					Success:      false,
-					ErrorMessage: fmt.Sprintf("Process was killed due to memory limit (%d MB)", config.MemoryLimitMB),
-					Result:       map[string]string{"status": "memory_limit_exceeded"},
-					ProofID:      proofID,
-				}, nil
+			// Check if it was killed by a signal indicating resource limit exceeded.
+			if exitErr.Sys().(syscall.WaitStatus).Signaled() {
+				signal := exitErr.Sys().(syscall.WaitStatus).Signal()
+				switch signal {
+				case syscall.SIGKILL:
+					// Could be OOM killer or memory limit exceeded
+					return &ProofResult{
+						Success:      false,
+						ErrorMessage: fmt.Sprintf("Process was killed (SIGKILL) - likely memory limit exceeded (%d bytes)", config.MemoryLimit),
+						Result:       map[string]string{"status": "memory_limit_exceeded"},
+						ProofID:      proofID,
+					}, nil
+				case syscall.SIGXCPU:
+					// CPU time limit exceeded
+					return &ProofResult{
+						Success:      false,
+						ErrorMessage: fmt.Sprintf("Process exceeded CPU time limit (%s)", config.CPUTimeLimit),
+						Result:       map[string]string{"status": "cpu_time_limit_exceeded"},
+						ProofID:      proofID,
+					}, nil
+				case syscall.SIGXFSZ:
+					// File size limit exceeded
+					return &ProofResult{
+						Success:      false,
+						ErrorMessage: fmt.Sprintf("Process exceeded file size limit (%d bytes)", config.FileSizeLimit),
+						Result:       map[string]string{"status": "file_size_limit_exceeded"},
+						ProofID:      proofID,
+					}, nil
+				case syscall.SIGSEGV:
+					// Segmentation fault - could be stack overflow
+					return &ProofResult{
+						Success:      false,
+						ErrorMessage: fmt.Sprintf("Process crashed with segmentation fault - possible stack overflow (stack limit: %d bytes)", config.StackLimit),
+						Result:       map[string]string{"status": "segmentation_fault"},
+						ProofID:      proofID,
+					}, nil
+				default:
+					// Other signals
+					return &ProofResult{
+						Success:      false,
+						ErrorMessage: fmt.Sprintf("Process was killed by signal %v", signal),
+						Result:       map[string]any{"status": "process_killed", "signal": signal.String()},
+						ProofID:      proofID,
+					}, nil
+				}
 			}
 			// Other exit errors.
 			return &ProofResult{

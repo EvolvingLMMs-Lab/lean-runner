@@ -9,6 +9,7 @@ package proto
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	structpb "google.golang.org/protobuf/types/known/structpb"
 	reflect "reflect"
 	sync "sync"
@@ -22,18 +23,189 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Configuration for the prover application.
+type Config struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	LeanExecutable string                 `protobuf:"bytes,1,opt,name=lean_executable,json=leanExecutable,proto3" json:"lean_executable,omitempty"`
+	LeanWorkspace  string                 `protobuf:"bytes,2,opt,name=lean_workspace,json=leanWorkspace,proto3" json:"lean_workspace,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *Config) Reset() {
+	*x = Config{}
+	mi := &file_prove_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Config) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Config) ProtoMessage() {}
+
+func (x *Config) ProtoReflect() protoreflect.Message {
+	mi := &file_prove_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Config.ProtoReflect.Descriptor instead.
+func (*Config) Descriptor() ([]byte, []int) {
+	return file_prove_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *Config) GetLeanExecutable() string {
+	if x != nil {
+		return x.LeanExecutable
+	}
+	return ""
+}
+
+func (x *Config) GetLeanWorkspace() string {
+	if x != nil {
+		return x.LeanWorkspace
+	}
+	return ""
+}
+
+// Configuration for a single proof execution.
+type ProofConfig struct {
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	Timeout      *durationpb.Duration   `protobuf:"bytes,1,opt,name=timeout,proto3" json:"timeout,omitempty"`
+	CpuTimeLimit *durationpb.Duration   `protobuf:"bytes,2,opt,name=cpu_time_limit,json=cpuTimeLimit,proto3" json:"cpu_time_limit,omitempty"`
+	AllTactics   bool                   `protobuf:"varint,3,opt,name=all_tactics,json=allTactics,proto3" json:"all_tactics,omitempty"`
+	Ast          bool                   `protobuf:"varint,4,opt,name=ast,proto3" json:"ast,omitempty"`
+	Tactics      []string               `protobuf:"bytes,5,rep,name=tactics,proto3" json:"tactics,omitempty"`
+	Premises     []string               `protobuf:"bytes,6,rep,name=premises,proto3" json:"premises,omitempty"`
+	// Resource limits
+	MemoryLimit   uint64 `protobuf:"varint,7,opt,name=memory_limit,json=memoryLimit,proto3" json:"memory_limit,omitempty"`         // Virtual memory limit in bytes
+	StackLimit    uint64 `protobuf:"varint,8,opt,name=stack_limit,json=stackLimit,proto3" json:"stack_limit,omitempty"`            // Stack size limit in bytes
+	FileSizeLimit uint64 `protobuf:"varint,9,opt,name=file_size_limit,json=fileSizeLimit,proto3" json:"file_size_limit,omitempty"` // Maximum file size limit in bytes
+	NumFileLimit  uint64 `protobuf:"varint,10,opt,name=num_file_limit,json=numFileLimit,proto3" json:"num_file_limit,omitempty"`   // Maximum number of open files
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ProofConfig) Reset() {
+	*x = ProofConfig{}
+	mi := &file_prove_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ProofConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ProofConfig) ProtoMessage() {}
+
+func (x *ProofConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_prove_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ProofConfig.ProtoReflect.Descriptor instead.
+func (*ProofConfig) Descriptor() ([]byte, []int) {
+	return file_prove_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *ProofConfig) GetTimeout() *durationpb.Duration {
+	if x != nil {
+		return x.Timeout
+	}
+	return nil
+}
+
+func (x *ProofConfig) GetCpuTimeLimit() *durationpb.Duration {
+	if x != nil {
+		return x.CpuTimeLimit
+	}
+	return nil
+}
+
+func (x *ProofConfig) GetAllTactics() bool {
+	if x != nil {
+		return x.AllTactics
+	}
+	return false
+}
+
+func (x *ProofConfig) GetAst() bool {
+	if x != nil {
+		return x.Ast
+	}
+	return false
+}
+
+func (x *ProofConfig) GetTactics() []string {
+	if x != nil {
+		return x.Tactics
+	}
+	return nil
+}
+
+func (x *ProofConfig) GetPremises() []string {
+	if x != nil {
+		return x.Premises
+	}
+	return nil
+}
+
+func (x *ProofConfig) GetMemoryLimit() uint64 {
+	if x != nil {
+		return x.MemoryLimit
+	}
+	return 0
+}
+
+func (x *ProofConfig) GetStackLimit() uint64 {
+	if x != nil {
+		return x.StackLimit
+	}
+	return 0
+}
+
+func (x *ProofConfig) GetFileSizeLimit() uint64 {
+	if x != nil {
+		return x.FileSizeLimit
+	}
+	return 0
+}
+
+func (x *ProofConfig) GetNumFileLimit() uint64 {
+	if x != nil {
+		return x.NumFileLimit
+	}
+	return 0
+}
+
 type CheckProofRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	Proof string                 `protobuf:"bytes,1,opt,name=proof,proto3" json:"proof,omitempty"`
-	// A JSON-like structure for Lean proof configuration.
-	Config        *structpb.Struct `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`
+	// Configuration for Lean proof execution.
+	Config        *ProofConfig `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CheckProofRequest) Reset() {
 	*x = CheckProofRequest{}
-	mi := &file_prove_proto_msgTypes[0]
+	mi := &file_prove_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -45,7 +217,7 @@ func (x *CheckProofRequest) String() string {
 func (*CheckProofRequest) ProtoMessage() {}
 
 func (x *CheckProofRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_prove_proto_msgTypes[0]
+	mi := &file_prove_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +230,7 @@ func (x *CheckProofRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckProofRequest.ProtoReflect.Descriptor instead.
 func (*CheckProofRequest) Descriptor() ([]byte, []int) {
-	return file_prove_proto_rawDescGZIP(), []int{0}
+	return file_prove_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *CheckProofRequest) GetProof() string {
@@ -68,7 +240,7 @@ func (x *CheckProofRequest) GetProof() string {
 	return ""
 }
 
-func (x *CheckProofRequest) GetConfig() *structpb.Struct {
+func (x *CheckProofRequest) GetConfig() *ProofConfig {
 	if x != nil {
 		return x.Config
 	}
@@ -78,15 +250,15 @@ func (x *CheckProofRequest) GetConfig() *structpb.Struct {
 type SubmitProofRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	Proof string                 `protobuf:"bytes,1,opt,name=proof,proto3" json:"proof,omitempty"`
-	// A JSON-like structure for Lean proof configuration.
-	Config        *structpb.Struct `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`
+	// Configuration for Lean proof execution.
+	Config        *ProofConfig `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SubmitProofRequest) Reset() {
 	*x = SubmitProofRequest{}
-	mi := &file_prove_proto_msgTypes[1]
+	mi := &file_prove_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -98,7 +270,7 @@ func (x *SubmitProofRequest) String() string {
 func (*SubmitProofRequest) ProtoMessage() {}
 
 func (x *SubmitProofRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_prove_proto_msgTypes[1]
+	mi := &file_prove_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -111,7 +283,7 @@ func (x *SubmitProofRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubmitProofRequest.ProtoReflect.Descriptor instead.
 func (*SubmitProofRequest) Descriptor() ([]byte, []int) {
-	return file_prove_proto_rawDescGZIP(), []int{1}
+	return file_prove_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *SubmitProofRequest) GetProof() string {
@@ -121,7 +293,7 @@ func (x *SubmitProofRequest) GetProof() string {
 	return ""
 }
 
-func (x *SubmitProofRequest) GetConfig() *structpb.Struct {
+func (x *SubmitProofRequest) GetConfig() *ProofConfig {
 	if x != nil {
 		return x.Config
 	}
@@ -137,7 +309,7 @@ type SubmitProofResponse struct {
 
 func (x *SubmitProofResponse) Reset() {
 	*x = SubmitProofResponse{}
-	mi := &file_prove_proto_msgTypes[2]
+	mi := &file_prove_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -149,7 +321,7 @@ func (x *SubmitProofResponse) String() string {
 func (*SubmitProofResponse) ProtoMessage() {}
 
 func (x *SubmitProofResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_prove_proto_msgTypes[2]
+	mi := &file_prove_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -162,7 +334,7 @@ func (x *SubmitProofResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubmitProofResponse.ProtoReflect.Descriptor instead.
 func (*SubmitProofResponse) Descriptor() ([]byte, []int) {
-	return file_prove_proto_rawDescGZIP(), []int{2}
+	return file_prove_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *SubmitProofResponse) GetProofId() string {
@@ -181,7 +353,7 @@ type GetResultRequest struct {
 
 func (x *GetResultRequest) Reset() {
 	*x = GetResultRequest{}
-	mi := &file_prove_proto_msgTypes[3]
+	mi := &file_prove_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -193,7 +365,7 @@ func (x *GetResultRequest) String() string {
 func (*GetResultRequest) ProtoMessage() {}
 
 func (x *GetResultRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_prove_proto_msgTypes[3]
+	mi := &file_prove_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -206,7 +378,7 @@ func (x *GetResultRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetResultRequest.ProtoReflect.Descriptor instead.
 func (*GetResultRequest) Descriptor() ([]byte, []int) {
-	return file_prove_proto_rawDescGZIP(), []int{3}
+	return file_prove_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *GetResultRequest) GetProofId() string {
@@ -218,18 +390,19 @@ func (x *GetResultRequest) GetProofId() string {
 
 // Represents the result of a proof execution.
 type ProofResult struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ProofId       string                 `protobuf:"bytes,1,opt,name=proof_id,json=proofId,proto3" json:"proof_id,omitempty"`
-	Success       bool                   `protobuf:"varint,2,opt,name=success,proto3" json:"success,omitempty"`
-	Result        string                 `protobuf:"bytes,3,opt,name=result,proto3" json:"result,omitempty"`
-	ErrorMessage  string                 `protobuf:"bytes,4,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	state   protoimpl.MessageState `protogen:"open.v1"`
+	ProofId string                 `protobuf:"bytes,1,opt,name=proof_id,json=proofId,proto3" json:"proof_id,omitempty"`
+	Success bool                   `protobuf:"varint,2,opt,name=success,proto3" json:"success,omitempty"`
+	// Result can be any JSON-like structure.
+	Result        *structpb.Struct `protobuf:"bytes,3,opt,name=result,proto3" json:"result,omitempty"`
+	ErrorMessage  string           `protobuf:"bytes,4,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ProofResult) Reset() {
 	*x = ProofResult{}
-	mi := &file_prove_proto_msgTypes[4]
+	mi := &file_prove_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -241,7 +414,7 @@ func (x *ProofResult) String() string {
 func (*ProofResult) ProtoMessage() {}
 
 func (x *ProofResult) ProtoReflect() protoreflect.Message {
-	mi := &file_prove_proto_msgTypes[4]
+	mi := &file_prove_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -254,7 +427,7 @@ func (x *ProofResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ProofResult.ProtoReflect.Descriptor instead.
 func (*ProofResult) Descriptor() ([]byte, []int) {
-	return file_prove_proto_rawDescGZIP(), []int{4}
+	return file_prove_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *ProofResult) GetProofId() string {
@@ -271,11 +444,11 @@ func (x *ProofResult) GetSuccess() bool {
 	return false
 }
 
-func (x *ProofResult) GetResult() string {
+func (x *ProofResult) GetResult() *structpb.Struct {
 	if x != nil {
 		return x.Result
 	}
-	return ""
+	return nil
 }
 
 func (x *ProofResult) GetErrorMessage() string {
@@ -289,21 +462,38 @@ var File_prove_proto protoreflect.FileDescriptor
 
 const file_prove_proto_rawDesc = "" +
 	"\n" +
-	"\vprove.proto\x12\vlean_runner\x1a\x1cgoogle/protobuf/struct.proto\"Z\n" +
+	"\vprove.proto\x12\vlean_runner\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1egoogle/protobuf/duration.proto\"X\n" +
+	"\x06Config\x12'\n" +
+	"\x0flean_executable\x18\x01 \x01(\tR\x0eleanExecutable\x12%\n" +
+	"\x0elean_workspace\x18\x02 \x01(\tR\rleanWorkspace\"\xfe\x02\n" +
+	"\vProofConfig\x123\n" +
+	"\atimeout\x18\x01 \x01(\v2\x19.google.protobuf.DurationR\atimeout\x12?\n" +
+	"\x0ecpu_time_limit\x18\x02 \x01(\v2\x19.google.protobuf.DurationR\fcpuTimeLimit\x12\x1f\n" +
+	"\vall_tactics\x18\x03 \x01(\bR\n" +
+	"allTactics\x12\x10\n" +
+	"\x03ast\x18\x04 \x01(\bR\x03ast\x12\x18\n" +
+	"\atactics\x18\x05 \x03(\tR\atactics\x12\x1a\n" +
+	"\bpremises\x18\x06 \x03(\tR\bpremises\x12!\n" +
+	"\fmemory_limit\x18\a \x01(\x04R\vmemoryLimit\x12\x1f\n" +
+	"\vstack_limit\x18\b \x01(\x04R\n" +
+	"stackLimit\x12&\n" +
+	"\x0ffile_size_limit\x18\t \x01(\x04R\rfileSizeLimit\x12$\n" +
+	"\x0enum_file_limit\x18\n" +
+	" \x01(\x04R\fnumFileLimit\"[\n" +
 	"\x11CheckProofRequest\x12\x14\n" +
-	"\x05proof\x18\x01 \x01(\tR\x05proof\x12/\n" +
-	"\x06config\x18\x02 \x01(\v2\x17.google.protobuf.StructR\x06config\"[\n" +
+	"\x05proof\x18\x01 \x01(\tR\x05proof\x120\n" +
+	"\x06config\x18\x02 \x01(\v2\x18.lean_runner.ProofConfigR\x06config\"\\\n" +
 	"\x12SubmitProofRequest\x12\x14\n" +
-	"\x05proof\x18\x01 \x01(\tR\x05proof\x12/\n" +
-	"\x06config\x18\x02 \x01(\v2\x17.google.protobuf.StructR\x06config\"0\n" +
+	"\x05proof\x18\x01 \x01(\tR\x05proof\x120\n" +
+	"\x06config\x18\x02 \x01(\v2\x18.lean_runner.ProofConfigR\x06config\"0\n" +
 	"\x13SubmitProofResponse\x12\x19\n" +
 	"\bproof_id\x18\x01 \x01(\tR\aproofId\"-\n" +
 	"\x10GetResultRequest\x12\x19\n" +
-	"\bproof_id\x18\x01 \x01(\tR\aproofId\"\x7f\n" +
+	"\bproof_id\x18\x01 \x01(\tR\aproofId\"\x98\x01\n" +
 	"\vProofResult\x12\x19\n" +
 	"\bproof_id\x18\x01 \x01(\tR\aproofId\x12\x18\n" +
-	"\asuccess\x18\x02 \x01(\bR\asuccess\x12\x16\n" +
-	"\x06result\x18\x03 \x01(\tR\x06result\x12#\n" +
+	"\asuccess\x18\x02 \x01(\bR\asuccess\x12/\n" +
+	"\x06result\x18\x03 \x01(\v2\x17.google.protobuf.StructR\x06result\x12#\n" +
 	"\rerror_message\x18\x04 \x01(\tR\ferrorMessage2\xee\x01\n" +
 	"\fProveService\x12F\n" +
 	"\n" +
@@ -323,29 +513,35 @@ func file_prove_proto_rawDescGZIP() []byte {
 	return file_prove_proto_rawDescData
 }
 
-var file_prove_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_prove_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_prove_proto_goTypes = []any{
-	(*CheckProofRequest)(nil),   // 0: lean_runner.CheckProofRequest
-	(*SubmitProofRequest)(nil),  // 1: lean_runner.SubmitProofRequest
-	(*SubmitProofResponse)(nil), // 2: lean_runner.SubmitProofResponse
-	(*GetResultRequest)(nil),    // 3: lean_runner.GetResultRequest
-	(*ProofResult)(nil),         // 4: lean_runner.ProofResult
-	(*structpb.Struct)(nil),     // 5: google.protobuf.Struct
+	(*Config)(nil),              // 0: lean_runner.Config
+	(*ProofConfig)(nil),         // 1: lean_runner.ProofConfig
+	(*CheckProofRequest)(nil),   // 2: lean_runner.CheckProofRequest
+	(*SubmitProofRequest)(nil),  // 3: lean_runner.SubmitProofRequest
+	(*SubmitProofResponse)(nil), // 4: lean_runner.SubmitProofResponse
+	(*GetResultRequest)(nil),    // 5: lean_runner.GetResultRequest
+	(*ProofResult)(nil),         // 6: lean_runner.ProofResult
+	(*durationpb.Duration)(nil), // 7: google.protobuf.Duration
+	(*structpb.Struct)(nil),     // 8: google.protobuf.Struct
 }
 var file_prove_proto_depIdxs = []int32{
-	5, // 0: lean_runner.CheckProofRequest.config:type_name -> google.protobuf.Struct
-	5, // 1: lean_runner.SubmitProofRequest.config:type_name -> google.protobuf.Struct
-	0, // 2: lean_runner.ProveService.CheckProof:input_type -> lean_runner.CheckProofRequest
-	1, // 3: lean_runner.ProveService.SubmitProof:input_type -> lean_runner.SubmitProofRequest
-	3, // 4: lean_runner.ProveService.GetResult:input_type -> lean_runner.GetResultRequest
-	4, // 5: lean_runner.ProveService.CheckProof:output_type -> lean_runner.ProofResult
-	2, // 6: lean_runner.ProveService.SubmitProof:output_type -> lean_runner.SubmitProofResponse
-	4, // 7: lean_runner.ProveService.GetResult:output_type -> lean_runner.ProofResult
-	5, // [5:8] is the sub-list for method output_type
-	2, // [2:5] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	7, // 0: lean_runner.ProofConfig.timeout:type_name -> google.protobuf.Duration
+	7, // 1: lean_runner.ProofConfig.cpu_time_limit:type_name -> google.protobuf.Duration
+	1, // 2: lean_runner.CheckProofRequest.config:type_name -> lean_runner.ProofConfig
+	1, // 3: lean_runner.SubmitProofRequest.config:type_name -> lean_runner.ProofConfig
+	8, // 4: lean_runner.ProofResult.result:type_name -> google.protobuf.Struct
+	2, // 5: lean_runner.ProveService.CheckProof:input_type -> lean_runner.CheckProofRequest
+	3, // 6: lean_runner.ProveService.SubmitProof:input_type -> lean_runner.SubmitProofRequest
+	5, // 7: lean_runner.ProveService.GetResult:input_type -> lean_runner.GetResultRequest
+	6, // 8: lean_runner.ProveService.CheckProof:output_type -> lean_runner.ProofResult
+	4, // 9: lean_runner.ProveService.SubmitProof:output_type -> lean_runner.SubmitProofResponse
+	6, // 10: lean_runner.ProveService.GetResult:output_type -> lean_runner.ProofResult
+	8, // [8:11] is the sub-list for method output_type
+	5, // [5:8] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_prove_proto_init() }
@@ -359,7 +555,7 @@ func file_prove_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_prove_proto_rawDesc), len(file_prove_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

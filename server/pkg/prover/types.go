@@ -12,7 +12,11 @@ type Config struct {
 // ProofConfig holds the configuration for a single proof execution.
 type ProofConfig struct {
 	Timeout       time.Duration `json:"timeout"`
-	MemoryLimitMB int           `json:"memory_limit_mb"`
+	CPUTimeLimit  time.Duration `json:"cpu_time_limit"`
+	MemoryLimit   uint64        `json:"memory_limit"`    // Virtual memory limit in bytes
+	StackLimit    uint64        `json:"stack_limit"`     // Stack size limit in bytes
+	FileSizeLimit uint64        `json:"file_size_limit"` // Maximum file size limit in bytes
+	NumFileLimit  uint64        `json:"num_file_limit"`  // Maximum number of open files
 	AllTactics    bool          `json:"all_tactics"`
 	AST           bool          `json:"ast"`
 	Tactics       []string      `json:"tactics"`

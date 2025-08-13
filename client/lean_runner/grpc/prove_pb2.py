@@ -23,9 +23,10 @@ _sym_db = _symbol_database.Default()
 
 
 from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
+from google.protobuf import duration_pb2 as google_dot_protobuf_dot_duration__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0bprove.proto\x12\x0blean_runner\x1a\x1cgoogle/protobuf/struct.proto\"K\n\x11\x43heckProofRequest\x12\r\n\x05proof\x18\x01 \x01(\t\x12\'\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x17.google.protobuf.Struct\"L\n\x12SubmitProofRequest\x12\r\n\x05proof\x18\x01 \x01(\t\x12\'\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x17.google.protobuf.Struct\"\'\n\x13SubmitProofResponse\x12\x10\n\x08proof_id\x18\x01 \x01(\t\"$\n\x10GetResultRequest\x12\x10\n\x08proof_id\x18\x01 \x01(\t\"W\n\x0bProofResult\x12\x10\n\x08proof_id\x18\x01 \x01(\t\x12\x0f\n\x07success\x18\x02 \x01(\x08\x12\x0e\n\x06result\x18\x03 \x01(\t\x12\x15\n\rerror_message\x18\x04 \x01(\t2\xee\x01\n\x0cProveService\x12\x46\n\nCheckProof\x12\x1e.lean_runner.CheckProofRequest\x1a\x18.lean_runner.ProofResult\x12P\n\x0bSubmitProof\x12\x1f.lean_runner.SubmitProofRequest\x1a .lean_runner.SubmitProofResponse\x12\x44\n\tGetResult\x12\x1d.lean_runner.GetResultRequest\x1a\x18.lean_runner.ProofResultB=Z;github.com/EvolvingLMMs-Lab/lean-runner/server/gen/go/protob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0bprove.proto\x12\x0blean_runner\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1egoogle/protobuf/duration.proto\"9\n\x06\x43onfig\x12\x17\n\x0flean_executable\x18\x01 \x01(\t\x12\x16\n\x0elean_workspace\x18\x02 \x01(\t\"\x8d\x02\n\x0bProofConfig\x12*\n\x07timeout\x18\x01 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x31\n\x0e\x63pu_time_limit\x18\x02 \x01(\x0b\x32\x19.google.protobuf.Duration\x12\x13\n\x0b\x61ll_tactics\x18\x03 \x01(\x08\x12\x0b\n\x03\x61st\x18\x04 \x01(\x08\x12\x0f\n\x07tactics\x18\x05 \x03(\t\x12\x10\n\x08premises\x18\x06 \x03(\t\x12\x14\n\x0cmemory_limit\x18\x07 \x01(\x04\x12\x13\n\x0bstack_limit\x18\x08 \x01(\x04\x12\x17\n\x0f\x66ile_size_limit\x18\t \x01(\x04\x12\x16\n\x0enum_file_limit\x18\n \x01(\x04\"L\n\x11\x43heckProofRequest\x12\r\n\x05proof\x18\x01 \x01(\t\x12(\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x18.lean_runner.ProofConfig\"M\n\x12SubmitProofRequest\x12\r\n\x05proof\x18\x01 \x01(\t\x12(\n\x06\x63onfig\x18\x02 \x01(\x0b\x32\x18.lean_runner.ProofConfig\"\'\n\x13SubmitProofResponse\x12\x10\n\x08proof_id\x18\x01 \x01(\t\"$\n\x10GetResultRequest\x12\x10\n\x08proof_id\x18\x01 \x01(\t\"p\n\x0bProofResult\x12\x10\n\x08proof_id\x18\x01 \x01(\t\x12\x0f\n\x07success\x18\x02 \x01(\x08\x12\'\n\x06result\x18\x03 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x15\n\rerror_message\x18\x04 \x01(\t2\xee\x01\n\x0cProveService\x12\x46\n\nCheckProof\x12\x1e.lean_runner.CheckProofRequest\x1a\x18.lean_runner.ProofResult\x12P\n\x0bSubmitProof\x12\x1f.lean_runner.SubmitProofRequest\x1a .lean_runner.SubmitProofResponse\x12\x44\n\tGetResult\x12\x1d.lean_runner.GetResultRequest\x1a\x18.lean_runner.ProofResultB=Z;github.com/EvolvingLMMs-Lab/lean-runner/server/gen/go/protob\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -33,16 +34,20 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'prove_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   _globals['DESCRIPTOR']._loaded_options = None
   _globals['DESCRIPTOR']._serialized_options = b'Z;github.com/EvolvingLMMs-Lab/lean-runner/server/gen/go/proto'
-  _globals['_CHECKPROOFREQUEST']._serialized_start=58
-  _globals['_CHECKPROOFREQUEST']._serialized_end=133
-  _globals['_SUBMITPROOFREQUEST']._serialized_start=135
-  _globals['_SUBMITPROOFREQUEST']._serialized_end=211
-  _globals['_SUBMITPROOFRESPONSE']._serialized_start=213
-  _globals['_SUBMITPROOFRESPONSE']._serialized_end=252
-  _globals['_GETRESULTREQUEST']._serialized_start=254
-  _globals['_GETRESULTREQUEST']._serialized_end=290
-  _globals['_PROOFRESULT']._serialized_start=292
-  _globals['_PROOFRESULT']._serialized_end=379
-  _globals['_PROVESERVICE']._serialized_start=382
-  _globals['_PROVESERVICE']._serialized_end=620
+  _globals['_CONFIG']._serialized_start=90
+  _globals['_CONFIG']._serialized_end=147
+  _globals['_PROOFCONFIG']._serialized_start=150
+  _globals['_PROOFCONFIG']._serialized_end=419
+  _globals['_CHECKPROOFREQUEST']._serialized_start=421
+  _globals['_CHECKPROOFREQUEST']._serialized_end=497
+  _globals['_SUBMITPROOFREQUEST']._serialized_start=499
+  _globals['_SUBMITPROOFREQUEST']._serialized_end=576
+  _globals['_SUBMITPROOFRESPONSE']._serialized_start=578
+  _globals['_SUBMITPROOFRESPONSE']._serialized_end=617
+  _globals['_GETRESULTREQUEST']._serialized_start=619
+  _globals['_GETRESULTREQUEST']._serialized_end=655
+  _globals['_PROOFRESULT']._serialized_start=657
+  _globals['_PROOFRESULT']._serialized_end=769
+  _globals['_PROVESERVICE']._serialized_start=772
+  _globals['_PROVESERVICE']._serialized_end=1010
 # @@protoc_insertion_point(module_scope)
