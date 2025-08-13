@@ -2,58 +2,58 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://lean-runner.vercel.app/</loc>
-         <lastmod>2025-08-11</lastmod>
+         <lastmod>2025-08-13</lastmod>
     </url>
     <url>
          <loc>https://lean-runner.vercel.app/quick-start/</loc>
-         <lastmod>2025-08-11</lastmod>
+         <lastmod>2025-08-13</lastmod>
     </url>
     <url>
          <loc>https://lean-runner.vercel.app/client/</loc>
-         <lastmod>2025-08-11</lastmod>
+         <lastmod>2025-08-13</lastmod>
     </url>
     <url>
          <loc>https://lean-runner.vercel.app/client/config/</loc>
-         <lastmod>2025-08-11</lastmod>
+         <lastmod>2025-08-13</lastmod>
     </url>
     <url>
          <loc>https://lean-runner.vercel.app/client/install/</loc>
-         <lastmod>2025-08-11</lastmod>
+         <lastmod>2025-08-13</lastmod>
     </url>
     <url>
          <loc>https://lean-runner.vercel.app/client/simple-query/</loc>
-         <lastmod>2025-08-11</lastmod>
+         <lastmod>2025-08-13</lastmod>
     </url>
     <url>
          <loc>https://lean-runner.vercel.app/client/submit-get-result/</loc>
-         <lastmod>2025-08-11</lastmod>
+         <lastmod>2025-08-13</lastmod>
     </url>
     <url>
          <loc>https://lean-runner.vercel.app/client/verify-all/</loc>
-         <lastmod>2025-08-11</lastmod>
+         <lastmod>2025-08-13</lastmod>
     </url>
     <url>
          <loc>https://lean-runner.vercel.app/dev/docs/</loc>
-         <lastmod>2025-08-11</lastmod>
+         <lastmod>2025-08-13</lastmod>
     </url>
     <url>
          <loc>https://lean-runner.vercel.app/dev/todos/</loc>
-         <lastmod>2025-08-11</lastmod>
+         <lastmod>2025-08-13</lastmod>
     </url>
     <url>
          <loc>https://lean-runner.vercel.app/server/api/</loc>
-         <lastmod>2025-08-11</lastmod>
+         <lastmod>2025-08-13</lastmod>
     </url>
     <url>
          <loc>https://lean-runner.vercel.app/server/config/</loc>
-         <lastmod>2025-08-11</lastmod>
+         <lastmod>2025-08-13</lastmod>
     </url>
     <url>
          <loc>https://lean-runner.vercel.app/server/docker/</loc>
-         <lastmod>2025-08-11</lastmod>
+         <lastmod>2025-08-13</lastmod>
     </url>
     <url>
          <loc>https://lean-runner.vercel.app/server/source/</loc>
-         <lastmod>2025-08-11</lastmod>
+         <lastmod>2025-08-13</lastmod>
     </url>
 </urlset>
