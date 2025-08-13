@@ -4,7 +4,7 @@ package service
 import (
 	"context"
 
-	pb "github.com/EvolvingLMMs-Lab/lean-runner/server/gen/go/lean_runner"
+	pb "github.com/EvolvingLMMs-Lab/lean-runner/server/gen/go/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
