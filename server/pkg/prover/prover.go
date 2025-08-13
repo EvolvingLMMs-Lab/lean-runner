@@ -6,11 +6,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"os/exec"
 	"syscall"
 
+	"github.com/EvolvingLMMs-Lab/lean-runner/server/internal/logger"
 	"github.com/google/uuid"
+	"go.uber.org/zap"
 )
 
 // Prover is an interface that defines the behavior for executing proofs.
@@ -99,7 +100,7 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 		defer stdin.Close()
 		_, err := stdin.Write(inputJSON)
 		if err != nil {
-			log.Printf("Warning: failed to write to lean process stdin: %v", err)
+			logger.Warn("Failed to write to lean process stdin", zap.Error(err))
 		}
 	}()
 

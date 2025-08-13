@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package lean_runner;
 
-option go_package = "github.com/EvolvingLMMs-Lab/lean-runner/server/gen/go/lean_runner";
+option go_package = "github.com/EvolvingLMMs-Lab/lean-runner/server/gen/go/proto";
 
 import "google/protobuf/struct.proto";
 

@@ -10,7 +10,7 @@ import (
 
 // AppVersion is the version of the application.
 // This can be set at build time using linker flags for production releases.
-var AppVersion = "0.2.0-dev"
+var AppVersion = "0.2.0-dev1"
 
 // UtilsService implements the gRPC UtilsService.
 type UtilsService struct {
