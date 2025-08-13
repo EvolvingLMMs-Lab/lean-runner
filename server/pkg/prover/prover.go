@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"log"
 	"os/exec"
 	"syscall"
@@ -105,14 +104,8 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 	}()
 
 	// Read stdout and stderr.
-	stdoutBytes, err := io.ReadAll(stdout)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read stdout: %w", err)
-	}
-	stderrBytes, err := io.ReadAll(stderr)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read stderr: %w", err)
-	}
+	stdoutBytes, _ := json.Marshal(stdout)
+	stderrBytes, _ := json.Marshal(stderr)
 
 	// Wait for the command to finish.
 	err = cmd.Wait()
@@ -122,7 +115,7 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 	// Check for timeout.
 	if ctx.Err() == context.DeadlineExceeded {
 		return &ProofResult{
-			Status:       StatusError,
+			Success:      false,
 			ErrorMessage: fmt.Sprintf("Process timed out after %s", config.Timeout),
 			Result:       map[string]string{"status": "timeout"},
 			ProofID:      proofID,
@@ -137,7 +130,7 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 			// Check if it was killed (e.g., by OOM killer).
 			if exitErr.Sys().(syscall.WaitStatus).Signaled() && exitErr.Sys().(syscall.WaitStatus).Signal() == syscall.SIGKILL {
 				return &ProofResult{
-					Status:       StatusError,
+					Success:      false,
 					ErrorMessage: fmt.Sprintf("Process was killed due to memory limit (%d MB)", config.MemoryLimitMB),
 					Result:       map[string]string{"status": "memory_limit_exceeded"},
 					ProofID:      proofID,
@@ -145,7 +138,7 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 			}
 			// Other exit errors.
 			return &ProofResult{
-				Status:       StatusError,
+				Success:      false,
 				ErrorMessage: fmt.Sprintf("Process exited with code %d: %s", exitErr.ExitCode(), string(stderrBytes)),
 				Result:       map[string]any{"status": "process_error", "return_code": exitErr.ExitCode()},
 				ProofID:      proofID,
@@ -161,7 +154,7 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 	if err := json.Unmarshal(stdoutBytes, &resultData); err != nil {
 		// Handle cases where the output is not valid JSON.
 		return &ProofResult{
-			Status:       StatusError,
+			Success:      false,
 			ErrorMessage: fmt.Sprintf("Error parsing JSON from Lean: %v", err),
 			Result: map[string]string{
 				"raw_output":          string(stdoutBytes),
@@ -176,7 +169,6 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 
 	return &ProofResult{
 		Success:      success,
-		Status:       StatusFinished,
 		Result:       processedResult,
 		ErrorMessage: string(stderrBytes),
 		ProofID:      proofID,
