@@ -5,9 +5,11 @@ from concurrent import futures
 from functools import partial
 from pathlib import Path
 
-import httpx
+import grpc
 import tqdm
+from google.protobuf.struct_pb2 import Struct
 
+from ..grpc import prove_pb2, prove_pb2_grpc, utils_pb2, utils_pb2_grpc
 from ..proof.proto import Proof, ProofConfig, ProofResult
 from .aio.client import AsyncLeanClient
 
@@ -16,30 +18,42 @@ logger = logging.getLogger(__name__)
 
 class LeanClient:
     """
-    A client for interacting with the Lean Server API.
+    A client for interacting with the Lean Server via gRPC.
 
     This client provides both synchronous and asynchronous methods for making API calls.
     The asynchronous client is available via the `aio` attribute.
     """
 
-    def __init__(self, base_url: str):
+    def __init__(self, address: str):
         """
         Initializes the LeanClient.
 
         Args:
-            base_url: The base URL of the Lean Server, e.g., "http://localhost:8000".
+            address: The address of the gRPC server, e.g., "localhost:50051".
         """
-        if not base_url.endswith("/"):
-            base_url += "/"
-        self.base_url = base_url
-        self.aio = AsyncLeanClient(base_url)
-        self._session: httpx.Client | None = None
+        self.address = address
+        self.aio = AsyncLeanClient(address)
+        self._channel: grpc.Channel | None = None
+        self._stub: prove_pb2_grpc.ProveServiceStub | None = None
+        self._utils_stub: utils_pb2_grpc.UtilsServiceStub | None = None
 
-    def _get_session(self) -> httpx.Client:
-        """Initializes or returns the httpx client session."""
-        if self._session is None or self._session.is_closed:
-            self._session = httpx.Client(base_url=self.base_url)
-        return self._session
+    def _get_channel(self) -> grpc.Channel:
+        """Initializes or returns the gRPC channel."""
+        if self._channel is None:
+            self._channel = grpc.insecure_channel(self.address)
+        return self._channel
+
+    def _get_stub(self) -> prove_pb2_grpc.ProveServiceStub:
+        """Initializes or returns the gRPC stub."""
+        if self._stub is None:
+            self._stub = prove_pb2_grpc.ProveServiceStub(self._get_channel())
+        return self._stub
+
+    def _get_utils_stub(self) -> utils_pb2_grpc.UtilsServiceStub:
+        """Initializes or returns the gRPC utils stub."""
+        if self._utils_stub is None:
+            self._utils_stub = utils_pb2_grpc.UtilsServiceStub(self._get_channel())
+        return self._utils_stub
 
     def _get_proof_content(self, file_or_content: str | Path | os.PathLike) -> str:
         """
@@ -47,21 +61,10 @@ class LeanClient:
 
         If `file_or_content` is a path to an existing file, it reads the file's content.
         Otherwise, it returns the string content directly.
-
-        Args:
-            file_or_content: The proof content or a path to the proof file.
-
-        Returns:
-            The string content of the proof.
-
-        Raises:
-            OSError: If there is an error reading the file.
         """
         path = Path(file_or_content)
-
         if not path.exists():
             return str(file_or_content)
-
         try:
             with path.open(encoding="utf-8") as f:
                 return f.read()
@@ -72,61 +75,44 @@ class LeanClient:
         self, proof: str | Path | os.PathLike, config: ProofConfig | None = None
     ) -> Proof:
         """
-        Submits a proof to the /prove/submit endpoint synchronously.
-
-        Args:
-            proof: The proof content. Can be:
-                - A string containing the proof.
-                - A Path object pointing to a file containing the proof.
-                - A string path to a file containing the proof.
-            config: An optional dictionary for proof configuration.
-
-        Returns:
-            A Proof object representing the submitted job.
+        Submits a proof to the server for asynchronous processing.
         """
-        session = self._get_session()
-
+        stub = self._get_stub()
         proof_content = self._get_proof_content(proof)
         config = config or ProofConfig()
 
-        data = {
-            "proof": proof_content,
-            "config": config.model_dump_json(),
-        }
+        # Convert config to a protobuf Struct
+        s = Struct()
+        s.update(config.model_dump())
 
-        response = session.post("/prove/submit", data=data)
-        response.raise_for_status()
-        return Proof.model_validate(response.json())
+        request = prove_pb2.SubmitProofRequest(proof=proof_content, config=s)
+        response = stub.SubmitProof(request)
+        return Proof(id=response.proof_id)
 
     def verify(
         self, proof: str | Path | os.PathLike, config: ProofConfig | None = None
     ) -> ProofResult:
         """
-        Sends a proof to the /prove/check endpoint synchronously.
-
-        Args:
-            proof: The proof content. Can be:
-                - A string containing the proof.
-                - A Path object pointing to a file containing the proof.
-                - A string path to a file containing the proof.
-            config: An optional dictionary for proof configuration.
-
-        Returns:
-            A dictionary containing the server's response.
+        Sends a proof to the server for synchronous verification.
         """
-        session = self._get_session()
-
+        stub = self._get_stub()
         proof_content = self._get_proof_content(proof)
+        config = config or ProofConfig()
 
-        if config is None:
-            config = ProofConfig()
+        # Convert config to a protobuf Struct
+        s = Struct()
+        s.update(config.model_dump())
 
-        data = {"proof": proof_content, "config": config.model_dump_json()}
-
-        response = session.post("/prove/check", data=data, timeout=config.timeout)
-        response.raise_for_status()
-
-        return ProofResult.model_validate(response.json())
+        request = prove_pb2.CheckProofRequest(proof=proof_content, config=s)
+        response = stub.CheckProof(request)
+        return ProofResult.model_validate(
+            {
+                "proof_id": response.proof_id,
+                "success": response.success,
+                "result": response.result,
+                "error_message": response.error_message,
+            }
+        )
 
     def verify_all(
         self,
@@ -138,27 +124,12 @@ class LeanClient:
     ) -> Iterable[ProofResult]:
         """
         Verifies a collection of proofs concurrently using a thread pool.
-
-        This function is designed to be memory-efficient. It yields results as
-        they are completed, making it suitable for very large collections of proofs.
-
-        Args:
-            proofs: An iterable of proofs to verify.
-            config: The proof configuration.
-            total: The total number of proofs (for the progress bar). If not provided,
-                   it's inferred from `len(proofs)` if available.
-            max_workers: The maximum number of concurrent verification tasks.
-            progress_bar: Whether to display a progress bar.
-
-        Yields:
-            ProofResult: The result of each verification as it completes.
         """
         if total is None and hasattr(proofs, "__len__"):
             total = len(proofs)
 
         pbar = tqdm.tqdm(total=total, disable=not progress_bar, desc="Verifying proofs")
 
-        # To handle exceptions gracefully with executor.map, we wrap the call.
         def _verify_wrapper(proof_item, proof_config):
             try:
                 return self.verify(proof_item, proof_config)
@@ -168,9 +139,7 @@ class LeanClient:
                 pbar.update(1)
 
         with futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-            # Use partial to fix the `config` argument for the wrapper.
             verify_func = partial(_verify_wrapper, proof_config=config)
-
             results_iterator = executor.map(verify_func, proofs)
 
             for result in results_iterator:
@@ -184,27 +153,34 @@ class LeanClient:
     def get_result(self, proof: Proof) -> ProofResult:
         """
         Retrieves the result of a proof submission.
-
-        Args:
-            proof: A Proof object.
-
-        Returns:
-            A ProofResult object.
         """
-        session = self._get_session()
-        response = session.get(f"/prove/result/{proof.id}")
-        response.raise_for_status()
-        return ProofResult.model_validate(response.json())
+        stub = self._get_stub()
+        request = prove_pb2.GetResultRequest(proof_id=proof.id)
+        response = stub.GetResult(request)
+        return ProofResult.model_validate(
+            {
+                "proof_id": response.proof_id,
+                "success": response.success,
+                "result": response.result,
+                "error_message": response.error_message,
+            }
+        )
+
+    def health_check(self):
+        """Checks the health of the server."""
+        stub = self._get_utils_stub()
+        request = utils_pb2.google_dot_protobuf_dot_empty__pb2.Empty()
+        return stub.Health(request)
 
     def close(self):
-        """Closes the client session."""
-        if self._session and not self._session.is_closed:
-            self._session.close()
+        """Closes the client channel."""
+        if self._channel:
+            self._channel.close()
 
     def __enter__(self):
         """Enter the context manager."""
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        """Exit the context manager, ensuring the session is closed."""
+        """Exit the context manager, ensuring the channel is closed."""
         self.close()
