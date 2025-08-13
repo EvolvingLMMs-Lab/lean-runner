@@ -12,6 +12,7 @@ import (
 	"github.com/EvolvingLMMs-Lab/lean-runner/server/internal/logger"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
+	"golang.org/x/sync/semaphore"
 	"golang.org/x/sys/unix"
 )
 
@@ -26,12 +27,20 @@ type Prover interface {
 
 type leanProver struct {
 	config Config
+	sem    *semaphore.Weighted // Semaphore to control concurrency
 }
 
 // NewLeanProver creates a new Lean prover with the given configuration.
 func NewLeanProver(config Config) Prover {
+	// If concurrency is not set or invalid, use default value of 1
+	concurrency := config.Concurrency
+	if concurrency <= 0 {
+		concurrency = 1
+	}
+
 	return &leanProver{
 		config: config,
+		sem:    semaphore.NewWeighted(int64(concurrency)),
 	}
 }
 
@@ -102,6 +111,17 @@ func setResourceLimits(pid int, config ProofConfig) error {
 // the standard Go pattern for managing long-running operations.
 func (p *leanProver) Execute(ctx context.Context, proofCode string, config ProofConfig) (*ProofResult, error) {
 	proofID := uuid.New().String()
+
+	// Acquire semaphore to control concurrency
+	if err := p.sem.Acquire(ctx, 1); err != nil {
+		return &ProofResult{
+			Success:      false,
+			ErrorMessage: fmt.Sprintf("Failed to acquire execution slot: %v", err),
+			Result:       map[string]string{"status": "concurrency_limit_reached"},
+			ProofID:      proofID,
+		}, nil
+	}
+	defer p.sem.Release(1)
 
 	ctx, cancel := context.WithTimeout(ctx, config.Timeout)
 	defer cancel()

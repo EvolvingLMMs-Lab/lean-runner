@@ -93,8 +93,9 @@ func main() {
 	utilsService := service.NewUtilsService()
 	pb.RegisterUtilsServiceServer(s, utilsService)
 
-	// proveService := service.NewProveService(...)
-	// pb.RegisterProveServiceServer(s, proveService)
+	// Register the ProverService.
+	proverService := service.NewProverService(cfg)
+	pb.RegisterProveServiceServer(s, proverService)
 
 	logger.Info("Server listening", zap.String("address", lis.Addr().String()))
 

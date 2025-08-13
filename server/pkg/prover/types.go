@@ -7,6 +7,7 @@ import "time"
 type Config struct {
 	LeanExecutable string
 	LeanWorkspace  string
+	Concurrency    int // Maximum number of concurrent proof executions
 }
 
 // ProofConfig holds the configuration for a single proof execution.
