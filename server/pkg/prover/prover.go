@@ -107,11 +107,11 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 	defer cancel()
 
 	commandPayload := struct {
-		Cmd        string   `json:"cmd"`
-		AllTactics bool     `json:"allTactics"`
-		AST        bool     `json:"ast"`
-		Tactics    []string `json:"tactics"`
-		Premises   []string `json:"premises"`
+		Cmd        string `json:"cmd"`
+		AllTactics bool   `json:"allTactics"`
+		AST        bool   `json:"ast"`
+		Tactics    bool   `json:"tactics"`
+		Premises   bool   `json:"premises"`
 	}{
 		Cmd:        proofCode,
 		AllTactics: config.AllTactics,

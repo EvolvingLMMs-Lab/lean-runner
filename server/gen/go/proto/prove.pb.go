@@ -81,10 +81,11 @@ type ProofConfig struct {
 	state        protoimpl.MessageState `protogen:"open.v1"`
 	Timeout      *durationpb.Duration   `protobuf:"bytes,1,opt,name=timeout,proto3" json:"timeout,omitempty"`
 	CpuTimeLimit *durationpb.Duration   `protobuf:"bytes,2,opt,name=cpu_time_limit,json=cpuTimeLimit,proto3" json:"cpu_time_limit,omitempty"`
-	AllTactics   bool                   `protobuf:"varint,3,opt,name=all_tactics,json=allTactics,proto3" json:"all_tactics,omitempty"`
-	Ast          bool                   `protobuf:"varint,4,opt,name=ast,proto3" json:"ast,omitempty"`
-	Tactics      []string               `protobuf:"bytes,5,rep,name=tactics,proto3" json:"tactics,omitempty"`
-	Premises     []string               `protobuf:"bytes,6,rep,name=premises,proto3" json:"premises,omitempty"`
+	// Proof options
+	AllTactics bool `protobuf:"varint,3,opt,name=all_tactics,json=allTactics,proto3" json:"all_tactics,omitempty"`
+	Ast        bool `protobuf:"varint,4,opt,name=ast,proto3" json:"ast,omitempty"`
+	Tactics    bool `protobuf:"varint,5,opt,name=tactics,proto3" json:"tactics,omitempty"`
+	Premises   bool `protobuf:"varint,6,opt,name=premises,proto3" json:"premises,omitempty"`
 	// Resource limits
 	MemoryLimit   uint64 `protobuf:"varint,7,opt,name=memory_limit,json=memoryLimit,proto3" json:"memory_limit,omitempty"`         // Virtual memory limit in bytes
 	StackLimit    uint64 `protobuf:"varint,8,opt,name=stack_limit,json=stackLimit,proto3" json:"stack_limit,omitempty"`            // Stack size limit in bytes
@@ -152,18 +153,18 @@ func (x *ProofConfig) GetAst() bool {
 	return false
 }
 
-func (x *ProofConfig) GetTactics() []string {
+func (x *ProofConfig) GetTactics() bool {
 	if x != nil {
 		return x.Tactics
 	}
-	return nil
+	return false
 }
 
-func (x *ProofConfig) GetPremises() []string {
+func (x *ProofConfig) GetPremises() bool {
 	if x != nil {
 		return x.Premises
 	}
-	return nil
+	return false
 }
 
 func (x *ProofConfig) GetMemoryLimit() uint64 {
@@ -472,8 +473,8 @@ const file_prove_proto_rawDesc = "" +
 	"\vall_tactics\x18\x03 \x01(\bR\n" +
 	"allTactics\x12\x10\n" +
 	"\x03ast\x18\x04 \x01(\bR\x03ast\x12\x18\n" +
-	"\atactics\x18\x05 \x03(\tR\atactics\x12\x1a\n" +
-	"\bpremises\x18\x06 \x03(\tR\bpremises\x12!\n" +
+	"\atactics\x18\x05 \x01(\bR\atactics\x12\x1a\n" +
+	"\bpremises\x18\x06 \x01(\bR\bpremises\x12!\n" +
 	"\fmemory_limit\x18\a \x01(\x04R\vmemoryLimit\x12\x1f\n" +
 	"\vstack_limit\x18\b \x01(\x04R\n" +
 	"stackLimit\x12&\n" +

@@ -19,8 +19,8 @@ type ProofConfig struct {
 	NumFileLimit  uint64        `json:"num_file_limit"`  // Maximum number of open files
 	AllTactics    bool          `json:"all_tactics"`
 	AST           bool          `json:"ast"`
-	Tactics       []string      `json:"tactics"`
-	Premises      []string      `json:"premises"`
+	Tactics       bool          `json:"tactics"`
+	Premises      bool          `json:"premises"`
 }
 
 // ProofResult holds the outcome of a proof execution.

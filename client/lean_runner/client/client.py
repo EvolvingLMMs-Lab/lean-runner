@@ -11,7 +11,6 @@ from google.protobuf.struct_pb2 import Struct
 
 from ..grpc import prove_pb2, prove_pb2_grpc, utils_pb2, utils_pb2_grpc
 from ..proof.proto import Proof, ProofConfig, ProofResult
-from .aio.client import AsyncLeanClient
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +31,6 @@ class LeanClient:
             address: The address of the gRPC server, e.g., "localhost:50051".
         """
         self.address = address
-        self.aio = AsyncLeanClient(address)
         self._channel: grpc.Channel | None = None
         self._stub: prove_pb2_grpc.ProveServiceStub | None = None
         self._utils_stub: utils_pb2_grpc.UtilsServiceStub | None = None

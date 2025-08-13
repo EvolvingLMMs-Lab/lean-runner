@@ -22,10 +22,11 @@ message Config {
 message ProofConfig {
   google.protobuf.Duration timeout = 1;
   google.protobuf.Duration cpu_time_limit = 2;
+  // Proof options
   bool all_tactics = 3;
   bool ast = 4;
-  repeated string tactics = 5;
-  repeated string premises = 6;
+  bool tactics = 5;
+  bool premises = 6;
   // Resource limits
   uint64 memory_limit = 7;      // Virtual memory limit in bytes
   uint64 stack_limit = 8;       // Stack size limit in bytes
