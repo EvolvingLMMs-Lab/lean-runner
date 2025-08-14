@@ -14,16 +14,16 @@ class ProofConfig(BaseModel):
     tactics: bool = Field(False, description="Whether to return tactics.")
     premises: bool = Field(False, description="Whether to return premises.")
     timeout: float = Field(
-        3600.0, description="The timeout for the verification in seconds."
+        300.0, description="The timeout for the verification in seconds."
     )
     memory_limit: int = Field(
-        8192 * 1024 * 1024, description="Memory limit in bytes for the Lean process."
+        16 * 1024 * 1024 * 1024, description="Memory limit in bytes for the Lean process."
     )
     cpu_time_limit: float = Field(
         300.0, description="The CPU time limit for the verification in seconds."
     )
     stack_limit: int = Field(
-        1024 * 1024 * 1024, description="The stack size limit in bytes."
+        10 * 1024 * 1024 * 1024, description="The stack size limit in bytes."
     )
     file_size_limit: int = Field(
         1024 * 1024 * 1024, description="The file size limit in bytes."
