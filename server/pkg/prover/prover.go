@@ -190,7 +190,7 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 	inputJSON = append(inputJSON, '\n')
 
 	// Execute the command
-	stdoutBytes, stderrBytes, err := proc.execute(ctx, inputJSON, config)
+	stdoutBytes, stderrBytes, err := proc.execute(inputJSON, config)
 
 	// ---
 

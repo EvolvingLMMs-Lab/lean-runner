@@ -2,7 +2,6 @@
 package prover
 
 import (
-	"context"
 	"io"
 	"os/exec"
 	"sync"
@@ -55,7 +54,7 @@ func newLeanProcess(leanExecutable, leanWorkspace string) (*leanProcess, error) 
 }
 
 // execute sends a command to the Lean process and reads the response.
-func (lp *leanProcess) execute(ctx context.Context, inputJSON []byte, config ProofConfig) ([]byte, []byte, error) {
+func (lp *leanProcess) execute(inputJSON []byte, config ProofConfig) ([]byte, []byte, error) {
 	lp.mu.Lock()
 	defer lp.mu.Unlock()
 
