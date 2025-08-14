@@ -15,8 +15,8 @@ class ProofConfig(BaseModel):
     timeout: float = Field(
         3600.0, description="The timeout for the verification in seconds."
     )
-    memory_limit_mb: int = Field(
-        8192, description="Memory limit in MB for the Lean process."
+    memory_limit: int = Field(
+        8192 * 1024 * 1024, description="Memory limit in bytes for the Lean process."
     )
     cpu_time_limit: float = Field(
         300.0, description="The CPU time limit for the verification in seconds."
@@ -40,7 +40,7 @@ class ProofConfig(BaseModel):
         pb_config.timeout.nanos = int(
             (self.timeout - int(self.timeout)) * 1_000_000_000
         )
-        pb_config.memory_limit = self.memory_limit_mb * 1024 * 1024
+        pb_config.memory_limit = self.memory_limit
         pb_config.cpu_time_limit.seconds = int(self.cpu_time_limit)
         pb_config.cpu_time_limit.nanos = int(
             (self.cpu_time_limit - int(self.cpu_time_limit)) * 1_000_000_000
