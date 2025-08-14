@@ -4,11 +4,12 @@ import os
 from collections.abc import AsyncIterable, Iterable
 from pathlib import Path
 
+import anyio
 import grpc
 import tqdm
 
 from ...grpc import prove_pb2, prove_pb2_grpc
-from ...proof.proto import Proof, ProofConfig, ProofResult
+from ...proof.proto import ProofConfig, ProofResult
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +41,7 @@ class AsyncLeanClient:
         return self._stub
 
     async def _get_proof_content(
-        self, file_or_content: str | Path | os.PathLike
+        self, file_or_content: str | Path | os.PathLike | anyio.Path
     ) -> str:
         """
         Gets the content of a proof.
@@ -48,35 +49,25 @@ class AsyncLeanClient:
         If `file_or_content` is a path to an existing file, it reads the file's content.
         Otherwise, it returns the string content directly.
         """
-        path = Path(file_or_content)
-        if not path.exists():
-            return str(file_or_content)
-        try:
-            # This is a synchronous file read, which is generally okay for local files.
-            # For true async file I/O, a library like aiofiles would be needed.
-            with path.open(encoding="utf-8") as f:
-                return f.read()
-        except OSError as e:
-            raise OSError(f"Error reading file {path}: {e}") from e
+        if isinstance(file_or_content, Path | os.PathLike | anyio.Path) or (
+            isinstance(file_or_content, str) and "\n" not in file_or_content
+        ):
+            try:
+                path = anyio.Path(file_or_content)
+                if await path.exists():
+                    async with await path.open(encoding="utf-8") as f:
+                        return await f.read()
+                else:
+                    return str(file_or_content)
+            except (OSError, ValueError):
+                pass
 
-    async def submit(
-        self, proof: str | Path | os.PathLike, config: ProofConfig | None = None
-    ) -> Proof:
-        """
-        Submits a proof to the server for asynchronous processing.
-        """
-        stub = self._get_stub()
-        proof_content = await self._get_proof_content(proof)
-        config = config or ProofConfig()
-
-        pb_config = config.to_protobuf()
-
-        request = prove_pb2.SubmitProofRequest(proof=proof_content, config=pb_config)
-        response = await stub.SubmitProof(request)
-        return Proof(id=response.proof_id)
+        return str(file_or_content)
 
     async def verify(
-        self, proof: str | Path | os.PathLike, config: ProofConfig | None = None
+        self,
+        proof: str | Path | os.PathLike | anyio.Path,
+        config: ProofConfig | None = None,
     ) -> ProofResult:
         """
         Sends a proof to the server for synchronous verification.
@@ -93,8 +84,8 @@ class AsyncLeanClient:
 
     async def verify_all(
         self,
-        proofs: Iterable[str | Path | os.PathLike]
-        | AsyncIterable[str | Path | os.PathLike],
+        proofs: Iterable[str | Path | os.PathLike | anyio.Path]
+        | AsyncIterable[str | Path | os.PathLike | anyio.Path],
         config: ProofConfig | None = None,
         total: int | None = None,
         max_workers: int = 128,
@@ -168,15 +159,6 @@ class AsyncLeanClient:
             raise e
         finally:
             pbar.close()
-
-    async def get_result(self, proof: Proof) -> ProofResult:
-        """
-        Retrieves the result of a proof submission.
-        """
-        stub = self._get_stub()
-        request = prove_pb2.GetResultRequest(proof_id=proof.id)
-        response = await stub.GetResult(request)
-        return ProofResult.from_protobuf(response)
 
     async def close(self):
         """Closes the client channel."""

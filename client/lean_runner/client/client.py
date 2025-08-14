@@ -9,7 +9,7 @@ import grpc
 import tqdm
 
 from ..grpc import prove_pb2, prove_pb2_grpc, utils_pb2, utils_pb2_grpc
-from ..proof.proto import Proof, ProofConfig, ProofResult
+from ..proof.proto import ProofConfig, ProofResult
 
 logger = logging.getLogger(__name__)
 
@@ -59,14 +59,18 @@ class LeanClient:
         If `file_or_content` is a path to an existing file, it reads the file's content.
         Otherwise, it returns the string content directly.
         """
-        path = Path(file_or_content)
-        if not path.exists():
-            return str(file_or_content)
-        try:
-            with path.open(encoding="utf-8") as f:
-                return f.read()
-        except OSError as e:
-            raise OSError(f"Error reading file {path}: {e}") from e
+        if isinstance(file_or_content, Path | os.PathLike) or (
+            isinstance(file_or_content, str) and "\n" not in file_or_content
+        ):
+            try:
+                path = Path(file_or_content)
+                if path.exists():
+                    with path.open(encoding="utf-8") as f:
+                        return f.read()
+            except (OSError, ValueError):
+                pass
+
+        return str(file_or_content)
 
     def verify(
         self, proof: str | Path | os.PathLike, config: ProofConfig | None = None
@@ -119,15 +123,6 @@ class LeanClient:
                     yield result
 
         pbar.close()
-
-    def get_result(self, proof: Proof) -> ProofResult:
-        """
-        Retrieves the result of a proof submission.
-        """
-        stub = self._get_stub()
-        request = prove_pb2.GetResultRequest(proof_id=proof.id)
-        response = stub.GetResult(request)
-        return ProofResult.from_protobuf(response)
 
     def health_check(self):
         """Checks the health of the server."""
