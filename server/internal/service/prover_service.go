@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"fmt"
-	"time"
 
 	pb "github.com/EvolvingLMMs-Lab/lean-runner/server/gen/go/proto"
 	"github.com/EvolvingLMMs-Lab/lean-runner/server/internal/config"
@@ -82,22 +81,6 @@ func (s *ProverService) CheckProof(ctx context.Context, req *pb.CheckProofReques
 
 // convertProofConfig converts protobuf ProofConfig to prover.ProofConfig
 func convertProofConfig(pbConfig *pb.ProofConfig) (*prover.ProofConfig, error) {
-	if pbConfig == nil {
-		// Use default configuration
-		return &prover.ProofConfig{
-			Timeout:       30 * time.Second,
-			CPUTimeLimit:  10 * time.Second,
-			MemoryLimit:   1024 * 1024 * 1024, // 1GB
-			StackLimit:    8 * 1024 * 1024,    // 8MB
-			FileSizeLimit: 100 * 1024 * 1024,  // 100MB
-			NumFileLimit:  1024,
-			AllTactics:    false,
-			AST:           false,
-			Tactics:       false,
-			Premises:      false,
-		}, nil
-	}
-
 	config := &prover.ProofConfig{
 		AllTactics:    pbConfig.AllTactics,
 		AST:           pbConfig.Ast,
@@ -109,19 +92,8 @@ func convertProofConfig(pbConfig *pb.ProofConfig) (*prover.ProofConfig, error) {
 		NumFileLimit:  pbConfig.NumFileLimit,
 	}
 
-	// Convert timeout
-	if pbConfig.Timeout != nil {
-		config.Timeout = pbConfig.Timeout.AsDuration()
-	} else {
-		config.Timeout = 30 * time.Second
-	}
-
-	// Convert CPU time limit
-	if pbConfig.CpuTimeLimit != nil {
-		config.CPUTimeLimit = pbConfig.CpuTimeLimit.AsDuration()
-	} else {
-		config.CPUTimeLimit = 10 * time.Second
-	}
+	config.Timeout = pbConfig.Timeout.AsDuration()
+	config.CPUTimeLimit = pbConfig.CpuTimeLimit.AsDuration()
 
 	return config, nil
 }

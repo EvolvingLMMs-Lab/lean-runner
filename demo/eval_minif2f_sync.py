@@ -1,8 +1,7 @@
 from collections.abc import Iterable
 
 import datasets
-from lean_runner import LeanClient
-from lean_runner.proof.proto import LeanProofStatus
+from lean_runner import LeanClient, LeanProofStatus, ProofConfig
 
 
 def get_data(data: datasets.Dataset) -> Iterable[str]:
@@ -18,6 +17,9 @@ def main():
         max_workers=32,
         progress_bar=True,
         total=len(data),
+        config=ProofConfig(
+            cpu_time_limit=20,
+        ),
     )
     result = 0
     error_num = 0
