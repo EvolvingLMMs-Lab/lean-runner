@@ -2,6 +2,8 @@ from enum import Enum
 
 from pydantic import BaseModel, Field
 
+from ..grpc import prove_pb2
+
 
 class ProofConfig(BaseModel):
     """Configuration for a proof verification request."""
@@ -16,6 +18,37 @@ class ProofConfig(BaseModel):
     memory_limit_mb: int = Field(
         8192, description="Memory limit in MB for the Lean process."
     )
+    cpu_time_limit: float = Field(
+        300.0, description="The CPU time limit for the verification in seconds."
+    )
+    stack_limit: int = Field(
+        1024 * 1024 * 1024, description="The stack size limit in bytes."
+    )
+    file_size_limit: int = Field(
+        1024 * 1024 * 1024, description="The file size limit in bytes."
+    )
+    num_file_limit: int = Field(1024, description="The number of open files limit.")
+
+    def to_protobuf(self) -> prove_pb2.ProofConfig:
+        """Convert Pydantic ProofConfig to protobuf ProofConfig."""
+        pb_config = prove_pb2.ProofConfig()
+        pb_config.all_tactics = self.all_tactics
+        pb_config.ast = self.ast
+        pb_config.tactics = self.tactics
+        pb_config.premises = self.premises
+        pb_config.timeout.seconds = int(self.timeout)
+        pb_config.timeout.nanos = int(
+            (self.timeout - int(self.timeout)) * 1_000_000_000
+        )
+        pb_config.memory_limit = self.memory_limit_mb * 1024 * 1024
+        pb_config.cpu_time_limit.seconds = int(self.cpu_time_limit)
+        pb_config.cpu_time_limit.nanos = int(
+            (self.cpu_time_limit - int(self.cpu_time_limit)) * 1_000_000_000
+        )
+        pb_config.stack_limit = self.stack_limit
+        pb_config.file_size_limit = self.file_size_limit
+        pb_config.num_file_limit = self.num_file_limit
+        return pb_config
 
 
 class LeanProofStatus(Enum):

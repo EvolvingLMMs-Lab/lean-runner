@@ -6,7 +6,6 @@ from pathlib import Path
 
 import grpc
 import tqdm
-from google.protobuf.struct_pb2 import Struct
 
 from ...grpc import prove_pb2, prove_pb2_grpc
 from ...proof.proto import Proof, ProofConfig, ProofResult
@@ -70,10 +69,9 @@ class AsyncLeanClient:
         proof_content = await self._get_proof_content(proof)
         config = config or ProofConfig()
 
-        s = Struct()
-        s.update(config.model_dump())
+        pb_config = config.to_protobuf()
 
-        request = prove_pb2.SubmitProofRequest(proof=proof_content, config=s)
+        request = prove_pb2.SubmitProofRequest(proof=proof_content, config=pb_config)
         response = await stub.SubmitProof(request)
         return Proof(id=response.proof_id)
 
@@ -87,18 +85,15 @@ class AsyncLeanClient:
         proof_content = await self._get_proof_content(proof)
         config = config or ProofConfig()
 
-        s = Struct()
-        s.update(config.model_dump())
+        pb_config = config.to_protobuf()
 
-        request = prove_pb2.CheckProofRequest(proof=proof_content, config=s)
+        request = prove_pb2.CheckProofRequest(proof=proof_content, config=pb_config)
         response = await stub.CheckProof(request)
-        return ProofResult.model_validate(
-            {
-                "proof_id": response.proof_id,
-                "success": response.success,
-                "result": response.result,
-                "error_message": response.error_message,
-            }
+        return ProofResult(
+            proof_id=response.proof_id,
+            success=response.success,
+            result=response.result,
+            error_message=response.error_message,
         )
 
     async def verify_all(

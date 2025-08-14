@@ -7,7 +7,6 @@ from pathlib import Path
 
 import grpc
 import tqdm
-from google.protobuf.struct_pb2 import Struct
 
 from ..grpc import prove_pb2, prove_pb2_grpc, utils_pb2, utils_pb2_grpc
 from ..proof.proto import Proof, ProofConfig, ProofResult
@@ -69,24 +68,6 @@ class LeanClient:
         except OSError as e:
             raise OSError(f"Error reading file {path}: {e}") from e
 
-    def submit(
-        self, proof: str | Path | os.PathLike, config: ProofConfig | None = None
-    ) -> Proof:
-        """
-        Submits a proof to the server for asynchronous processing.
-        """
-        stub = self._get_stub()
-        proof_content = self._get_proof_content(proof)
-        config = config or ProofConfig()
-
-        # Convert config to a protobuf Struct
-        s = Struct()
-        s.update(config.model_dump())
-
-        request = prove_pb2.SubmitProofRequest(proof=proof_content, config=s)
-        response = stub.SubmitProof(request)
-        return Proof(id=response.proof_id)
-
     def verify(
         self, proof: str | Path | os.PathLike, config: ProofConfig | None = None
     ) -> ProofResult:
@@ -97,19 +78,15 @@ class LeanClient:
         proof_content = self._get_proof_content(proof)
         config = config or ProofConfig()
 
-        # Convert config to a protobuf Struct
-        s = Struct()
-        s.update(config.model_dump())
+        pb_config = config.to_protobuf()
 
-        request = prove_pb2.CheckProofRequest(proof=proof_content, config=s)
+        request = prove_pb2.CheckProofRequest(proof=proof_content, config=pb_config)
         response = stub.CheckProof(request)
-        return ProofResult.model_validate(
-            {
-                "proof_id": response.proof_id,
-                "success": response.success,
-                "result": response.result,
-                "error_message": response.error_message,
-            }
+        return ProofResult(
+            proof_id=response.proof_id,
+            success=response.success,
+            result=response.result,
+            error_message=response.error_message,
         )
 
     def verify_all(

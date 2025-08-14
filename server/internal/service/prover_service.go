@@ -50,6 +50,9 @@ func (s *ProverService) CheckProof(ctx context.Context, req *pb.CheckProofReques
 		return nil, status.Errorf(codes.InvalidArgument, "proof code cannot be empty")
 	}
 
+	logger.Debug("Received proof request",
+		zap.String("proof", req.Proof))
+
 	// Convert protobuf ProofConfig to prover.ProofConfig
 	proofConfig, err := convertProofConfig(req.Config)
 	if err != nil {

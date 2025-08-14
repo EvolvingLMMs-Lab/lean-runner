@@ -8,17 +8,17 @@ from lean_runner import AsyncLeanClient, LeanClient
 logging.basicConfig(level=logging.INFO)
 
 
-HOST = "http://0.0.0.0:8888"
+HOST = "localhost:50051"
 
 
 def check():
-    with LeanClient(base_url=HOST) as client:
+    with LeanClient(address=HOST) as client:
         result = client.verify(proof=Path(__file__).parent / "test1.lean")
         print(result)
 
 
 async def check_async():
-    async with AsyncLeanClient(base_url=HOST) as client:
+    async with AsyncLeanClient(address=HOST) as client:
         result = await client.verify(proof=Path(__file__).parent / "test1.lean")
         print(result)
 
