@@ -41,11 +41,6 @@ func (m *Manager) LoadConfig(configFile string) error {
 	m.v.SetEnvPrefix("LEAN_RUNNER")
 	m.v.SetEnvKeyReplacer(strings.NewReplacer(".", "_", "-", "_"))
 
-	// Load default config first (embedded or from default location)
-	if err := m.loadDefaultConfig(); err != nil {
-		return fmt.Errorf("failed to load default config: %w", err)
-	}
-
 	// If a custom config file is specified, load and merge it
 	if configFile != "" && configFile != "default" {
 		logger.Debug("Loading custom configuration file", zap.String("file", configFile))
@@ -81,8 +76,8 @@ func (m *Manager) setDefaults() {
 	m.v.SetDefault("server.port", 50051)
 
 	// Lean defaults
-	m.v.SetDefault("lean.executable", "lean")
-	m.v.SetDefault("lean.workspace", "./workspace")
+	m.v.SetDefault("lean.executable", "/root/.elan/bin/lake")
+	m.v.SetDefault("lean.workspace", "/app/lean-runner/playground")
 	m.v.SetDefault("lean.concurrency", 4)
 
 	// Logger defaults
@@ -91,22 +86,7 @@ func (m *Manager) setDefaults() {
 	m.v.SetDefault("logger.output_path", "stdout")
 }
 
-// loadDefaultConfig loads the default configuration
-func (m *Manager) loadDefaultConfig() error {
-	// Try to read from default config file
-	defaultConfigPath := "configs/default.yaml"
-	m.v.SetConfigFile(defaultConfigPath)
 
-	if err := m.v.ReadInConfig(); err != nil {
-		var configFileNotFoundError viper.ConfigFileNotFoundError
-		if errors.As(err, &configFileNotFoundError) {
-			// Default config file not found, that's ok, we'll use the defaults set above
-			return nil
-		}
-		return err
-	}
-	return nil
-}
 
 // loadCustomConfig loads and merges a custom configuration file
 func (m *Manager) loadCustomConfig(configFile string) error {
@@ -189,7 +169,11 @@ func (m *Manager) SaveConfig(filename string) error {
 
 // GetConfigFile returns the configuration file being used
 func (m *Manager) GetConfigFile() string {
-	return m.v.ConfigFileUsed()
+	configFile := m.v.ConfigFileUsed()
+	if configFile == "" {
+		return "defaults (embedded)"
+	}
+	return configFile
 }
 
 // Global configuration manager instance
