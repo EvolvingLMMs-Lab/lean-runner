@@ -6,14 +6,13 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"os/exec"
 	"syscall"
+	"time"
 
 	"github.com/EvolvingLMMs-Lab/lean-runner/server/internal/logger"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
-	"golang.org/x/sync/semaphore"
 	"golang.org/x/sys/unix"
 )
 
@@ -24,24 +23,44 @@ type Prover interface {
 		proofCode string, // the proof code to execute
 		config ProofConfig, // the configuration for the proof
 	) (*ProofResult, error)
+	Close()
 }
 
 type leanProver struct {
-	config Config
-	sem    *semaphore.Weighted // Semaphore to control concurrency
+	config       Config
+	processPool  chan *leanProcess
+	shutdownChan chan struct{}
 }
 
 // NewLeanProver creates a new Lean prover with the given configuration.
 func NewLeanProver(config Config) Prover {
-	// If concurrency is not set or invalid, use default value of 1
 	concurrency := config.Concurrency
 	if concurrency <= 0 {
 		concurrency = 1
 	}
 
+	pool := make(chan *leanProcess, concurrency)
+	for i := 0; i < concurrency; i++ {
+		proc, err := newLeanProcess(config.LeanExecutable, config.LeanWorkspace)
+		if err != nil {
+			logger.Fatal("Failed to create lean process", zap.Error(err))
+		}
+		pool <- proc
+	}
+
 	return &leanProver{
-		config: config,
-		sem:    semaphore.NewWeighted(int64(concurrency)),
+		config:       config,
+		processPool:  pool,
+		shutdownChan: make(chan struct{}),
+	}
+}
+
+// Close terminates all the Lean processes in the pool.
+func (p *leanProver) Close() {
+	close(p.shutdownChan)
+	for i := 0; i < cap(p.processPool); i++ {
+		proc := <-p.processPool
+		proc.close()
 	}
 }
 
@@ -120,19 +139,34 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 
 	proofID := proofIDObj.String()
 
-	// Acquire semaphore to control concurrency
-	if err := p.sem.Acquire(ctx, 1); err != nil {
+	// Acquire a lean process from the pool
+	var proc *leanProcess
+	select {
+	case proc = <-p.processPool:
+	case <-ctx.Done():
 		return &ProofResult{
 			Success:      false,
-			ErrorMessage: fmt.Sprintf("Failed to acquire execution slot: %v", err),
+			ErrorMessage: fmt.Sprintf("Failed to acquire execution slot: %v", ctx.Err()),
 			Result:       map[string]string{"status": "concurrency_limit_reached"},
 			ProofID:      proofID,
 			Status:       ProofStatusError,
 		}, nil
+	case <-p.shutdownChan:
+		return &ProofResult{
+			Success:      false,
+			ErrorMessage: "Server is shutting down",
+			Result:       map[string]string{"status": "server_shutdown"},
+			ProofID:      proofID,
+			Status:       ProofStatusError,
+		}, nil
 	}
-	defer p.sem.Release(1)
 
-	ctx, cancel := context.WithTimeout(ctx, config.Timeout)
+	// Return the process to the pool when done
+	defer func() {
+		p.processPool <- proc
+	}()
+
+	ctx, cancel := context.WithTimeout(ctx, config.Timeout+1*time.Second)
 	defer cancel()
 
 	commandPayload := struct {
@@ -153,85 +187,14 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal command payload: %w", err)
 	}
+	inputJSON = append(inputJSON, '\n')
 
-	// Create the command with the context.
-	logger.Debug("Executing command", zap.String("command", p.config.LeanExecutable), zap.String("workspace", p.config.LeanWorkspace))
-	logger.Debug("Input JSON", zap.String("input", string(inputJSON)))
-	cmd := exec.CommandContext(ctx, p.config.LeanExecutable, "exe", "repl")
-	cmd.Dir = p.config.LeanWorkspace
+	// Execute the command
+	stdoutBytes, stderrBytes, err := proc.execute(ctx, inputJSON, config)
 
-	// Set memory limits, analogous to `preexec_fn` in Python.
-	// This is done by setting system process attributes.
-	cmd.SysProcAttr = &syscall.SysProcAttr{
-		Setpgid: true, // Run in a new process group
-	}
+	// ---
 
-	// Set up stdin, stdout, and stderr pipes.
-	stdin, err := cmd.StdinPipe()
-	if err != nil {
-		return nil, fmt.Errorf("failed to get stdin pipe: %w", err)
-	}
-	stdout, err := cmd.StdoutPipe()
-	if err != nil {
-		return nil, fmt.Errorf("failed to get stdout pipe: %w", err)
-	}
-	stderr, err := cmd.StderrPipe()
-	if err != nil {
-		return nil, fmt.Errorf("failed to get stderr pipe: %w", err)
-	}
-
-	// Start the command.
-	if err := cmd.Start(); err != nil {
-		return nil, fmt.Errorf("failed to start lean process: %w", err)
-	}
-
-	// Apply resource limits to the child process.
-	if err := setResourceLimits(cmd.Process.Pid, config); err != nil {
-		// If setting limits fails, kill the process and return error.
-		if killErr := cmd.Process.Kill(); killErr != nil {
-			logger.Warn("Failed to kill process after failing to set resource limits", zap.Error(killErr))
-		}
-		return nil, fmt.Errorf("failed to set resource limits: %w", err)
-	}
-
-	// Write the JSON input to the process's stdin in a separate goroutine.
-	go func() {
-		defer stdin.Close()
-		_, err := stdin.Write(inputJSON)
-		if err != nil {
-			logger.Warn("Failed to write to lean process stdin", zap.Error(err))
-		}
-	}()
-
-	// Read stdout and stderr in separate goroutines to avoid blocking
-	var stdoutBytes, stderrBytes []byte
-	var stdoutErr, stderrErr error
-
-	done := make(chan struct{})
-	go func() {
-		defer close(done)
-		stdoutBytes, stdoutErr = io.ReadAll(stdout)
-	}()
-
-	go func() {
-		stderrBytes, stderrErr = io.ReadAll(stderr)
-	}()
-
-	// Wait for the command to finish.
-	err = cmd.Wait()
-
-	// Wait for output reading to complete
-	<-done
-
-	// Check for read errors
-	if stdoutErr != nil {
-		logger.Warn("Failed to read stdout", zap.Error(stdoutErr))
-	}
-	if stderrErr != nil {
-		logger.Warn("Failed to read stderr", zap.Error(stderrErr))
-	}
-
-	// --- Error Handling ---
+	// Error Handling ---
 
 	// Check for timeout.
 	if ctx.Err() == context.DeadlineExceeded {
@@ -313,7 +276,9 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 		return nil, fmt.Errorf("lean process execution failed: %w", err)
 	}
 
-	// --- Result Processing ---
+	// ---
+
+	// Result Processing ---
 
 	var resultData any
 	if err := json.Unmarshal(stdoutBytes, &resultData); err != nil {
