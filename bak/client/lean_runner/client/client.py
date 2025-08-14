@@ -175,6 +175,9 @@ class LeanClient:
 
             for result in results_iterator:
                 if isinstance(result, Exception):
+                    import traceback
+
+                    traceback.print_exc()
                     logger.error(f"Error verifying proof: {result}")
                 else:
                     yield result

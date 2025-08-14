@@ -1,0 +1,49 @@
+[project]
+name = "lean-runner"
+version = "0.2.0-dev1"
+description = "A Python client for the Lean Theorem Prover Server API."
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    { name = "Pu Fanyi", email = "FPU001@e.ntu.edu.sg" },
+]
+keywords = ["lean", "lean-client", "lean-server", "theorem prover"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "grpcio>=1.60.0",
+    "grpcio-tools>=1.60.0",
+    "protobuf>=3.20.0",
+    "pydantic>=2.0.0",
+    "tqdm>=4.67.1",
+]
+
+[project.urls]
+Repository = "https://github.com/EvolvingLMMs-Lab/lean-runner"
+
+[tool.setuptools.packages.find]
+include = ["lean_runner*"]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "httpx>=0.28.0",
+    "pydantic>=2.0.0",
+    "sphinx>=7.0.0",
+    "furo>=2024.0.0",
+    "sphinx-pydantic>=0.1.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]

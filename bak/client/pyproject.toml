@@ -20,7 +20,7 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/pufanyi/lean-server"
+Repository = "https://github.com/EvolvingLMMs-Lab/lean-runner"
 
 [tool.setuptools.packages.find]
 include = ["lean_runner*"]

@@ -1,6 +1,6 @@
 [project]
 name = "lean-server"
-version = "0.1.0"
+version = "0.2.0-dev1"
 description = "A FastAPI-based server to interact with the Lean Theorem Prover."
 license = { text = "MIT" }
 readme = "README.md"
@@ -31,8 +31,8 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/pufanyi/lean-server"
-Homepage = "https://github.com/pufanyi/lean-server"
+Repository = "https://github.com/EvolvingLMMs-Lab/lean-runner"
+Homepage = "https://github.com/EvolvingLMMs-Lab/lean-runner"
 
 [project.scripts]
 lean-server = 'lean_server.app.serve:main'
