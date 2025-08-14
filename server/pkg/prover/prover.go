@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"os/exec"
 	"syscall"
 
@@ -155,6 +156,7 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 
 	// Create the command with the context.
 	logger.Info("Executing command", zap.String("command", p.config.LeanExecutable), zap.String("workspace", p.config.LeanWorkspace))
+	logger.Info("Input JSON", zap.String("input", string(inputJSON)))
 	cmd := exec.CommandContext(ctx, p.config.LeanExecutable, "exe", "repl")
 	cmd.Dir = p.config.LeanWorkspace
 
@@ -201,12 +203,33 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 		}
 	}()
 
-	// Read stdout and stderr.
-	stdoutBytes, _ := json.Marshal(stdout)
-	stderrBytes, _ := json.Marshal(stderr)
+	// Read stdout and stderr in separate goroutines to avoid blocking
+	var stdoutBytes, stderrBytes []byte
+	var stdoutErr, stderrErr error
+
+	done := make(chan struct{})
+	go func() {
+		defer close(done)
+		stdoutBytes, stdoutErr = io.ReadAll(stdout)
+	}()
+
+	go func() {
+		stderrBytes, stderrErr = io.ReadAll(stderr)
+	}()
 
 	// Wait for the command to finish.
 	err = cmd.Wait()
+
+	// Wait for output reading to complete
+	<-done
+
+	// Check for read errors
+	if stdoutErr != nil {
+		logger.Warn("Failed to read stdout", zap.Error(stdoutErr))
+	}
+	if stderrErr != nil {
+		logger.Warn("Failed to read stderr", zap.Error(stderrErr))
+	}
 
 	// --- Error Handling ---
 

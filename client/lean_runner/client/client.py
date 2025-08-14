@@ -82,7 +82,6 @@ class LeanClient:
 
         request = prove_pb2.CheckProofRequest(proof=proof_content, config=pb_config)
         response = stub.CheckProof(request)
-        print(response)
         return ProofResult(
             proof_id=response.proof_id,
             success=response.success,
@@ -113,6 +112,7 @@ class LeanClient:
             except Exception as e:
                 return e
             finally:
+                print(proof_item)
                 pbar.update(1)
 
         with futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
