@@ -1,25 +1,26 @@
 import asyncio
 import json
 
-from lean_runner import LeanClient
+from lean_runner import AsyncLeanClient
 from lean_runner.proof.proto import LeanProofStatus
 
 
 async def main():
     with open(
-        "/mnt/raid10/pufanyi/lmms-lean-runner/demo/data/to_inference_codes.json"
+        # "/mnt/raid10/pufanyi/lmms-lean-runner/demo/data/to_inference_codes.json"
+        "/data/pufanyi/lmms-lean-runner/demo/data/to_inference_codes.json"
     ) as f:
         data = json.load(f)
-    # data = data[:100]
-    client = LeanClient("http://localhost:8888")
-    data_name = [d["name"] for d in data]
-    data_code = [d["code"] for d in data]
-    results = client.aio.verify_all(
-        data_code,
-        max_workers=256,
-        progress_bar=True,
-        total=len(data_code),
-    )
+    # data = data[:10]
+    async with AsyncLeanClient("localhost:50051") as client:
+        data_name = [d["name"] for d in data]
+        data_code = [d["code"] for d in data]
+        results = client.verify_all(
+            data_code,
+            max_workers=64,
+            progress_bar=True,
+            total=len(data_code),
+        )
     result = 0
     error_num = 0
     num = 0

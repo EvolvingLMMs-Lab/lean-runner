@@ -89,13 +89,7 @@ class AsyncLeanClient:
 
         request = prove_pb2.CheckProofRequest(proof=proof_content, config=pb_config)
         response = await stub.CheckProof(request)
-        return ProofResult(
-            proof_id=response.proof_id,
-            success=response.success,
-            status=response.status,
-            result=response.result,
-            error_message=response.error_message,
-        )
+        return ProofResult.from_protobuf(response)
 
     async def verify_all(
         self,
@@ -128,48 +122,52 @@ class AsyncLeanClient:
             total = len(proofs)
 
         pbar = tqdm.tqdm(total=total, disable=not progress_bar, desc="Verifying proofs")
-        tasks = set()
+        try:
+            tasks = set()
 
-        async def _verify_wrapper(proof_item):
-            try:
-                return await self.verify(proof_item, config)
-            except Exception as e:
-                return e
-            finally:
-                pbar.update(1)
+            async def _verify_wrapper(proof_item):
+                try:
+                    return await self.verify(proof_item, config)
+                except Exception as e:
+                    return e
+                finally:
+                    pbar.update(1)
 
-        async def _proof_iterator():
-            if isinstance(proofs, AsyncIterable):
-                async for proof in proofs:
-                    yield proof
-            else:
-                for proof in proofs:
-                    yield proof
+            async def _proof_iterator():
+                if isinstance(proofs, AsyncIterable):
+                    async for proof in proofs:
+                        yield proof
+                else:
+                    for proof in proofs:
+                        yield proof
 
-        async for proof in _proof_iterator():
-            if len(tasks) >= max_workers:
-                done, pending = await asyncio.wait(
-                    tasks, return_when=asyncio.FIRST_COMPLETED
-                )
-                for future in done:
-                    result = future.result()
-                    if isinstance(result, Exception):
-                        logger.error(f"Error verifying proof: {result}")
-                    else:
-                        yield result
-                tasks = pending
+            async for proof in _proof_iterator():
+                if len(tasks) >= max_workers:
+                    done, pending = await asyncio.wait(
+                        tasks, return_when=asyncio.FIRST_COMPLETED
+                    )
+                    for future in done:
+                        result = future.result()
+                        if isinstance(result, Exception):
+                            logger.error(f"Error verifying proof: {result}")
+                        else:
+                            yield result
+                    tasks = pending
 
-            task = asyncio.create_task(_verify_wrapper(proof))
-            tasks.add(task)
+                task = asyncio.create_task(_verify_wrapper(proof))
+                tasks.add(task)
 
-        for future in asyncio.as_completed(tasks):
-            result = await future
-            if isinstance(result, Exception):
-                logger.error(f"Error verifying proof: {result}")
-            else:
-                yield result
-
-        pbar.close()
+            for future in asyncio.as_completed(tasks):
+                result = await future
+                if isinstance(result, Exception):
+                    logger.error(f"Error verifying proof: {result}")
+                else:
+                    yield result
+        except Exception as e:
+            logger.error(f"Error verifying proofs: {e}")
+            raise e
+        finally:
+            pbar.close()
 
     async def get_result(self, proof: Proof) -> ProofResult:
         """
@@ -178,13 +176,7 @@ class AsyncLeanClient:
         stub = self._get_stub()
         request = prove_pb2.GetResultRequest(proof_id=proof.id)
         response = await stub.GetResult(request)
-        return ProofResult(
-            proof_id=response.proof_id,
-            success=response.success,
-            status=response.status,
-            result=response.result,
-            error_message=response.error_message,
-        )
+        return ProofResult.from_protobuf(response)
 
     async def close(self):
         """Closes the client channel."""

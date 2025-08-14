@@ -1,5 +1,6 @@
 from enum import Enum
 
+from google.protobuf import json_format
 from pydantic import BaseModel, Field
 
 from ..grpc import prove_pb2
@@ -77,6 +78,16 @@ class ProofResult(BaseModel):
     error_message: str | None = Field(
         None, description="An error message if the verification failed."
     )
+
+    @staticmethod
+    def from_protobuf(pb_result: prove_pb2.ProofResult) -> "ProofResult":
+        return ProofResult(
+            proof_id=pb_result.proof_id,
+            success=pb_result.success,
+            status=LeanProofStatus(pb_result.status),
+            result=json_format.MessageToDict(pb_result.result),
+            error_message=pb_result.error_message,
+        )
 
 
 class Proof(BaseModel):

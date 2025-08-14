@@ -82,13 +82,7 @@ class LeanClient:
 
         request = prove_pb2.CheckProofRequest(proof=proof_content, config=pb_config)
         response = stub.CheckProof(request)
-        return ProofResult(
-            proof_id=response.proof_id,
-            success=response.success,
-            status=response.status,
-            result=response.result,
-            error_message=response.error_message,
-        )
+        return ProofResult.from_protobuf(response)
 
     def verify_all(
         self,
@@ -133,13 +127,7 @@ class LeanClient:
         stub = self._get_stub()
         request = prove_pb2.GetResultRequest(proof_id=proof.id)
         response = stub.GetResult(request)
-        return ProofResult(
-            proof_id=response.proof_id,
-            success=response.success,
-            status=response.status,
-            result=response.result,
-            error_message=response.error_message,
-        )
+        return ProofResult.from_protobuf(response)
 
     def health_check(self):
         """Checks the health of the server."""
