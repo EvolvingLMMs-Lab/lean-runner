@@ -65,12 +65,10 @@ class LeanProofStatus(Enum):
 class ProofResult(BaseModel):
     """The result of a proof verification."""
 
+    proof_id: str = Field(..., description="The unique identifier for the proof task.")
     success: bool | None = Field(
         None,
         description="Whether the proof was successful. Can be None if not finished.",
-    )
-    status: LeanProofStatus = Field(
-        ..., description="The status of the proof verification."
     )
     result: dict | None = Field(
         None, description="The result data from the verification."

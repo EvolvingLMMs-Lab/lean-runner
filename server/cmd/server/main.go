@@ -17,7 +17,7 @@ import (
 
 var (
 	port        = flag.Int("port", 50051, "The server port")
-	host        = flag.String("host", "localhost", "The server host")
+	host        = flag.String("host", "0.0.0.0", "The server host")
 	logLevel    = flag.String("log-level", "", "The log level (debug, info, warn, error)")
 	configFile  = flag.String("config", "", "Path to config file (default: use built-in defaults)")
 	concurrency = flag.Int("concurrency", 0, "Lean concurrency (0 = use config default)")

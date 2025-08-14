@@ -82,6 +82,7 @@ class LeanClient:
 
         request = prove_pb2.CheckProofRequest(proof=proof_content, config=pb_config)
         response = stub.CheckProof(request)
+        print(response)
         return ProofResult(
             proof_id=response.proof_id,
             success=response.success,

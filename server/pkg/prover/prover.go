@@ -110,7 +110,14 @@ func setResourceLimits(pid int, config ProofConfig) error {
 // It uses a `context.Context` for handling timeouts and cancellations, which is
 // the standard Go pattern for managing long-running operations.
 func (p *leanProver) Execute(ctx context.Context, proofCode string, config ProofConfig) (*ProofResult, error) {
-	proofID := uuid.New().String()
+	proofIDObj, err := uuid.NewV7()
+	if err != nil {
+		logger.Error("Failed to generate proof ID", zap.Error(err))
+		logger.Info("Falling back to UUIDv4")
+		proofIDObj = uuid.New()
+	}
+
+	proofID := proofIDObj.String()
 
 	// Acquire semaphore to control concurrency
 	if err := p.sem.Acquire(ctx, 1); err != nil {
@@ -146,6 +153,7 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 	}
 
 	// Create the command with the context.
+	logger.Info("Executing command", zap.String("command", p.config.LeanExecutable), zap.String("workspace", p.config.LeanWorkspace))
 	cmd := exec.CommandContext(ctx, p.config.LeanExecutable, "exe", "repl")
 	cmd.Dir = p.config.LeanWorkspace
 
@@ -308,7 +316,7 @@ func handleResult(result any) (any, bool) {
 	if !ok {
 		// If the result is not a map, we can't inspect it for messages.
 		// Assume success unless there were other errors.
-		return result, true
+		return resultMap, true
 	}
 
 	messages, ok := resultMap["messages"].([]any)

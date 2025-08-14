@@ -5,8 +5,8 @@ server:
   host: "localhost"
   port: 50051
 lean:
-  executable: "/home/fypu/.elan/bin/lake"
-  workspace: "./playground"
+  executable: "/root/.elan/bin/lake"
+  workspace: "/app/lean-runner/playground"
   concurrency: 4
 logger:
   level: "info" # debug, info, warn, error

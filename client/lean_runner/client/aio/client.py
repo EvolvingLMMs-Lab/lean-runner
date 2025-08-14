@@ -177,13 +177,11 @@ class AsyncLeanClient:
         stub = self._get_stub()
         request = prove_pb2.GetResultRequest(proof_id=proof.id)
         response = await stub.GetResult(request)
-        return ProofResult.model_validate(
-            {
-                "proof_id": response.proof_id,
-                "success": response.success,
-                "result": response.result,
-                "error_message": response.error_message,
-            }
+        return ProofResult(
+            proof_id=response.proof_id,
+            success=response.success,
+            result=response.result,
+            error_message=response.error_message,
         )
 
     async def close(self):

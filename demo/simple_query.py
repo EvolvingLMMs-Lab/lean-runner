@@ -27,7 +27,7 @@ async def main():
     # Test synchronous version
     print("=== Testing Synchronous Version ===")
     with ThreadPoolExecutor(max_workers=10) as executor:
-        for _ in range(5):
+        for _ in range(10):
             executor.submit(check)
 
     # Test asynchronous concurrent version
