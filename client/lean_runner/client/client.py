@@ -112,7 +112,6 @@ class LeanClient:
             except Exception as e:
                 return e
             finally:
-                print(proof_item)
                 pbar.update(1)
 
         with futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
