@@ -155,8 +155,8 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 	}
 
 	// Create the command with the context.
-	logger.Info("Executing command", zap.String("command", p.config.LeanExecutable), zap.String("workspace", p.config.LeanWorkspace))
-	logger.Info("Input JSON", zap.String("input", string(inputJSON)))
+	logger.Debug("Executing command", zap.String("command", p.config.LeanExecutable), zap.String("workspace", p.config.LeanWorkspace))
+	logger.Debug("Input JSON", zap.String("input", string(inputJSON)))
 	cmd := exec.CommandContext(ctx, p.config.LeanExecutable, "exe", "repl")
 	cmd.Dir = p.config.LeanWorkspace
 

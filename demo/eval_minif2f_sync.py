@@ -14,13 +14,10 @@ def main():
     client = LeanClient("localhost:50051")
     results = client.verify_all(
         get_data(data),
-        max_workers=256,
+        max_workers=128,
         progress_bar=True,
         total=len(data),
-        config=ProofConfig(
-            cpu_time_limit=20,
-            # timeout=20
-        ),
+        config=ProofConfig(cpu_time_limit=300),
     )
     result = 0
     error_num = 0
