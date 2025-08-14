@@ -1,5 +1,6 @@
 import asyncio
 import json
+import os
 
 from lean_runner import AsyncLeanClient
 from lean_runner.proof.proto import LeanProofStatus
@@ -7,8 +8,7 @@ from lean_runner.proof.proto import LeanProofStatus
 
 async def main():
     with open(
-        # "/mnt/raid10/pufanyi/lmms-lean-runner/demo/data/to_inference_codes.json"
-        "/data/pufanyi/lmms-lean-runner/demo/data/to_inference_codes.json"
+        os.path.join(os.path.dirname(__file__), "data", "to_inference_codes.json")
     ) as f:
         data = json.load(f)
     # data = data[:10]
