@@ -3,6 +3,13 @@ package prover
 
 import "time"
 
+type ProofStatus string
+
+const (
+	ProofStatusFinished ProofStatus = "finished"
+	ProofStatusError    ProofStatus = "error"
+)
+
 // Config holds the application-level configuration for the prover.
 type Config struct {
 	LeanExecutable string
@@ -26,8 +33,9 @@ type ProofConfig struct {
 
 // ProofResult holds the outcome of a proof execution.
 type ProofResult struct {
-	Success      bool   `json:"success"`
-	Result       any    `json:"result"`
-	ErrorMessage string `json:"error_message,omitempty"`
-	ProofID      string `json:"proof_id"`
+	ProofID      string      `json:"proof_id"`
+	Success      bool        `json:"success"`
+	Status       ProofStatus `json:"status"`
+	Result       any         `json:"result"`
+	ErrorMessage string      `json:"error_message,omitempty"`
 }

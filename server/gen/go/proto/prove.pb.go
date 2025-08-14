@@ -394,9 +394,10 @@ type ProofResult struct {
 	state   protoimpl.MessageState `protogen:"open.v1"`
 	ProofId string                 `protobuf:"bytes,1,opt,name=proof_id,json=proofId,proto3" json:"proof_id,omitempty"`
 	Success bool                   `protobuf:"varint,2,opt,name=success,proto3" json:"success,omitempty"`
+	Status  string                 `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
 	// Result can be any JSON-like structure.
-	Result        *structpb.Struct `protobuf:"bytes,3,opt,name=result,proto3" json:"result,omitempty"`
-	ErrorMessage  string           `protobuf:"bytes,4,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
+	Result        *structpb.Struct `protobuf:"bytes,4,opt,name=result,proto3" json:"result,omitempty"`
+	ErrorMessage  string           `protobuf:"bytes,5,opt,name=error_message,json=errorMessage,proto3" json:"error_message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -445,6 +446,13 @@ func (x *ProofResult) GetSuccess() bool {
 	return false
 }
 
+func (x *ProofResult) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
 func (x *ProofResult) GetResult() *structpb.Struct {
 	if x != nil {
 		return x.Result
@@ -490,12 +498,13 @@ const file_prove_proto_rawDesc = "" +
 	"\x13SubmitProofResponse\x12\x19\n" +
 	"\bproof_id\x18\x01 \x01(\tR\aproofId\"-\n" +
 	"\x10GetResultRequest\x12\x19\n" +
-	"\bproof_id\x18\x01 \x01(\tR\aproofId\"\x98\x01\n" +
+	"\bproof_id\x18\x01 \x01(\tR\aproofId\"\xb0\x01\n" +
 	"\vProofResult\x12\x19\n" +
 	"\bproof_id\x18\x01 \x01(\tR\aproofId\x12\x18\n" +
-	"\asuccess\x18\x02 \x01(\bR\asuccess\x12/\n" +
-	"\x06result\x18\x03 \x01(\v2\x17.google.protobuf.StructR\x06result\x12#\n" +
-	"\rerror_message\x18\x04 \x01(\tR\ferrorMessage2V\n" +
+	"\asuccess\x18\x02 \x01(\bR\asuccess\x12\x16\n" +
+	"\x06status\x18\x03 \x01(\tR\x06status\x12/\n" +
+	"\x06result\x18\x04 \x01(\v2\x17.google.protobuf.StructR\x06result\x12#\n" +
+	"\rerror_message\x18\x05 \x01(\tR\ferrorMessage2V\n" +
 	"\fProveService\x12F\n" +
 	"\n" +
 	"CheckProof\x12\x1e.lean_runner.CheckProofRequest\x1a\x18.lean_runner.ProofResultB=Z;github.com/EvolvingLMMs-Lab/lean-runner/server/gen/go/protob\x06proto3"

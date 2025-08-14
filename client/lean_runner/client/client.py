@@ -86,6 +86,7 @@ class LeanClient:
         return ProofResult(
             proof_id=response.proof_id,
             success=response.success,
+            status=response.status,
             result=response.result,
             error_message=response.error_message,
         )
@@ -133,13 +134,12 @@ class LeanClient:
         stub = self._get_stub()
         request = prove_pb2.GetResultRequest(proof_id=proof.id)
         response = stub.GetResult(request)
-        return ProofResult.model_validate(
-            {
-                "proof_id": response.proof_id,
-                "success": response.success,
-                "result": response.result,
-                "error_message": response.error_message,
-            }
+        return ProofResult(
+            proof_id=response.proof_id,
+            success=response.success,
+            status=response.status,
+            result=response.result,
+            error_message=response.error_message,
         )
 
     def health_check(self):

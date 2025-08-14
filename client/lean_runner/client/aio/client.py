@@ -92,6 +92,7 @@ class AsyncLeanClient:
         return ProofResult(
             proof_id=response.proof_id,
             success=response.success,
+            status=response.status,
             result=response.result,
             error_message=response.error_message,
         )
@@ -180,6 +181,7 @@ class AsyncLeanClient:
         return ProofResult(
             proof_id=response.proof_id,
             success=response.success,
+            status=response.status,
             result=response.result,
             error_message=response.error_message,
         )

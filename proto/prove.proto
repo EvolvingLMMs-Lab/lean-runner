@@ -58,7 +58,8 @@ message GetResultRequest {
 message ProofResult {
   string proof_id = 1;
   bool success = 2;
+  string status = 3;
   // Result can be any JSON-like structure.
-  google.protobuf.Struct result = 3;
-  string error_message = 4;
+  google.protobuf.Struct result = 4;
+  string error_message = 5;
 }

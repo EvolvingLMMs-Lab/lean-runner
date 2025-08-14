@@ -126,6 +126,7 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 			ErrorMessage: fmt.Sprintf("Failed to acquire execution slot: %v", err),
 			Result:       map[string]string{"status": "concurrency_limit_reached"},
 			ProofID:      proofID,
+			Status:       ProofStatusError,
 		}, nil
 	}
 	defer p.sem.Release(1)
@@ -216,6 +217,7 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 			ErrorMessage: fmt.Sprintf("Process timed out after %s", config.Timeout),
 			Result:       map[string]string{"status": "timeout"},
 			ProofID:      proofID,
+			Status:       ProofStatusError,
 		}, nil
 	}
 
@@ -235,6 +237,7 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 						ErrorMessage: fmt.Sprintf("Process was killed (SIGKILL) - likely memory limit exceeded (%d bytes)", config.MemoryLimit),
 						Result:       map[string]string{"status": "memory_limit_exceeded"},
 						ProofID:      proofID,
+						Status:       ProofStatusError,
 					}, nil
 				case syscall.SIGXCPU:
 					// CPU time limit exceeded
@@ -243,6 +246,7 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 						ErrorMessage: fmt.Sprintf("Process exceeded CPU time limit (%s)", config.CPUTimeLimit),
 						Result:       map[string]string{"status": "cpu_time_limit_exceeded"},
 						ProofID:      proofID,
+						Status:       ProofStatusError,
 					}, nil
 				case syscall.SIGXFSZ:
 					// File size limit exceeded
@@ -251,6 +255,7 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 						ErrorMessage: fmt.Sprintf("Process exceeded file size limit (%d bytes)", config.FileSizeLimit),
 						Result:       map[string]string{"status": "file_size_limit_exceeded"},
 						ProofID:      proofID,
+						Status:       ProofStatusError,
 					}, nil
 				case syscall.SIGSEGV:
 					// Segmentation fault - could be stack overflow
@@ -259,6 +264,7 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 						ErrorMessage: fmt.Sprintf("Process crashed with segmentation fault - possible stack overflow (stack limit: %d bytes)", config.StackLimit),
 						Result:       map[string]string{"status": "segmentation_fault"},
 						ProofID:      proofID,
+						Status:       ProofStatusError,
 					}, nil
 				default:
 					// Other signals
@@ -267,6 +273,7 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 						ErrorMessage: fmt.Sprintf("Process was killed by signal %v", signal),
 						Result:       map[string]any{"status": "process_killed", "signal": signal.String()},
 						ProofID:      proofID,
+						Status:       ProofStatusError,
 					}, nil
 				}
 			}
@@ -276,6 +283,7 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 				ErrorMessage: fmt.Sprintf("Process exited with code %d: %s", exitErr.ExitCode(), string(stderrBytes)),
 				Result:       map[string]any{"status": "process_error", "return_code": exitErr.ExitCode()},
 				ProofID:      proofID,
+				Status:       ProofStatusError,
 			}, nil
 		}
 		// Other kinds of errors (e.g., executable not found).
@@ -295,6 +303,7 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 				"parse_error_message": err.Error(),
 			},
 			ProofID: proofID,
+			Status:  ProofStatusError,
 		}, nil
 	}
 
@@ -306,6 +315,7 @@ func (p *leanProver) Execute(ctx context.Context, proofCode string, config Proof
 		Result:       processedResult,
 		ErrorMessage: string(stderrBytes),
 		ProofID:      proofID,
+		Status:       ProofStatusFinished,
 	}, nil
 }
 

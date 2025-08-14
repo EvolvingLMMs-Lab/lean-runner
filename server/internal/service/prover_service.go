@@ -132,8 +132,22 @@ func convertToProtoResult(result *prover.ProofResult) (*pb.ProofResult, error) {
 		return nil, fmt.Errorf("result cannot be nil")
 	}
 
-	// Convert result to protobuf Struct
-	resultStruct, err := structpb.NewStruct(result.Result.(map[string]any))
+	// Convert result to protobuf Struct - handle different map types
+	var resultMap map[string]any
+	switch v := result.Result.(type) {
+	case map[string]any:
+		resultMap = v
+	case map[string]string:
+		// Convert map[string]string to map[string]any
+		resultMap = make(map[string]any, len(v))
+		for k, val := range v {
+			resultMap[k] = val
+		}
+	default:
+		return nil, fmt.Errorf("unsupported result type: %T, expected map[string]any or map[string]string", result.Result)
+	}
+
+	resultStruct, err := structpb.NewStruct(resultMap)
 	if err != nil {
 		return nil, fmt.Errorf("failed to convert result to struct: %w", err)
 	}
@@ -141,6 +155,7 @@ func convertToProtoResult(result *prover.ProofResult) (*pb.ProofResult, error) {
 	return &pb.ProofResult{
 		ProofId:      result.ProofID,
 		Success:      result.Success,
+		Status:       string(result.Status),
 		Result:       resultStruct,
 		ErrorMessage: result.ErrorMessage,
 	}, nil

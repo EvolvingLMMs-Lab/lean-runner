@@ -56,8 +56,6 @@ class LeanProofStatus(Enum):
     The status of a Lean proof verification.
     """
 
-    PENDING = "pending"
-    RUNNING = "running"
     FINISHED = "finished"
     ERROR = "error"
 
@@ -69,6 +67,9 @@ class ProofResult(BaseModel):
     success: bool | None = Field(
         None,
         description="Whether the proof was successful. Can be None if not finished.",
+    )
+    status: LeanProofStatus = Field(
+        ..., description="The status of the proof verification."
     )
     result: dict | None = Field(
         None, description="The result data from the verification."
